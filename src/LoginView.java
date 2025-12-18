@@ -6,6 +6,7 @@ public class LoginView extends JFrame{
     JRadioButton SupervisorButton =new JRadioButton("ProductionSupervisor");
     JButton signInButton=new JButton("Sign in");
     JTextField usernameField =new JTextField();
+
     JPasswordField passwordField=new JPasswordField();
     LoginView(){
         this.setTitle("Login");

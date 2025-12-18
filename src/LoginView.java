@@ -5,7 +5,6 @@ public class LoginView extends JFrame{
     JRadioButton MangerButton=new JRadioButton("Manger");
     JRadioButton SupervisorButton =new JRadioButton("ProductionSupervisor");
     JButton signInButton=new JButton("Sign in");
-    JButton signUpButton=new JButton("Sign up");
     JTextField usernameField =new JTextField();
     JPasswordField passwordField=new JPasswordField();
     LoginView(){
@@ -48,9 +47,6 @@ public class LoginView extends JFrame{
         JPanel panel4=new JPanel();
         panel4.add(signInButton);
 
-        JPanel panel5=new JPanel();
-        panel5.add(signUpButton);
-
 
 
 
@@ -69,8 +65,6 @@ public class LoginView extends JFrame{
         SupervisorButton.setForeground(new Color(200, 80, 0));
         signInButton.setBackground(Color.darkGray);
         signInButton.setForeground(Color.WHITE);
-        signUpButton.setBackground(Color.darkGray);
-        signUpButton.setForeground(Color.WHITE);
         // signInButton.addActionListener(this);
 
 
@@ -80,7 +74,6 @@ public class LoginView extends JFrame{
         this.add(panel2);
         this.add(panel3);
         this.add(panel4);
-        this.add(panel5);
         this.setVisible(true);
 
     }

@@ -1,51 +1,105 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class LoginView extends JFrame {
+public class LoginView extends JFrame{
+    JRadioButton MangerButton=new JRadioButton("Manger");
+    JRadioButton SupervisorButton =new JRadioButton("ProductionSupervisor");
+    JButton signInButton=new JButton("Sign in");
+    JTextField usernameField =new JTextField();
+    JPasswordField passwordField=new JPasswordField();
+    LoginView(){
+        this.setTitle("Login");
+        this.setSize(500,500);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(new FlowLayout(FlowLayout.CENTER,10,20));
 
-    JTextField usernameField = new JTextField();
-    JPasswordField passwordField = new JPasswordField();
-    JRadioButton adminRadio = new JRadioButton("admin");
-    JRadioButton userRadio = new JRadioButton("user");
-    JButton submitButton = new JButton("Submit");
 
-    public LoginView() {
-        setTitle("Login Test");
-        setSize(350, 250);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Username
-        gbc.gridx = 0; gbc.gridy = 0;
-        add(new JLabel("Username:"), gbc);
-        gbc.gridx = 1;
-        add(usernameField, gbc);
+        JLabel labelUser = new JLabel("UserName:");
+        JLabel labelPass = new JLabel("Password:");
 
-        // Password
-        gbc.gridx = 0; gbc.gridy = 1;
-        add(new JLabel("Password:"), gbc);
-        gbc.gridx = 1;
-        add(passwordField, gbc);
 
-        // Role
-        gbc.gridx = 0; gbc.gridy = 2;
-        add(new JLabel("Role:"), gbc);
-        ButtonGroup roleGroup = new ButtonGroup();
-        roleGroup.add(adminRadio);
-        roleGroup.add(userRadio);
-        JPanel rolePanel = new JPanel();
-        rolePanel.add(adminRadio);
-        rolePanel.add(userRadio);
-        gbc.gridx = 1;
-        add(rolePanel, gbc);
 
-        // Submit
-        gbc.gridx = 1; gbc.gridy = 3;
-        add(submitButton, gbc);
 
-        setLocationRelativeTo(null);
-        setVisible(true);
+
+        usernameField.setPreferredSize(new Dimension(200,40));
+        passwordField.setPreferredSize(new Dimension(200,40));
+
+
+        ButtonGroup group = new ButtonGroup();
+        group.add(MangerButton);
+        group.add(SupervisorButton);
+
+
+
+        JPanel panel1=new JPanel();
+        panel1.add(labelUser);
+        panel1.add(usernameField);
+
+        JPanel panel2=new JPanel();
+        panel2.add(labelPass);
+        panel2.add(passwordField);
+
+        JPanel panel3 = new JPanel();
+        panel3.add(MangerButton);
+        panel3.add(SupervisorButton);
+
+        JPanel panel4=new JPanel();
+        panel4.add(signInButton);
+
+
+
+
+        this.getContentPane().setBackground(new Color(255, 245, 200));
+        labelUser.setForeground(new Color(255, 120, 0));
+        usernameField.setBackground(Color.WHITE);
+        usernameField.setForeground(Color.DARK_GRAY);
+        usernameField.setBorder(BorderFactory.createLineBorder(new Color(255, 165, 0), 2));
+        labelPass.setForeground(new Color(255, 120, 0));
+        passwordField.setBackground(Color.WHITE);
+        passwordField.setForeground(Color.DARK_GRAY);
+        passwordField.setBorder(BorderFactory.createLineBorder(new Color(255, 165, 0), 2));
+        MangerButton.setBackground(new Color(255, 245, 200));
+        MangerButton.setForeground(new Color(200, 80, 0));
+        SupervisorButton.setBackground(new Color(255, 245, 200));
+        SupervisorButton.setForeground(new Color(200, 80, 0));
+        signInButton.setBackground(Color.darkGray);
+        signInButton.setForeground(Color.WHITE);
+        // signInButton.addActionListener(this);
+
+
+
+
+        this.add(panel1);
+        this.add(panel2);
+        this.add(panel3);
+        this.add(panel4);
+        this.setVisible(true);
+
     }
+
+
+    /*@Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == signInButton) {
+            String username = textField1.getText();
+            String password = new String(passwordField.getPassword());
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (!MangerButton.isSelected() && !ProductionSupervisorButton.isSelected()) {
+                JOptionPane.showMessageDialog(this, "Please select a role", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (MangerButton.isSelected()) {
+                new MangerSwing();
+                dispose();
+            } else {
+                new ProductionSupervisoS();
+                dispose();
+            }*/
+
 }

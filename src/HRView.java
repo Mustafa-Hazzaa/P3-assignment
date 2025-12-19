@@ -5,16 +5,11 @@ import java.awt.event.ActionListener;
 
 public class HRView extends JFrame {
 
-    // Fields for user input
     public JTextField nameField = new JTextField();
     JPasswordField passwordField = new JPasswordField();
     public JComboBox<String> roleComboBox = new JComboBox<>(new String[]{"Manager", "Supervisor", "HR"});
-
-    // Buttons
     JButton addUserButton = new JButton("Add User");
     JButton removeUserButton = new JButton("Remove User");
-
-    // User display
     public DefaultListModel<String> userListModel = new DefaultListModel<>();
     JList<String> userList = new JList<>(userListModel);
 
@@ -30,119 +25,101 @@ public class HRView extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Left Panel with Image
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(Color.WHITE);
         ImageIcon icon = new ImageIcon("Images/imagep.jpg");
         Image image = icon.getImage().getScaledInstance(600, 750, Image.SCALE_SMOOTH);
         leftPanel.add(new JLabel(new ImageIcon(image)), BorderLayout.CENTER);
 
-        // Right Panel
-        JPanel rightPanel = new JPanel();
+        JPanel rightPanel = new JPanel(new GridBagLayout());
         rightPanel.setBackground(potatoBeige);
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel title = new JLabel("HR Management");
+        JLabel title = new JLabel("HR Management", SwingConstants.CENTER);
         title.setFont(new Font("Comic Sans MS", Font.BOLD, 28));
         title.setForeground(capeRed);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+        rightPanel.add(title, gbc);
 
-        // Name Row
         JLabel labelName = new JLabel("Name:");
         labelName.setFont(new Font("SansSerif", Font.BOLD, 16));
         labelName.setForeground(textBrown);
-        nameField.setMaximumSize(new Dimension(260, 40));
         nameField.setBorder(BorderFactory.createLineBorder(glassesGreen, 2));
+        nameField.setPreferredSize(new Dimension(300, 35));
+        nameField.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        gbc.gridwidth = 1;
+        gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 10, 5, 10);
+        rightPanel.add(labelName, gbc);
+        gbc.gridx = 1;
+        rightPanel.add(nameField, gbc);
 
-        JPanel nameRow = new JPanel();
-        nameRow.setLayout(new BoxLayout(nameRow, BoxLayout.X_AXIS));
-        nameRow.setBackground(potatoBeige);
-        nameRow.add(labelName);
-        nameRow.add(Box.createRigidArea(new Dimension(10, 0)));
-        nameRow.add(nameField);
-        nameRow.setMaximumSize(new Dimension(400, 45));
-
-        // Password Row
         JLabel labelPass = new JLabel("Password:");
         labelPass.setFont(new Font("SansSerif", Font.BOLD, 16));
         labelPass.setForeground(textBrown);
-        passwordField.setMaximumSize(new Dimension(260, 40));
         passwordField.setBorder(BorderFactory.createLineBorder(glassesGreen, 2));
+        passwordField.setPreferredSize(new Dimension(300, 35));
+        passwordField.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        gbc.gridx = 0;
+        gbc.gridy++;
+        rightPanel.add(labelPass, gbc);
+        gbc.gridx = 1;
+        rightPanel.add(passwordField, gbc);
 
-        JPanel passRow = new JPanel();
-        passRow.setLayout(new BoxLayout(passRow, BoxLayout.X_AXIS));
-        passRow.setBackground(potatoBeige);
-        passRow.add(labelPass);
-        passRow.add(Box.createRigidArea(new Dimension(10, 0)));
-        passRow.add(passwordField);
-        passRow.setMaximumSize(new Dimension(400, 45));
-
-        // Role Row
         JLabel labelRole = new JLabel("Role:");
         labelRole.setFont(new Font("SansSerif", Font.BOLD, 16));
         labelRole.setForeground(textBrown);
-        roleComboBox.setMaximumSize(new Dimension(260, 40));
 
-        JPanel roleRow = new JPanel();
-        roleRow.setLayout(new BoxLayout(roleRow, BoxLayout.X_AXIS));
-        roleRow.setBackground(potatoBeige);
-        roleRow.add(labelRole);
-        roleRow.add(Box.createRigidArea(new Dimension(10, 0)));
-        roleRow.add(roleComboBox);
-        roleRow.setMaximumSize(new Dimension(400, 45));
+        roleComboBox.setPreferredSize(new Dimension(300, 35));
+        roleComboBox.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        roleComboBox.setBackground(Color.WHITE);
+//        roleComboBox.setBorder(BorderFactory.createLineBorder(glassesGreen, 2));
 
-        // Buttons Row
+        gbc.gridx = 0;
+        gbc.gridy++;
+        rightPanel.add(labelRole, gbc);
+        gbc.gridx = 1;
+        rightPanel.add(roleComboBox, gbc);
+
+
         addUserButton.setBackground(glassesGreen);
         addUserButton.setForeground(Color.WHITE);
         addUserButton.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
         addUserButton.setFocusPainted(false);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(15, 10, 15, 10); // extra vertical space
+        rightPanel.add(addUserButton, gbc);
+
+        userList.setBorder(BorderFactory.createLineBorder(glassesGreen, 2));
+        JScrollPane listScroll = new JScrollPane(userList);
+        listScroll.setPreferredSize(new Dimension(300, 200));
+        gbc.gridy++;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(50, 10, 5, 10);
+        rightPanel.add(listScroll, gbc);
 
         removeUserButton.setBackground(capeRed);
         removeUserButton.setForeground(Color.WHITE);
         removeUserButton.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
         removeUserButton.setFocusPainted(false);
-
-        JPanel buttonRow = new JPanel();
-        buttonRow.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
-        buttonRow.setBackground(potatoBeige);
-        buttonRow.add(addUserButton);
-        buttonRow.add(removeUserButton);
-
-        // User List
-        userList.setBorder(BorderFactory.createLineBorder(glassesGreen, 2));
-        JScrollPane listScroll = new JScrollPane(userList);
-        listScroll.setPreferredSize(new Dimension(400, 200));
-        listScroll.setMaximumSize(new Dimension(400, 200));
-
-        rightPanel.add(Box.createVerticalGlue());
-        rightPanel.add(title);
-        rightPanel.add(Box.createRigidArea(new Dimension(0, 30)));
-        rightPanel.add(nameRow);
-        rightPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        rightPanel.add(passRow);
-        rightPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        rightPanel.add(roleRow);
-        rightPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        rightPanel.add(buttonRow);
-        rightPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        rightPanel.add(listScroll);
-        rightPanel.add(Box.createVerticalGlue());
+        gbc.gridy++;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        rightPanel.add(removeUserButton, gbc);
 
         add(leftPanel, BorderLayout.WEST);
         add(rightPanel, BorderLayout.CENTER);
 
-
-
-
-        removeUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedIndex = userList.getSelectedIndex();
-                if (selectedIndex != -1) {
-                    userListModel.remove(selectedIndex);
-                }
-            }
-        });
 
         this.setVisible(true);
     }
@@ -150,6 +127,6 @@ public class HRView extends JFrame {
     public static void main(String[] args) {
         UserData model = new UserData();
         HRView view = new HRView();
-        new HRController(model,view);
+        new HRController(model, view);
     }
 }

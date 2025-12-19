@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class LoginView extends JFrame{
     JRadioButton MangerButton=new JRadioButton("Manger");
-    JRadioButton SupervisorButton =new JRadioButton("ProductionSupervisor");
+    JRadioButton SupervisorButton =new JRadioButton("Supervisor");
     JButton signInButton=new JButton("Sign in");
     JButton signUpButton=new JButton("Sign up");
     JTextField usernameField =new JTextField();
@@ -19,10 +19,6 @@ public class LoginView extends JFrame{
 
         JLabel labelUser = new JLabel("UserName:");
         JLabel labelPass = new JLabel("Password:");
-
-
-
-
 
         usernameField.setPreferredSize(new Dimension(200,40));
         passwordField.setPreferredSize(new Dimension(200,40));

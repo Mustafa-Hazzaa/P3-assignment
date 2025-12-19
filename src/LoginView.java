@@ -7,76 +7,105 @@ public class LoginView extends JFrame{
     JButton signInButton=new JButton("Sign in");
     JButton signUpButton=new JButton("Sign up");
     JTextField usernameField =new JTextField();
-
     JPasswordField passwordField=new JPasswordField();
+
+
+
     LoginView(){
-        this.setTitle("Login");
-        this.setSize(500,500);
+        Color potatoBeige =new Color(243,229,195);
+        Color capeRed = new Color(192,57,43);
+        Color glassesGreen = new Color(26,188,156);
+        Color textBrown = new Color(93,64,55);
+
+
+
+
+
+        this.setTitle("Super Potato Login");
+        this.setSize(1350,750);
+        this.setLocationRelativeTo(null);
+        this.setMinimumSize(new Dimension(1350,750));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLayout(new FlowLayout(FlowLayout.CENTER,10,20));
+        setLayout(new BorderLayout());
 
+        JPanel leftPanel =new JPanel(new BorderLayout());
+        leftPanel.setBackground(Color.WHITE);
+        ImageIcon icon =new ImageIcon("imagep.jpg");
+        Image image = icon.getImage();
+        Image scaledImg = image.getScaledInstance(600,750,Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon =new ImageIcon(scaledImg);
+        JLabel imageLabel =new JLabel(scaledIcon);
+        imageLabel.setHorizontalAlignment(JLabel.CENTER);
+        leftPanel.add(imageLabel, BorderLayout.CENTER);
 
+        JPanel rightPanel =new JPanel();
+        rightPanel.setBackground(potatoBeige);
+        rightPanel.setLayout(new BoxLayout(rightPanel,BoxLayout.Y_AXIS));
+
+        JLabel title =new JLabel("Welcome to Super Potato");
+        title.setFont(new Font("Comic Sans MS",Font.BOLD, 24));
+        title.setForeground(capeRed);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel labelUser = new JLabel("UserName:");
         JLabel labelPass = new JLabel("Password:");
+        labelUser.setForeground(textBrown);
+        labelPass.setForeground(textBrown);
 
-        usernameField.setPreferredSize(new Dimension(200,40));
-        passwordField.setPreferredSize(new Dimension(200,40));
+        Dimension fieldSize =new Dimension(260,40);
+        usernameField.setMaximumSize(fieldSize);
+        usernameField.setPreferredSize(fieldSize);
+      usernameField.setHorizontalAlignment(JTextField.LEFT);
+
+
+        passwordField.setMaximumSize(fieldSize);
+        passwordField.setPreferredSize(fieldSize);
+        passwordField.setHorizontalAlignment(JTextField.LEFT);
+
+        usernameField.setBorder(BorderFactory.createLineBorder(glassesGreen,2));
+        passwordField.setBorder(BorderFactory.createLineBorder(glassesGreen,2));
 
 
         ButtonGroup group = new ButtonGroup();
         group.add(MangerButton);
         group.add(SupervisorButton);
 
-
-
-        JPanel panel1=new JPanel();
-        panel1.add(labelUser);
-        panel1.add(usernameField);
-
-        JPanel panel2=new JPanel();
-        panel2.add(labelPass);
-        panel2.add(passwordField);
-
-        JPanel panel3 = new JPanel();
-        panel3.add(MangerButton);
-        panel3.add(SupervisorButton);
-
-        JPanel panel4=new JPanel();
-        panel4.add(signInButton);
-
-        JPanel panel5=new JPanel();
-        panel5.add(signUpButton);
-
-
-
-
-        this.getContentPane().setBackground(new Color(255, 245, 200));
-        labelUser.setForeground(new Color(255, 120, 0));
-        usernameField.setBackground(Color.WHITE);
-        usernameField.setForeground(Color.DARK_GRAY);
-        usernameField.setBorder(BorderFactory.createLineBorder(new Color(255, 165, 0), 2));
-        labelPass.setForeground(new Color(255, 120, 0));
-        passwordField.setBackground(Color.WHITE);
-        passwordField.setForeground(Color.DARK_GRAY);
-        passwordField.setBorder(BorderFactory.createLineBorder(new Color(255, 165, 0), 2));
-        MangerButton.setBackground(new Color(255, 245, 200));
-        MangerButton.setForeground(new Color(200, 80, 0));
-        SupervisorButton.setBackground(new Color(255, 245, 200));
-        SupervisorButton.setForeground(new Color(200, 80, 0));
-        signInButton.setBackground(Color.darkGray);
+        MangerButton.setBackground(potatoBeige);
+        SupervisorButton.setBackground(potatoBeige);
+        MangerButton.setForeground(textBrown);
+        SupervisorButton.setForeground(textBrown);
+        signInButton.setBackground(capeRed);
         signInButton.setForeground(Color.WHITE);
-        signUpButton.setBackground(Color.darkGray);
+        signUpButton.setBackground(glassesGreen);
         signUpButton.setForeground(Color.WHITE);
 
+        Dimension buttonSize =new Dimension(200,40);
+        signInButton.setMaximumSize(buttonSize);
+        signUpButton.setMaximumSize(buttonSize);
 
+        rightPanel.add(Box.createVerticalGlue());
+        rightPanel.add(title);
+        rightPanel.add(Box.createRigidArea(new Dimension(0,25)));
 
+        rightPanel.add(labelUser);
+        rightPanel.add(usernameField);
+        rightPanel.add(Box.createRigidArea(new Dimension(0,15)));
 
-        this.add(panel1);
-        this.add(panel2);
-        this.add(panel3);
-        this.add(panel4);
-        this.add(panel5);
+        rightPanel.add(labelPass);
+        rightPanel.add(passwordField);
+        rightPanel.add(Box.createRigidArea(new Dimension(0,15)));
+
+        rightPanel.add(MangerButton);
+        rightPanel.add(SupervisorButton);
+        rightPanel.add(Box.createRigidArea(new Dimension(0,20)));
+
+        rightPanel.add(signInButton);
+        rightPanel.add(Box.createRigidArea(new Dimension(0,10)));
+        rightPanel.add(signUpButton);
+        rightPanel.add(Box.createVerticalGlue());
+
+        add(leftPanel,BorderLayout.WEST);
+        add(rightPanel,BorderLayout.CENTER);
         this.setVisible(true);
 
     }

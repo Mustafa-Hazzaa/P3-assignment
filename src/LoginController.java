@@ -13,24 +13,26 @@ public class LoginController {
 
     private void initController() {
         view.signInButton.addActionListener(e -> handleSignIn());
-        view.signUpButton.addActionListener(e -> handleSignUp());
     }
 
     private void handleSignIn() {
         String username = view.usernameField.getText();
         String password = new String(view.passwordField.getPassword());
-        String role = view.MangerButton.isSelected() ? "Manager" :
+        String role = view.ManagerButton.isSelected() ? "Manager" :
                 view.SupervisorButton.isSelected() ? "Supervisor" : null;
 
         String status = model.validateLoginRequest(username, password, role);
-        JOptionPane.showMessageDialog(view, status.equals("SUCCESS") ?
-                "Login successful!" : status);
+
+        if (status.equals("SUCCESS"))
+        {
+            JOptionPane.showMessageDialog(view, status);
+        }
+            else{
+            JOptionPane.showMessageDialog(view, status);
+        }
+
+
     }
 
-    private void handleSignUp() {
 
-
-
-
-    }
 }

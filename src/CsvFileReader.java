@@ -10,7 +10,7 @@ public class CsvFileReader {
     }
 
     public List<User> loadUsers() throws IOException {
-        return loadUsers("Users.csv");
+        return loadUsers("Data/Users.csv");
     }
 
     public List<User> loadUsers(String filePath) throws IOException {

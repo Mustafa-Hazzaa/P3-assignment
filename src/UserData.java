@@ -20,10 +20,6 @@ public class UserData {
             throw new RuntimeException(e);
         }
 
-
-//        users.put("Mustafa", new User("Mustafa", "1234", "admin"));
-//        users.put("Masa", new User("Masa", "abcd", "user"));
-//        users.put("Luna", new User("Luna", "abcd", "user"));
     }
 
     public User getUser(String name) { return users.get(name); }
@@ -43,4 +39,51 @@ public class UserData {
 
         return authenticate(username, password, role) ? "SUCCESS" : "Invalid username, password, or role";
     }
+
+    public String validateInfo(String username, String password, String role) {
+        if (username == null || username.trim().isEmpty()) return "Username cannot be empty";
+        if (!username.contains("@gmail")) {
+            return "invalid username format (must contain '@gmail')";
+        }
+        if (password == null || password.trim().isEmpty()) return "Password cannot be empty";
+        if (role == null) return "Select a role";
+
+        return "SUCCESS";
+    }
+
+    public void updateUsers(){
+        CsvFileReader csvFileReader = new CsvFileReader();
+        try {
+            List<User> allUsers = csvFileReader.loadUsers();
+            for (User user:allUsers)
+            {
+                users.put(user.getName(),user);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void updateUsers(String usernameToRemove) {
+        // Remove user from map
+        users.remove(usernameToRemove);
+
+        CsvFileWriter csvFileWriter = new CsvFileWriter();
+        TxtFileWriter txtFileWriter = new TxtFileWriter();
+
+        try {
+            // Write header first
+            txtFileWriter.writeLine("Data/Users.csv", "username,password,role", false);
+
+            for (User temp : users.values()) {
+                csvFileWriter.addUser(temp.getName(), temp.getPassword(), temp.getRole(), true);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 }

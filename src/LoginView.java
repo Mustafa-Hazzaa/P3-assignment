@@ -68,7 +68,6 @@ public class LoginView extends JFrame{
         signInButton.setForeground(Color.WHITE);
         signUpButton.setBackground(Color.darkGray);
         signUpButton.setForeground(Color.WHITE);
-        // signInButton.addActionListener(this);
 
 
 
@@ -81,29 +80,5 @@ public class LoginView extends JFrame{
         this.setVisible(true);
 
     }
-
-
-    /*@Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == signInButton) {
-            String username = textField1.getText();
-            String password = new String(passwordField.getPassword());
-            if (username.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            if (!MangerButton.isSelected() && !ProductionSupervisorButton.isSelected()) {
-                JOptionPane.showMessageDialog(this, "Please select a role", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            if (MangerButton.isSelected()) {
-                new MangerSwing();
-                dispose();
-            } else {
-                new ProductionSupervisoS();
-                dispose();
-            }*/
 
 }

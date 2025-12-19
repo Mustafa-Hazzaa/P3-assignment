@@ -10,7 +10,7 @@ public class CsvFileReader {
     }
 
     public List<User> loadUsers() throws IOException {
-        return loadUsers("src/Users.csv");
+        return loadUsers("Users.csv");
     }
 
     public List<User> loadUsers(String filePath) throws IOException {
@@ -29,17 +29,4 @@ public class CsvFileReader {
         }
         return users;
     }
-
-    public static void main() {
-        CsvFileReader csvFileReader = new CsvFileReader();
-        try {
-            System.out.println(csvFileReader.loadUsers());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-
-
 }

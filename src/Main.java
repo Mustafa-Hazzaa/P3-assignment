@@ -1,3 +1,7 @@
+import Control.LoginController;
+import Model.UserData;
+import View.LoginView;
+
 public class Main {
     public static void main(String[] args) {
         UserData model = new UserData();

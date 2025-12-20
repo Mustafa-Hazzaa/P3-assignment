@@ -3,10 +3,10 @@
 //import java.util.List;
 //
 //public class HRController {
-//    private UserData model;
+//    private Moel.UserData model;
 //    private HRView view;
 //
-//    public HRController(UserData model, HRView view) {
+//    public HRController(Moel.UserData model, HRView view) {
 //        this.model = model;
 //        this.view = view;
 //        initController();
@@ -16,10 +16,10 @@
 ////        view.addUserButton.addActionListener(e -> handleAdd());
 ////        view.removeUserButton.addActionListener(e -> handleRemove());
 //
-//        CsvFileReader csvFileReader = new CsvFileReader();
+//        IO.CsvFileReader csvFileReader = new IO.CsvFileReader();
 //        try {
-//            List<User> users = csvFileReader.loadUsers();
-//            for (User user : users)
+//            List<Moel.User> users = csvFileReader.loadUsers();
+//            for (Moel.User user : users)
 //                view.userListModel.addElement(user.getName() + " - " + user.getRole());
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
@@ -28,7 +28,7 @@
 //    }
 //
 //    private void handleAdd() {
-//        CsvFileWriter csvFileWriter = new CsvFileWriter();
+//        IO.CsvFileWriter csvFileWriter = new IO.CsvFileWriter();
 //        String username = view.nameField.getText();
 //        String password = new String(view.passwordField.getPassword());
 //        String role = (String) view.roleComboBox.getSelectedItem();
@@ -36,7 +36,7 @@
 //        String status = model.validateLoginRequest(username, password, role);
 //
 //        if (status.equals("SUCCESS")) {
-//            JOptionPane.showMessageDialog(view, "User already exist");
+//            JOptionPane.showMessageDialog(view, "Moel.User already exist");
 //        } else {
 //            if (model.validateInfo(username, password, role).equals("SUCCESS")) {
 //                csvFileWriter.addUser(username, password, role, true);

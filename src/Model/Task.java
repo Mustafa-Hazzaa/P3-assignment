@@ -1,3 +1,7 @@
+package Model;
+
+import IO.productLine;
+
 import java.time.LocalDate;
 
 public class Task {

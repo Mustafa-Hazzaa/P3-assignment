@@ -1,15 +1,17 @@
+package View;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginView extends JFrame {
-    JRadioButton ManagerButton = new JRadioButton("Manager");
-    JRadioButton SupervisorButton = new JRadioButton("Supervisor");
-    JRadioButton HRButton = new JRadioButton("HR");
-    JButton signInButton = new JButton("Sign in");
-    JTextField usernameField = new JTextField();
-    JPasswordField passwordField = new JPasswordField();
+    public JRadioButton ManagerButton = new JRadioButton("Manager");
+    public JRadioButton SupervisorButton = new JRadioButton("Supervisor");
+    public JRadioButton HRButton = new JRadioButton("HR");
+    public JButton signInButton = new JButton("Sign in");
+    public JTextField usernameField = new JTextField();
+    public JPasswordField passwordField = new JPasswordField();
 
-    LoginView() {
+    public LoginView() {
         Color potatoBeige = new Color(243, 229, 195);
         Color capeRed = new Color(192, 57, 43);
         Color glassesGreen = new Color(26, 188, 156);
@@ -20,11 +22,15 @@ public class LoginView extends JFrame {
         this.setLocationRelativeTo(null);
         this.setMinimumSize(new Dimension(1350, 750));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
         setLayout(new BorderLayout());
+        ImageIcon logo = new ImageIcon("src/Images/Logo.png");
+        this.setIconImage(logo.getImage());
+
 
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(Color.WHITE);
-        ImageIcon icon = new ImageIcon("Images/imagep.jpg");
+        ImageIcon icon = new ImageIcon("src/Images/imagep.jpg");
         Image image = icon.getImage();
         Image scaledImg = image.getScaledInstance(600, 750, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImg);

@@ -1,3 +1,7 @@
+package IO;
+
+import Model.User;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -205,7 +205,7 @@ public class HRView extends JFrame {
 
         addUserCard.add(formPanel);
 
-        // ==== Remove User Card ====
+        // ==== Remove Moel.User Card ====
         JPanel removeUserCard = new JPanel(new GridBagLayout());
         removeUserCard.setOpaque(false);
 

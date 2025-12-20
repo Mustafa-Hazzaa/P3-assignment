@@ -1,9 +1,10 @@
+package IO;
+
 import java.io.IOException;
-import java.util.List;
 
 public class CsvFileWriter {
 
-    void addUser(String username,String password,String role,boolean append)
+    public void addUser(String username, String password, String role, boolean append)
     {
         addUser("Data/Users.csv",username,password,role,append);
     }

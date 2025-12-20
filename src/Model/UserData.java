@@ -1,3 +1,9 @@
+package Model;
+
+import IO.CsvFileReader;
+import IO.CsvFileWriter;
+import IO.TxtFileWriter;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;

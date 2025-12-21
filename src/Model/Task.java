@@ -10,7 +10,7 @@ public class Task {
     LocalDate startTime;
     LocalDate endTime;
     String status;
-    productLine productLine;
+    ProductLine productLine;
     int progress;
 
     

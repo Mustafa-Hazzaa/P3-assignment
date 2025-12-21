@@ -2,7 +2,7 @@ package Model;
 
 import java.util.List;
 
-public class productLine {
+public class ProductLine {
     int id;
     String name;
     String status;
@@ -39,4 +39,7 @@ public class productLine {
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
+
+
+
 }

@@ -2,21 +2,23 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import Swing.*;
 
 public class LoginView extends JFrame {
-    public JRadioButton ManagerButton = new JRadioButton("Manager");
-    public JRadioButton SupervisorButton = new JRadioButton("Supervisor");
-    public JRadioButton HRButton = new JRadioButton("HR");
-    public JButton signInButton = new JButton("Sign in");
-    public JTextField usernameField = new JTextField();
-    public JPasswordField passwordField = new JPasswordField();
+    public RoundedButton signInButton;
+    public IconTextField usernameField;
+    public IconPasswordField passwordField;
+    private CardLayout cardLayout;
 
     public LoginView() {
         Color potatoBeige = new Color(243, 229, 195);
         Color capeRed = new Color(192, 57, 43);
         Color glassesGreen = new Color(26, 188, 156);
         Color textBrown = new Color(93, 64, 55);
+        Icon userIcon = new ImageIcon(getClass().getResource("/Images/user.png"));
+        Icon passIcon = new ImageIcon(getClass().getResource("/Images/password.png"));
 
+        //  Frame Settings
         this.setTitle("Super Potato Login");
         this.setSize(1350, 750);
         this.setLocationRelativeTo(null);
@@ -27,7 +29,7 @@ public class LoginView extends JFrame {
         ImageIcon logo = new ImageIcon("src/Images/Logo.png");
         this.setIconImage(logo.getImage());
 
-
+        //  Left Panel Settings
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(Color.WHITE);
         ImageIcon icon = new ImageIcon("src/Images/imagep.jpg");
@@ -38,6 +40,7 @@ public class LoginView extends JFrame {
         imageLabel.setHorizontalAlignment(JLabel.CENTER);
         leftPanel.add(imageLabel, BorderLayout.CENTER);
 
+        //  Right Panel Settings
         JPanel rightPanel = new JPanel();
         rightPanel.setBackground(potatoBeige);
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
@@ -63,11 +66,13 @@ public class LoginView extends JFrame {
         labelUser.setMaximumSize(labelDim);
         labelPass.setMaximumSize(labelDim);
 
-
+        //make the label next to the fields
         labelUser.setHorizontalAlignment(SwingConstants.RIGHT);
         labelPass.setHorizontalAlignment(SwingConstants.RIGHT);
 
         Dimension fieldSize = new Dimension(260, 40);
+        usernameField = new IconTextField(10, userIcon);
+        passwordField = new IconPasswordField(10, passIcon);
         usernameField.setMaximumSize(fieldSize);
         usernameField.setPreferredSize(fieldSize);
         passwordField.setMaximumSize(fieldSize);
@@ -75,6 +80,8 @@ public class LoginView extends JFrame {
 
         usernameField.setBorder(BorderFactory.createLineBorder(glassesGreen, 2));
         passwordField.setBorder(BorderFactory.createLineBorder(glassesGreen, 2));
+        usernameField.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+        passwordField.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
 
         JPanel userRow = new JPanel();
         userRow.setLayout(new BoxLayout(userRow, BoxLayout.X_AXIS));
@@ -94,29 +101,13 @@ public class LoginView extends JFrame {
         passRow.add(passwordField);
         passRow.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        ButtonGroup group = new ButtonGroup();
-        group.add(ManagerButton);
-        group.add(SupervisorButton);
-        group.add(HRButton);
-
-        JPanel radioPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
-        radioPanel.setBackground(potatoBeige);
-        radioPanel.setMaximumSize(new Dimension(400, 40));
-
-        JRadioButton[] radios = {ManagerButton, SupervisorButton, HRButton};
-        for (JRadioButton btn : radios) {
-            btn.setBackground(potatoBeige);
-            btn.setForeground(textBrown);
-            btn.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
-            btn.setFocusPainted(false);
-            radioPanel.add(btn);
-        }
-
-        signInButton.setBackground(capeRed);
+        Dimension signInSize = new Dimension(360, 40);
+        signInButton= new RoundedButton("Sign in",capeRed);
+//        signInButton.setBackground(capeRed);
         signInButton.setForeground(Color.WHITE);
         signInButton.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
-        signInButton.setMaximumSize(fieldSize);
-        signInButton.setPreferredSize(fieldSize);
+        signInButton.setMaximumSize(signInSize);
+        signInButton.setPreferredSize(signInSize);
         signInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         signInButton.setFocusPainted(false);
 
@@ -129,9 +120,6 @@ public class LoginView extends JFrame {
 
         rightPanel.add(passRow);
         rightPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-
-        rightPanel.add(radioPanel);
-        rightPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         rightPanel.add(signInButton);
         rightPanel.add(Box.createVerticalGlue());

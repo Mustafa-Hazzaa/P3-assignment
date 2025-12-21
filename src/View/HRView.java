@@ -14,14 +14,19 @@ public class HRView extends JFrame {
     public IconTextField nameField;
     public IconTextField emailField;
     public IconPasswordField passwordField;
-    public JComboBox<String> roleComboBox = new JComboBox<>(new String[]{"Manager", "Supervisor", "HR"});
-    public DefaultListModel<String> userListModel = new DefaultListModel<>();
-    public JList<String> userList = new JList<>(userListModel);
+    public JComboBox<String> roleComboBox;
+
+    public DefaultListModel<String> userListModel;
+    public JList<String> userList;
+    public JButton addUserBtn;
+    public JButton rmvBtn;
+    List<String> menuItems;
+    SideNavPanel sideNav;
 
     private CardLayout cardLayout = new CardLayout();
     private JPanel rightPanel;
 
-    private final Color navBackground = new Color(45, 45, 45);
+    private final Color cardColor = new Color(45, 45, 45);
 
     public HRView() {
         Color glassesGreen = new Color(26, 188, 156);
@@ -33,16 +38,17 @@ public class HRView extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+        ImageIcon logo = new ImageIcon("src/Images/Logo.png");
+        this.setIconImage(logo.getImage());
 
-        // ---- Right Panel ----
+        //   Right Panel
         rightPanel = new BackgroundPanel("src/Images/background.jpg"); // use absolute classpath
         rightPanel.setLayout(cardLayout);
-        setupCards(glassesGreen, rmvRed, labelColor);
+        setupCards(labelColor);
         add(rightPanel, BorderLayout.CENTER);
 
-        // ---- Side Navigation Panel ----
-        List<String> menuItems = List.of("Add User", "Remove User");
-        SideNavPanel sideNav = new SideNavPanel(
+        menuItems = List.of("Add User", "Remove User");
+        sideNav = new SideNavPanel(
                 "SUPER POTATO",
                 "HR MANAGER",
                 "src/Images/logo.png",
@@ -60,27 +66,29 @@ public class HRView extends JFrame {
         setVisible(true);
     }
 
-    private void setupCards(Color glassesGreen, Color rmvRed, Color labelColor) {
-        // ==== Add User Card ====
+    private void setupCards(Color labelColor) {
+        Color glassesGreen = new Color(26, 188, 156);
+        Color rmvRed = new Color(192, 57, 43);
+
+        //  Add User Card
         JPanel addUserCard = new JPanel(new GridBagLayout());
         addUserCard.setOpaque(false);
 
-        RoundedPanel formPanel = new RoundedPanel(navBackground, 30);
+        //  init Card
+        RoundedPanel formPanel = new RoundedPanel(cardColor, 30);
         formPanel.setLayout(new GridBagLayout());
         formPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
         formPanel.setPreferredSize(new Dimension(500, 520));
         formPanel.setShadowColor(new Color(0, 0, 0, 70));
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(6, 6, 6, 10);
         gbc.anchor = GridBagConstraints.WEST;
-
-        // ---- Uniform label size ----
         Dimension labelSize = new Dimension(90, 30);
 
-        // ---- Title ----
+        //#######################   Title    ######################
+
         JLabel titleAdd = new JLabel("Add User", SwingConstants.CENTER);
-        titleAdd.setFont(new Font("Comic Sans MS", Font.BOLD, 26));
+        titleAdd.setFont(new Font("Comic Sans MS", Font.BOLD, 36));
         titleAdd.setForeground(Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -92,12 +100,13 @@ public class HRView extends JFrame {
         gbc.gridwidth = 1;
         gbc.insets = new Insets(6, 6, 6, 10);
 
-        // ---- Load icons ----
+        //  add icons
         Icon userIcon = new ImageIcon(getClass().getResource("/Images/user.png"));
         Icon emailIcon = new ImageIcon(getClass().getResource("/Images/email.png"));
         Icon passIcon = new ImageIcon(getClass().getResource("/Images/password.png"));
 
-        // ---- Name ----
+        //#######################   NAME    ######################
+        //  nameLabel
         gbc.gridy++;
         gbc.gridx = 0;
         gbc.weightx = 0;
@@ -107,7 +116,7 @@ public class HRView extends JFrame {
         nameLabel.setFont(new Font("SansSerif", Font.BOLD, 15));
         nameLabel.setPreferredSize(labelSize);
         formPanel.add(nameLabel, gbc);
-
+        //  nameField
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -117,7 +126,8 @@ public class HRView extends JFrame {
         nameField.setFont(new Font("SansSerif", Font.PLAIN, 14));
         formPanel.add(nameField, gbc);
 
-        // ---- Email ----
+        //#######################   Email   ######################
+        //  EmailLabel
         gbc.gridy++;
         gbc.gridx = 0;
         gbc.weightx = 0;
@@ -127,7 +137,7 @@ public class HRView extends JFrame {
         emailLabel.setFont(new Font("SansSerif", Font.BOLD, 15));
         emailLabel.setPreferredSize(labelSize);
         formPanel.add(emailLabel, gbc);
-
+        //  EmailField
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -137,14 +147,8 @@ public class HRView extends JFrame {
         emailField.setFont(new Font("SansSerif", Font.PLAIN, 14));
         formPanel.add(emailField, gbc);
 
-        emailField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                emailField.setBorder(underline(isValidEmail(emailField.getText()) ? Color.GREEN : Color.RED));
-            }
-        });
-
-        // ---- Password ----
+        //#######################   Password    ######################
+        //  PasswordLabel
         gbc.gridy++;
         gbc.gridx = 0;
         gbc.weightx = 0;
@@ -154,7 +158,7 @@ public class HRView extends JFrame {
         passLabel.setFont(new Font("SansSerif", Font.BOLD, 15));
         passLabel.setPreferredSize(labelSize);
         formPanel.add(passLabel, gbc);
-
+        //  PasswordField
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -164,16 +168,8 @@ public class HRView extends JFrame {
         passwordField.setFont(new Font("SansSerif", Font.PLAIN, 14));
         formPanel.add(passwordField, gbc);
 
-        passwordField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                int strength = passwordCheck(passwordField.getText());
-                Color color = (strength <= 1) ? Color.RED : (strength == 2) ? Color.YELLOW : Color.GREEN;
-                passwordField.setBorder(underline(color));
-            }
-        });
-
-        // ---- Role ----
+        //#######################   Role    ######################
+        //  roleLabel
         gbc.gridy++;
         gbc.gridx = 0;
         gbc.weightx = 0;
@@ -184,20 +180,22 @@ public class HRView extends JFrame {
         roleLabel.setPreferredSize(labelSize);
         formPanel.add(roleLabel, gbc);
 
+        //  roleComboBox
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        roleComboBox = new JComboBox<>(new String[]{"Manager", "Supervisor", "HR"});
         roleComboBox.setPreferredSize(new Dimension(0, 35));
         formPanel.add(roleComboBox, gbc);
 
-        // ---- Add User Button ----
+        //#######################   addButton    ######################
         gbc.gridy++;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(30, 0, 0, 0);
-        JButton addUserBtn = new RoundedButton("Add User", glassesGreen);
+        addUserBtn = new RoundedButton("Add User", glassesGreen);
         addUserBtn.setForeground(Color.WHITE);
         addUserBtn.setFont(new Font("SansSerif", Font.BOLD, 16));
         addUserBtn.setPreferredSize(new Dimension(220, 45));
@@ -205,25 +203,31 @@ public class HRView extends JFrame {
 
         addUserCard.add(formPanel);
 
-        // ==== Remove Moel.User Card ====
+        //                                       RemoveUser Card
+
         JPanel removeUserCard = new JPanel(new GridBagLayout());
         removeUserCard.setOpaque(false);
 
-        RoundedPanel listPanel = new RoundedPanel(navBackground, 30);
+        RoundedPanel listPanel = new RoundedPanel(cardColor, 30);
         listPanel.setLayout(new BorderLayout());
-        listPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        listPanel.setBorder(new EmptyBorder(20, 20, 20, 30));
         listPanel.setPreferredSize(new Dimension(500, 450));
         listPanel.setShadowColor(new Color(0,0,0,50));
 
+        //#######################   Title    ######################
         JLabel titleRemove = new JLabel("Remove User", SwingConstants.CENTER);
         titleRemove.setFont(new Font("Comic Sans MS", Font.BOLD, 26));
         titleRemove.setForeground(Color.WHITE);
         titleRemove.setBorder(new EmptyBorder(0,0,15,0));
 
-        userList.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        //#######################   UserList    ######################
+        userListModel = new DefaultListModel<>();
+        userList= new JList<>(userListModel);
+        userList.setFont(new Font("SansSerif", Font.PLAIN, 20));
         JScrollPane scrollPane = new JScrollPane(userList);
 
-        JButton rmvBtn = new RoundedButton("Remove User", rmvRed);
+        //#######################   removeButton    ######################
+        rmvBtn = new RoundedButton("Remove User", rmvRed);
         rmvBtn.setForeground(Color.WHITE);
         rmvBtn.setFont(new Font("SansSerif", Font.BOLD, 15));
         rmvBtn.setPreferredSize(new Dimension(150, 40));
@@ -237,29 +241,22 @@ public class HRView extends JFrame {
         listPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         removeUserCard.add(listPanel);
-
         rightPanel.add(addUserCard, "ADD");
         rightPanel.add(removeUserCard, "REMOVE");
     }
 
     // ==== Border helper ====
-    private static Border underline(Color c) {
+    public static Border underline(Color c) {
         return BorderFactory.createMatteBorder(0, 0, 2, 0, c);
     }
 
-    // ==== Email validation ====
-    public static boolean isValidEmail(String email) {
-        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{3,6}$");
+    public void addEmailListener(KeyAdapter listener) {
+        emailField.addKeyListener(listener);
     }
 
-    // ==== Password strength 0=weak,1=weak,2=medium,3=strong ====
-    public static int passwordCheck(String password) {
-        if (password.length() < 6 || password.matches(".*\\s.*")) return 0;
-        int score = 1;
-        if (password.matches(".*[A-Z].*")) score++;
-        if (password.matches(".*\\d.*")) score++;
-        if (password.matches(".*[!@#$%^&*()\\-_=+{}\\[\\]:;\"'<>,.?/`~|\\\\].*")) score++;
-        return Math.min(score, 3);
+    // Allow controller to listen to password typing
+    public void addPasswordListener(KeyAdapter listener) {
+        passwordField.addKeyListener(listener);
     }
 
     public static void main(String[] args) {

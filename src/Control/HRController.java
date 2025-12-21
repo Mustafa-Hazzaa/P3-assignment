@@ -1,66 +1,120 @@
-//import javax.swing.*;
-//import java.io.IOException;
-//import java.util.List;
-//
-//public class HRController {
-//    private Moel.UserData model;
-//    private HRView view;
-//
-//    public HRController(Moel.UserData model, HRView view) {
-//        this.model = model;
-//        this.view = view;
-//        initController();
-//    }
-//
-//    private void initController() {
-////        view.addUserButton.addActionListener(e -> handleAdd());
-////        view.removeUserButton.addActionListener(e -> handleRemove());
-//
-//        IO.CsvFileReader csvFileReader = new IO.CsvFileReader();
-//        try {
-//            List<Moel.User> users = csvFileReader.loadUsers();
-//            for (Moel.User user : users)
-//                view.userListModel.addElement(user.getName() + " - " + user.getRole());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
-//
-//    private void handleAdd() {
-//        IO.CsvFileWriter csvFileWriter = new IO.CsvFileWriter();
-//        String username = view.nameField.getText();
-//        String password = new String(view.passwordField.getPassword());
-//        String role = (String) view.roleComboBox.getSelectedItem();
-//
-//        String status = model.validateLoginRequest(username, password, role);
-//
-//        if (status.equals("SUCCESS")) {
-//            JOptionPane.showMessageDialog(view, "Moel.User already exist");
-//        } else {
-//            if (model.validateInfo(username, password, role).equals("SUCCESS")) {
-//                csvFileWriter.addUser(username, password, role, true);
-//                String user = view.nameField.getText() + " - " + view.roleComboBox.getSelectedItem();
-//                view.userListModel.addElement(user);
-//                model.updateUsers();
-//            } else {
-//                JOptionPane.showMessageDialog(view, status);
-//            }
-//        }
-//    }
-//
-//        void handleRemove () {
-//            int selectedIndex = view.userList.getSelectedIndex();
-//            if (selectedIndex != -1) {
-//                String selectedUser = view.userListModel.get(selectedIndex);
-//                view.userListModel.remove(selectedIndex);
-//
-//                selectedUser = selectedUser.split("-")[0].trim();
-//                model.updateUsers(selectedUser);
-//            }
-//        }
-//
-//
-//    }
-//
-//
+package Control;
+
+import Model.User;
+import Model.UserService;
+import View.HRView;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+import static View.HRView.underline;
+
+public class HRController {
+
+    private final UserService model;
+    private final HRView view;
+
+    public HRController(UserService model, HRView view) {
+        this.model = model;
+        this.view = view;
+        initController();
+    }
+
+    private void initController() {
+        view.addUserBtn.addActionListener(e -> handleAddUser());
+        view.rmvBtn.addActionListener(e -> handleRemoveUser());
+        view.nameField.addActionListener(e ->   view.nameField.transferFocus());;
+        view.emailField.addActionListener(e ->   view.emailField.transferFocus());;
+        view.passwordField.addActionListener(e ->   view.passwordField.transferFocus());;
+        refreshUserList();
+
+        view.addEmailListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                boolean valid = model.isValidEmail(view.emailField.getText());
+                Color color =valid ? Color.GREEN : Color.RED;
+                view.emailField.setBorder(underline(color));
+            }
+        });
+
+        view.addPasswordListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                int strength = model.passwordCheck(new String(view.passwordField.getPassword()));
+                Color color = (strength <= 1) ? Color.RED : (strength == 2) ? Color.YELLOW : Color.GREEN;
+                view.passwordField.setBorder(underline(color));
+            }
+        });
+    }
+
+    private void handleAddUser() {
+        String name = view.nameField.getText().trim();
+        String email = view.emailField.getText().trim();
+        String password = new String(view.passwordField.getPassword());
+        String role = (String) view.roleComboBox.getSelectedItem();
+
+        String validation = model.validateInfo(email,name, password, role);
+        if (!validation.equals("SUCCESS")) {
+            JOptionPane.showMessageDialog(view, validation, "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (model.getUser(name) != null) {
+            JOptionPane.showMessageDialog(view, "User already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        model.addUser(name, email, password, role);
+
+        view.userListModel.addElement(name + " - " +email + " - " + role);
+
+        JOptionPane.showMessageDialog(view, "User added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        clearForm();
+    }
+
+    private void handleRemoveUser() {
+        int selectedIndex = view.userList.getSelectedIndex();
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(view, "Select a user to remove", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String selectedUser = view.userListModel.get(selectedIndex);
+        String username = selectedUser.split("-")[0].trim();
+
+        UIManager.put("OptionPane.yesButtonFocusPainted", false);
+        UIManager.put("OptionPane.noButtonFocusPainted", false);
+
+        int option = JOptionPane.showConfirmDialog(
+                view,
+                "Are you sure you want to delete " + username + "?",
+                "Confirm Deletion",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (option == JOptionPane.YES_OPTION) {
+            model.removeUser(username);
+            view.userListModel.remove(selectedIndex);
+            JOptionPane.showMessageDialog(view, "User removed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+
+    private void refreshUserList() {
+        view.userListModel.clear();
+        for (User user : model.getAllUsers()) {
+            view.userListModel.addElement(user.getName() + " - "+user.getEmail()+" - " + user.getRole());
+        }
+    }
+
+    private void clearForm() {
+        view.nameField.setText("");
+        view.emailField.setText("");
+        view.passwordField.setText("");
+        view.roleComboBox.setSelectedIndex(0);
+    }
+}

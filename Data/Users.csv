@@ -1,3 +1,4 @@
-username,,password,role
-Luna@gmail.com,abcd,Manager
-mustafahazzaa@gmail.com,1234,HR
+username,email,password,role
+Masa,masa@gmail.com,abcd,Supervisor
+mustafa,mustafahazzaa@gmail.com,1234,HR
+luna,luna@gmail.com,abcd,Manager

@@ -1,6 +1,4 @@
-package IO;
-
-import Model.Task;
+package Model;
 
 import java.util.List;
 

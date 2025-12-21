@@ -1,12 +1,15 @@
 package Model;
 
 public class User {
-            private String name;
-            private String password;
-            private String role;
+            private final String name;
+            private final String email;
+            private final String password;
+            private final String role;
 
-            public User(String name, String password, String role) {
+
+            public User(String name,String email, String password, String role) {
                 this.name = name;
+                this.email =email;
                 this.password = password;
                 this.role = role;
             }
@@ -14,7 +17,7 @@ public class User {
             public String getName() { return name; }
             public String getPassword() { return password; }
             public String getRole() { return role; }
-
+            public String getEmail() { return email;}
 }
 
 

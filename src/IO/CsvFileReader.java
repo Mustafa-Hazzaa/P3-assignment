@@ -26,10 +26,12 @@ public class CsvFileReader {
 
             String[] data = line.split(",");
 
+
             String username = data[0];
-            String password = data[1];
-            String role = data[2];
-            users.add(new User(username,password,role));
+            String email = data[1];
+            String password = data[2];
+            String role = data[3];
+            users.add(new User(username,email,password,role));
         }
         return users;
     }

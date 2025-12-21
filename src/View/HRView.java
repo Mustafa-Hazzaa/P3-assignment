@@ -250,14 +250,14 @@ public class HRView extends JFrame {
         return BorderFactory.createMatteBorder(0, 0, 2, 0, c);
     }
 
-    public void addEmailListener(KeyAdapter listener) {
-        emailField.addKeyListener(listener);
-    }
-
-    // Allow controller to listen to password typing
-    public void addPasswordListener(KeyAdapter listener) {
-        passwordField.addKeyListener(listener);
-    }
+//    public void addEmailListener(KeyAdapter listener) {
+//        emailField.addKeyListener(listener);
+//    }
+//
+//    // Allow controller to listen to password typing
+//    public void addPasswordListener(KeyAdapter listener) {
+//        passwordField.addKeyListener(listener);
+//    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(HRView::new);

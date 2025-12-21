@@ -30,16 +30,17 @@ public class HRController {
         view.passwordField.addActionListener(e ->   view.passwordField.transferFocus());;
         refreshUserList();
 
-        view.addEmailListener(new KeyAdapter() {
+
+        view.emailField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 boolean valid = model.isValidEmail(view.emailField.getText());
-                Color color =valid ? Color.GREEN : Color.RED;
+                Color color = valid ? Color.GREEN : Color.RED;
                 view.emailField.setBorder(underline(color));
             }
         });
 
-        view.addPasswordListener(new KeyAdapter() {
+        view.passwordField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 int strength = model.passwordCheck(new String(view.passwordField.getPassword()));

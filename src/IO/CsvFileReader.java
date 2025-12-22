@@ -1,10 +1,13 @@
 package IO;
 
+import Model.ReviewNotes;
 import Model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CsvFileReader {
     private TxtFileReader txtFileReader;
@@ -35,4 +38,42 @@ public class CsvFileReader {
         }
         return users;
     }
+
+    public HashMap<String, ReviewNotes> loadReviewAndNotes(String filePath)  {
+        List<String> lines;
+        ReviewNotes reviewNotes;
+        HashMap<String,ReviewNotes> reviewAndNotes = new HashMap<>();
+
+        try {
+            lines = txtFileReader.readLines(filePath);
+            lines.removeFirst();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (String line:lines){
+
+            String[] data = line.split(",");
+
+            String productLine = parseCsvField(data[0]);
+            String review      = parseCsvField(data[1]);
+            String notes       = parseCsvField(data[2]);
+
+
+            reviewNotes = new ReviewNotes(review,notes);
+            reviewAndNotes.put(productLine,reviewNotes);
+        }
+        return  reviewAndNotes;
+    }
+
+    private String parseCsvField(String field) {
+        field = field.trim();
+
+        if (field.startsWith("\"") && field.endsWith("\"")) {
+            field = field.substring(1, field.length() - 1);
+        }
+
+        return field.replace("\"\"", "\"");
+    }
+
 }

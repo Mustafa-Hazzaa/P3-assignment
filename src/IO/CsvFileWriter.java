@@ -19,15 +19,16 @@ public class CsvFileWriter {
         }
     }
 
-    public void addReviewAndNotes(String review,String Notes){
-        addReviewAndNotes("Data/ReviewAndNotes.csv",review,Notes);
+    public void addReviewAndNotes(String productLine,String review,String Notes){
+        addReviewAndNotes("Data/ReviewAndNotes.csv",productLine,review,Notes);
     }
-    public void addReviewAndNotes(String filePath,String review, String notes){
+    public void addReviewAndNotes(String filePath,String productLine,String review, String notes){
+        String safeProductLine = "\"" + productLine.replace("\"", "\"\"") + "\"";
         String safeReview = "\"" + review.replace("\"", "\"\"") + "\"";
         String safeNotes = "\"" + notes.replace("\"", "\"\"") + "\"";
         TxtFileWriter txtFileWriter = new TxtFileWriter();
         try {
-            txtFileWriter.writeLine(filePath,safeReview+","+safeNotes,true);
+            txtFileWriter.writeLine(filePath,safeProductLine+","+safeReview+","+safeNotes,true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

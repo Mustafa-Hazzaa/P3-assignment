@@ -1,12 +1,12 @@
 package Model;
 
-import java.util.List;
+import java.util.Queue;
 
-public class ProductLine {
+public class ProductLine implements Runnable  {
     int id;
     String name;
     String status;
-    List<Task> tasks;
+    Queue<Task> taskQueue;
 
     public int getId() {
         return id;
@@ -32,14 +32,18 @@ public class ProductLine {
         this.status = status;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public Queue<Task> getTaskQueue() {
+        return taskQueue;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void setTaskQueue(Queue<Task> taskQueue) {
+        this.taskQueue = taskQueue;
     }
 
 
-
+    @Override
+    public void run() {
+//        while ()
+//            Task currentTask = taskQueue.;
+    }
 }

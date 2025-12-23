@@ -1,6 +1,7 @@
 import Control.LoginController;
 import IO.CsvFileReader;
 import IO.CsvFileWriter;
+import Model.Item;
 import Model.ReviewNotes;
 import Model.UserRepository;
 import Model.UserService;
@@ -21,19 +22,16 @@ public class Main {
 //        new LoginController(model, view);
 //    }
         CsvFileWriter csvFileWriter = new CsvFileWriter();
-        csvFileWriter.addReviewAndNotes(
-                "hot",
-                "Great product, really!",
-                "Works well, but needs improvement \"sometimes\""
-        );
+        Item item = new Item("potato",100,100,"food",50);
+        csvFileWriter.addItem(item,true);
 
-        CsvFileReader csvFileReader = new CsvFileReader();
-        HashMap<String, ReviewNotes> hashMap;
-
-            hashMap = csvFileReader.loadReviewAndNotes("Data/ReviewAndNotes.csv");
-
-        ReviewNotes result = hashMap.get("hot");
-        System.out.println("Review: " + result.getReview());
-        System.out.println("Notes: " + result.getNotes());
+//        CsvFileReader csvFileReader = new CsvFileReader();
+//        HashMap<String, ReviewNotes> hashMap;
+//
+//            hashMap = csvFileReader.loadReviewAndNotes("Data/ReviewAndNotes.csv");
+//
+//        ReviewNotes result = hashMap.get("hot");
+//        System.out.println("Review: " + result.getReview());
+//        System.out.println("Notes: " + result.getNotes());
     }
 }

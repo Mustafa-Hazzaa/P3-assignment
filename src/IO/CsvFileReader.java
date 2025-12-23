@@ -39,6 +39,10 @@ public class CsvFileReader {
         return users;
     }
 
+    public HashMap<String, ReviewNotes> loadReviewAndNotes()  {
+        return loadReviewAndNotes("Data/ReviewAndNotes.csv");
+    }
+
     public HashMap<String, ReviewNotes> loadReviewAndNotes(String filePath)  {
         List<String> lines;
         ReviewNotes reviewNotes;

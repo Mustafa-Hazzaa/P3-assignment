@@ -1,5 +1,8 @@
 package View;
 
+import Control.LoginController;
+import Model.UserRepository;
+import Model.UserService;
 import Swing.*;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -59,7 +62,13 @@ public class HRView extends JFrame {
                         case "Remove User" -> cardLayout.show(rightPanel, "REMOVE");
                     }
                 },
-                () -> System.exit(0)
+                () -> {this.dispose();
+                    UserRepository repository = new UserRepository();
+                    repository.loadFromCsv("Data/Users.csv");
+                    UserService model = new UserService(repository);
+                    LoginView view = new LoginView();
+                    new LoginController(model, view);
+                }
         );
         add(sideNav, BorderLayout.WEST);
 
@@ -245,19 +254,10 @@ public class HRView extends JFrame {
         rightPanel.add(removeUserCard, "REMOVE");
     }
 
-    // ==== Border helper ====
     public static Border underline(Color c) {
         return BorderFactory.createMatteBorder(0, 0, 2, 0, c);
     }
 
-//    public void addEmailListener(KeyAdapter listener) {
-//        emailField.addKeyListener(listener);
-//    }
-//
-//    // Allow controller to listen to password typing
-//    public void addPasswordListener(KeyAdapter listener) {
-//        passwordField.addKeyListener(listener);
-//    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(HRView::new);

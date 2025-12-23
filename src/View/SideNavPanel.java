@@ -23,7 +23,7 @@ public class SideNavPanel extends JPanel {
         setBackground(navBackground);
         setPreferredSize(new Dimension(260, 0));
 
-        // -------- Header --------
+
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 20));
         headerPanel.setOpaque(false);
         headerPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -32,13 +32,9 @@ public class SideNavPanel extends JPanel {
         ));
 
         JLabel brandIcon = new JLabel();
-        try {
-            ImageIcon originalIcon = new ImageIcon(logoPath);
-            brandIcon.setIcon(createSquareLogo(originalIcon.getImage(), 70));
-        } catch (Exception e) {
-            brandIcon.setText("🥔");
-            brandIcon.setFont(new Font("SansSerif", Font.PLAIN, 36));
-        }
+        ImageIcon originalIcon = new ImageIcon(logoPath);
+        Image scaledImg = originalIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+        brandIcon.setIcon(new ImageIcon(scaledImg));
 
         JPanel textContainer = new JPanel();
         textContainer.setOpaque(false);
@@ -59,11 +55,10 @@ public class SideNavPanel extends JPanel {
         headerPanel.add(textContainer);
         add(headerPanel, BorderLayout.NORTH);
 
-        // -------- Menu Items --------
         JPanel menuContainer = new JPanel();
         menuContainer.setOpaque(false);
         menuContainer.setLayout(new BoxLayout(menuContainer, BoxLayout.Y_AXIS));
-        menuContainer.add(Box.createVerticalStrut(20)); // top spacing
+        menuContainer.add(Box.createVerticalStrut(20));
 
         for (int i = 0; i < menuItems.size(); i++) {
             String item = menuItems.get(i);
@@ -76,15 +71,13 @@ public class SideNavPanel extends JPanel {
             });
             menuContainer.add(lbl);
 
-            // Add vertical spacing between menu items
             if (i < menuItems.size() - 1) {
-                menuContainer.add(Box.createVerticalStrut(15)); // 15 px spacing
+                menuContainer.add(Box.createVerticalStrut(15));
             }
         }
 
         add(menuContainer, BorderLayout.CENTER);
 
-        // -------- Footer Log Out --------
         JPanel bottomNav = new JPanel(new BorderLayout());
         bottomNav.setOpaque(false);
         bottomNav.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, separatorColor));
@@ -101,7 +94,7 @@ public class SideNavPanel extends JPanel {
         bottomNav.add(logoutLabel, BorderLayout.SOUTH);
         add(bottomNav, BorderLayout.SOUTH);
 
-        // -------- Select first actual JLabel menu item --------
+
         for (Component comp : menuContainer.getComponents()) {
             if (comp instanceof JLabel lbl) {
                 setSelected(lbl);
@@ -147,10 +140,4 @@ public class SideNavPanel extends JPanel {
                 BorderFactory.createEmptyBorder(12, 20, 12, 10)
         ));
     }
-
-    private ImageIcon createSquareLogo(Image img, int size) {
-        Image scaledImg = img.getScaledInstance(size, size, Image.SCALE_SMOOTH);
-        return new ImageIcon(scaledImg);
-    }
-
 }

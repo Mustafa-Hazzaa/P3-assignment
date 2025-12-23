@@ -62,11 +62,13 @@ public class HRView extends JFrame {
                         case "Remove User" -> cardLayout.show(rightPanel, "REMOVE");
                     }
                 },
-                () -> {this.dispose();
-                    UserRepository repository = new UserRepository();
+                () -> {this.dispose();         UserRepository repository = new UserRepository();
                     repository.loadFromCsv("Data/Users.csv");
+
                     UserService model = new UserService(repository);
+
                     LoginView view = new LoginView();
+
                     new LoginController(model, view);
                 }
         );

@@ -5,7 +5,7 @@ import java.util.List;
 public class Product extends Stockable {
     private List<Item> requiredItems;
 
-    public Product(String name, int id, int quantity, List<Item> requiredItems) {
+    public Product( int id,String name, int quantity, List<Item> requiredItems) {
         super(name, id, quantity);
         this.requiredItems = requiredItems;
     }

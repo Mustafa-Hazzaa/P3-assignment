@@ -2,3 +2,7 @@ Id,Name,Quantity,Price,Category,MinStockLevel
 1,potato1,100,100,food,50
 2,potato2,100,100,food,50
 3,potato3,100,100,food,50
+4,potato,1,100,food,100
+5,potato,1,100,food,100
+6,potato,1,100,food,100
+7,potato,1,100,food,100

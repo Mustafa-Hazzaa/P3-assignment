@@ -13,6 +13,7 @@ public class Main {
         UserRepository repository = new UserRepository();
         repository.loadFromCsv("Data/Users.csv");
         Inventory inventory = new Inventory();
+        inventory.loadItemsCsv("Data/Items.csv");
 
         UserService model = new UserService(repository);
 
@@ -23,9 +24,10 @@ public class Main {
 
         CsvFileWriter csvFileWriter = new CsvFileWriter();
 //        ArrayList<Item> items = csvFileReader.loadItems();
-//        Product product = new Product("hotChips",1,100,items);
+        Model.Item item = new Item("potato",1,100,"food",100);
 //        csvFileWriter.addProduct(product,true);
-        System.out.println(inventory.getItemById(4));
+        csvFileWriter.addItem(item,true);
+        System.out.println(inventory.getItemById(2));
 
 
     }

@@ -1,8 +1,8 @@
 package Model;
 
 public class Stockable {
-    private String name;
-    private int id;
+    private final String name;
+    private final int id;
     private int quantity;
 
     public Stockable(String name, int id, int quantity) {
@@ -11,20 +11,14 @@ public class Stockable {
         this.quantity = quantity;
     }
 
-    public String getName() {
-        return name;
-    }
+    // getters
+    public String getName() { return name; }
+    public int getId() { return id; }
+    public int getQuantity() { return quantity; }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
+    public boolean setQuantity(int quantity) {
+        if (quantity < 0) return false;
         this.quantity = quantity;
+        return true;
     }
-
 }

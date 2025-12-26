@@ -1,20 +1,19 @@
 import Control.LoginController;
 
-import IO.CsvFileReader;
-import IO.CsvFileWriter;
+import io.CsvFileReader;
+import io.CsvFileWriter;
 import Model.*;
 import View.LoginView;
 
-import java.util.ArrayList;
-
 public class Main {
     public static void main(String[] args) {
-//        ArrayList<Item> items = csvFileReader.loadItems();
+        CsvFileReader csvFileReader = new CsvFileReader();
         UserRepository repository = new UserRepository();
         repository.loadFromCsv("Data/Users.csv");
         Inventory inventory = new Inventory();
         inventory.loadItemsCsv("Data/Items.csv");
-
+        inventory.loadProductsCsv("Data/Products.csv");
+//
         UserService model = new UserService(repository);
 
         LoginView view = new LoginView();
@@ -23,11 +22,18 @@ public class Main {
 
 
         CsvFileWriter csvFileWriter = new CsvFileWriter();
-//        ArrayList<Item> items = csvFileReader.loadItems();
-        Model.Item item = new Item("potato",1,100,"food",100);
-//        csvFileWriter.addProduct(product,true);
+        Item item = new Item("potato",1,100,"food",100);
+        Item item2 = new Item("potato",2,100,"food",100);
         csvFileWriter.addItem(item,true);
-        System.out.println(inventory.getItemById(2));
+        csvFileWriter.addItem(item2,true);
+
+        Product product = new Product("HotChips",15,items);
+        csvFileWriter.addProduct(product,true);
+
+//        csvFileWriter.addItem(item3,true);
+//        csvFileWriter.addItem(item4,true);
+//
+//        System.out.println(inventory.getItemById(2));
 
 
     }

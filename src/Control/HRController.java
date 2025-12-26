@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import static View.HRView.underline;
+import static View.underline.underline;
 
 public class HRController {
 
@@ -23,38 +23,38 @@ public class HRController {
     }
 
     private void initController() {
-        view.addUserBtn.addActionListener(e -> handleAddUser());
-        view.rmvBtn.addActionListener(e -> handleRemoveUser());
-        view.nameField.addActionListener(e ->   view.nameField.transferFocus());;
-        view.emailField.addActionListener(e ->   view.emailField.transferFocus());;
-        view.passwordField.addActionListener(e ->   view.passwordField.transferFocus());;
+        view.rightPanel.addUserBtn.addActionListener(e -> handleAddUser());
+        view.rightPanel.rmvBtn.addActionListener(e -> handleRemoveUser());
+        view.rightPanel.nameField.addActionListener(e ->   view.rightPanel.nameField.transferFocus());;
+        view.rightPanel.emailField.addActionListener(e ->   view.rightPanel.emailField.transferFocus());;
+        view.rightPanel.passwordField.addActionListener(e ->   view.rightPanel.passwordField.transferFocus());;
         refreshUserList();
 
 
-        view.emailField.addKeyListener(new KeyAdapter() {
+        view.rightPanel.emailField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                boolean valid = model.isValidEmail(view.emailField.getText());
+                boolean valid = model.isValidEmail(view.rightPanel.emailField.getText());
                 Color color = valid ? Color.GREEN : Color.RED;
-                view.emailField.setBorder(underline(color));
+                view.rightPanel.emailField.setBorder(underline(color));
             }
         });
 
-        view.passwordField.addKeyListener(new KeyAdapter() {
+        view.rightPanel.passwordField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                int strength = model.passwordCheck(new String(view.passwordField.getPassword()));
+                int strength = model.passwordCheck(new String(view.rightPanel.passwordField.getPassword()));
                 Color color = (strength <= 1) ? Color.RED : (strength == 2) ? Color.YELLOW : Color.GREEN;
-                view.passwordField.setBorder(underline(color));
+                view.rightPanel.passwordField.setBorder(underline(color));
             }
         });
     }
 
     private void handleAddUser() {
-        String name = view.nameField.getText().trim();
-        String email = view.emailField.getText().trim();
-        String password = new String(view.passwordField.getPassword());
-        String role = (String) view.roleComboBox.getSelectedItem();
+        String name = view.rightPanel.nameField.getText().trim();
+        String email = view.rightPanel.emailField.getText().trim();
+        String password = new String(view.rightPanel.passwordField.getPassword());
+        String role = (String) view.rightPanel.roleComboBox.getSelectedItem();
 
         String validation = model.validateInfo(email,name, password, role);
         if (!validation.equals("SUCCESS")) {
@@ -69,7 +69,7 @@ public class HRController {
 
         model.addUser(name, email, password, role);
 
-        view.userListModel.addElement(name + " - " +email + " - " + role);
+        view.rightPanel.userListModel.addElement(name + " - " +email + " - " + role);
 
         JOptionPane.showMessageDialog(view, "User added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
@@ -77,17 +77,14 @@ public class HRController {
     }
 
     private void handleRemoveUser() {
-        int selectedIndex = view.userList.getSelectedIndex();
+        int selectedIndex = view.rightPanel.userList.getSelectedIndex();
         if (selectedIndex == -1) {
             JOptionPane.showMessageDialog(view, "Select a user to remove", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        String selectedUser = view.userListModel.get(selectedIndex);
+        String selectedUser = view.rightPanel.userListModel.get(selectedIndex);
         String username = selectedUser.split("-")[0].trim();
-
-        UIManager.put("OptionPane.yesButtonFocusPainted", false);
-        UIManager.put("OptionPane.noButtonFocusPainted", false);
 
         int option = JOptionPane.showConfirmDialog(
                 view,
@@ -99,23 +96,23 @@ public class HRController {
 
         if (option == JOptionPane.YES_OPTION) {
             model.removeUser(username);
-            view.userListModel.remove(selectedIndex);
+            view.rightPanel.userListModel.remove(selectedIndex);
             JOptionPane.showMessageDialog(view, "User removed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
 
     private void refreshUserList() {
-        view.userListModel.clear();
+        view.rightPanel.userListModel.clear();
         for (User user : model.getAllUsers()) {
-            view.userListModel.addElement(user.getName() + " - "+user.getEmail()+" - " + user.getRole());
+            view.rightPanel.userListModel.addElement(user.getName() + " - "+user.getEmail()+" - " + user.getRole());
         }
     }
 
     private void clearForm() {
-        view.nameField.setText("");
-        view.emailField.setText("");
-        view.passwordField.setText("");
-        view.roleComboBox.setSelectedIndex(0);
+        view.rightPanel.nameField.setText("");
+        view.rightPanel.emailField.setText("");
+        view.rightPanel.passwordField.setText("");
+        view.rightPanel.roleComboBox.setSelectedIndex(0);
     }
 }

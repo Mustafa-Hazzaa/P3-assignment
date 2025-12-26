@@ -1,4 +1,4 @@
-package IO;
+package io;
 
 import Model.*;
 
@@ -9,9 +9,14 @@ public class CsvFileReader {
     private final TxtFileReader txtFileReader;
     private final Inventory inventory;
 
+    public CsvFileReader(Inventory inventory) {
+        this.txtFileReader = new TxtFileReader();
+        this.inventory= inventory;
+    }
+
     public CsvFileReader() {
         this.txtFileReader = new TxtFileReader();
-        this.inventory=new Inventory();
+        inventory=null;
     }
 
     public List<User> loadUsers() throws IOException {
@@ -19,7 +24,7 @@ public class CsvFileReader {
     }
 
     public List<User> loadUsers(String filePath) throws IOException {
-        List<String> lines = txtFileReader.readLines(filePath);
+        List<String> lines = txtFileReader.readAllLines(filePath);
         List<User> users = new ArrayList<>();
 
         if (!lines.isEmpty()) {
@@ -49,7 +54,7 @@ public class CsvFileReader {
         HashMap<String,ReviewNotes> reviewAndNotes = new HashMap<>();
 
         try {
-            lines = txtFileReader.readLines(filePath);
+            lines = txtFileReader.readAllLines(filePath);
             if (!lines.isEmpty()) {
                 lines.removeFirst();
             }
@@ -84,7 +89,7 @@ public class CsvFileReader {
         List<String> lines;
         ArrayList<Item> items = new ArrayList<>();
         try {
-            lines = txtFileReader.readLines(filesPath);
+            lines = txtFileReader.readAllLines(filesPath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -110,7 +115,7 @@ public class CsvFileReader {
         List<String> lines;
         ArrayList<Product> products = new ArrayList<>();
         try {
-            lines = txtFileReader.readLines(filesPath);
+            lines = txtFileReader.readAllLines(filesPath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

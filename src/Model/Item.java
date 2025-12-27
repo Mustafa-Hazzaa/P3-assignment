@@ -1,23 +1,14 @@
 package Model;
 
-public class Item extends Stockable{
-    private static int Id=0;
-    private int id;
-    private int price;
-    private String category;
-    private int minStockLevel;
+public class Item extends Stockable {
+
+    private final int price;
+    private final String category;
+    private final int minStockLevel;
 
 
-    public Item(String name ,int quantity, int price, String category, int minStockLevel) {
-        super(name, ++Id, quantity);
-        this.price = price;
-        this.category = category;
-        this.minStockLevel = minStockLevel;
-    }
-
-    public Item( int id,String name, int quantity, int price, String category, int minStockLevel) {
+    public Item(int id, String name, int quantity, int price, String category, int minStockLevel) {
         super(name, id, quantity);
-        Id++;
         this.price = price;
         this.category = category;
         this.minStockLevel = minStockLevel;
@@ -39,6 +30,8 @@ public class Item extends Stockable{
     public String toString() {
         return "Item{" +
                 "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", quantity=" + getQuantity() +
                 ", price=" + price +
                 ", category='" + category + '\'' +
                 ", minStockLevel=" + minStockLevel +

@@ -1,3 +1,6 @@
-Id,Name,quantity,Items
-1,hotChips,100,1;2;3
-1,HotChips,15,6;7
+id,name,quantity,requiredItems
+1,Bookshelf Kit,10,1;4
+2,Toolbox,5,1;1;2
+1,Fruit Salad,10,1;2
+1,Fruit Salad,10,1;2
+1,Fruit Salad,10,1;2

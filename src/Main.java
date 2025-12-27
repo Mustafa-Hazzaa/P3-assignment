@@ -1,44 +1,58 @@
-import Control.LoginController;
-
-import io.CsvFileReader;
-import io.CsvFileWriter;
-import Model.*;
-import View.LoginView;
+import Model.Inventory;
+import Model.Item;
+import Model.Product;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        CsvFileReader csvFileReader = new CsvFileReader();
-        UserRepository repository = new UserRepository();
-        repository.loadFromCsv("Data/Users.csv");
+
+        // Create inventory
         Inventory inventory = new Inventory();
-        inventory.loadItemsCsv("Data/Items.csv");
-        inventory.loadProductsCsv("Data/Products.csv");
-//
-        UserService model = new UserService(repository);
 
-        LoginView view = new LoginView();
+        // ----------------------------
+        // Add new items
+        // ----------------------------
+        inventory.addNewItem("Apple", 50, 10, "Food", 5);
+        inventory.addNewItem("Banana", 30, 8, "Food", 5);
+        inventory.addNewItem("Carrot", 20, 5, "Food", 2);
 
-        new LoginController(model, view);
+        System.out.println("After adding items:");
+        inventory.printInventory();
 
+        // ----------------------------
+        // Add a product using some items
+        // ----------------------------
+        ArrayList<Item> productItems = new ArrayList<>();
+        productItems.add(inventory.getItemById(1)); // Apple
+        productItems.add(inventory.getItemById(2)); // Banana
 
-        CsvFileWriter csvFileWriter = new CsvFileWriter();
-        Item item = new Item("potato",1,100,"food",100);
-        Item item2 = new Item("potato",2,100,"food",100);
-        csvFileWriter.addItem(item,true);
-        csvFileWriter.addItem(item2,true);
+        inventory.addNewProduct("Fruit Salad", 10, productItems);
 
-        Product product = new Product("HotChips",15,items);
-        csvFileWriter.addProduct(product,true);
+        System.out.println("After adding product:");
+        inventory.printInventory();
 
-//        csvFileWriter.addItem(item3,true);
-//        csvFileWriter.addItem(item4,true);
-//
-//        System.out.println(inventory.getItemById(2));
+        // ----------------------------
+        // Remove an item
+        // ----------------------------
+        System.out.println("Removing item with ID 2 (Banana)...");
+        inventory.removeItem(2);
 
+        inventory.printInventory();
 
+        // ----------------------------
+        // Remove a product
+        // ----------------------------
+        System.out.println("Removing product with ID 1 (Fruit Salad)...");
+        inventory.removeProduct(1);
+
+        inventory.printInventory();
+
+        // ----------------------------
+        // Add another item after deletion
+        // ----------------------------
+        inventory.addNewItem("Orange", 40, 12, "Food", 3);
+
+        System.out.println("After adding Orange:");
+        inventory.printInventory();
     }
-
-
-
-
 }

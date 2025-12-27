@@ -1,2 +1,4 @@
-Id,Name,Quantity,Price,Category,MinStockLevel
-1,potato1,100,100,food,50
+id,name,quantity,price,category,minStockLevel
+1,Apple,50,10,Food,5
+3,Carrot,20,5,Food,2
+4,Orange,40,12,Food,3

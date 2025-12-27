@@ -17,8 +17,7 @@ public class ErrorLogger {
         try {
             writer.writeLine(errorFilePath, errorMessage, true);
         } catch (IOException e) {
-            // last resort
-            System.err.println("Failed to write error log");
+//            System.err.println("Failed to write error log");
         }
     }
 }

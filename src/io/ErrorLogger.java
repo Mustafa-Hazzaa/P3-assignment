@@ -1,6 +1,5 @@
-package Control;
+package io;
 
-import io.TxtFileWriter;
 import java.io.IOException;
 
 public class ErrorLogger {
@@ -17,7 +16,7 @@ public class ErrorLogger {
         try {
             writer.writeLine(errorFilePath, errorMessage, true);
         } catch (IOException e) {
-//            System.err.println("Failed to write error log");
+            System.err.println("Failed to write error log");
         }
     }
 }

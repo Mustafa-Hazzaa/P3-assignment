@@ -1,24 +1,18 @@
 package Model;
 
-public class Stockable {
-    private final String name;
-    private final int id;
-    private int quantity;
+public abstract class Stockable {
 
-    public Stockable(String name, int id, int quantity) {
-        this.name = name;
+    protected final int id;
+    protected String name;
+    protected int quantity;
+
+    protected Stockable(int id, String name, int quantity) {
         this.id = id;
+        this.name = name;
         this.quantity = quantity;
     }
 
-    // getters
-    public String getName() { return name; }
-    public int getId() { return id; }
-    public int getQuantity() { return quantity; }
-
-    public boolean setQuantity(int quantity) {
-        if (quantity < 0) return false;
-        this.quantity = quantity;
-        return true;
-    }
+    public int getId() {return id;}
+    public String getName() {return name;}
+    public int getQuantity() {return quantity;}
 }

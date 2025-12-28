@@ -10,11 +10,28 @@ import java.util.Comparator;
 import java.util.Date;
 
 public class Inventory {
-    ArrayList<Item> items = new ArrayList<>();
-    ArrayList<Product> products = new ArrayList<>();
+    private static volatile Inventory instance;
+    private  ArrayList<Item> items = new ArrayList<>();
+    private  ArrayList<Product> products = new ArrayList<>();
     private final CsvFileWriter writer = new CsvFileWriter();
     private final TxtFileWriter txtWriter = new TxtFileWriter();
 
+    private Inventory() {
+
+    }
+
+    public static Inventory getInstance(){
+            Inventory result = instance;
+            if (result == null) {
+               synchronized (Inventory.class){
+                   result = instance;
+                   if (result == null){
+                       instance = result = new Inventory();
+                   }
+               }
+            }
+        return result;
+    }
 
     private int nextItemId = 1;
     private int nextProductId = 1;

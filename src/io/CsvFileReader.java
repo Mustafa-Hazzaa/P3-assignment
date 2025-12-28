@@ -1,7 +1,6 @@
 package io;
 
 import Model.*;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -44,48 +43,47 @@ public class CsvFileReader {
         return users;
     }
 
-    public HashMap<String, ReviewNotes> loadReviewAndNotes()  {
+
+    public HashMap<String, ReviewNotes> loadReviewAndNotes() {
         return loadReviewAndNotes("Data/ReviewAndNotes.csv");
     }
 
-    public HashMap<String, ReviewNotes> loadReviewAndNotes(String filePath)  {
+    public HashMap<String, ReviewNotes> loadReviewAndNotes(String filePath) {
         List<String> lines;
         ReviewNotes reviewNotes;
-        HashMap<String,ReviewNotes> reviewAndNotes = new HashMap<>();
+        HashMap<String, ReviewNotes> reviewAndNotes = new HashMap<>();
 
         try {
             lines = txtFileReader.readAllLines(filePath);
             if (!lines.isEmpty()) {
-                lines.removeFirst();
+                lines.remove(0);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        for (String line:lines){
-
+        for (String line : lines) {
             String[] data = line.split(",");
 
             String productLine = parseCsvField(data[0]);
-            String review      = parseCsvField(data[1]);
-            String notes       = parseCsvField(data[2]);
+            String review = parseCsvField(data[1]);
+            String notes = parseCsvField(data[2]);
 
-
-            reviewNotes = new ReviewNotes(review,notes);
-            reviewAndNotes.put(productLine,reviewNotes);
+            reviewNotes = new ReviewNotes(review, notes);
+            reviewAndNotes.put(productLine, reviewNotes);
         }
-        return  reviewAndNotes;
+        return reviewAndNotes;
     }
 
-    public ArrayList<Item> loadItems(){
+    public ArrayList<Item> loadItems() {
         return loadItems("Data/Items.csv");
     }
 
-    public ArrayList<Product> loadProducts(){
-        return loadProducts("Data/Products.csv");
+    public ArrayList<Product> loadProducts(Inventory inventory) {
+        return loadProducts("Data/Products.csv", inventory);
     }
 
-    public ArrayList<Item> loadItems(String filesPath){
+    public ArrayList<Item> loadItems(String filesPath) {
         List<String> lines;
         ArrayList<Item> items = new ArrayList<>();
         try {
@@ -94,24 +92,23 @@ public class CsvFileReader {
             throw new RuntimeException(e);
         }
         if (!lines.isEmpty()) {
-            lines.removeFirst();
+            lines.remove(0);
         }
-        for (String line:lines){
+        for (String line : lines) {
             String[] csv = line.split(",");
-            int id= Integer.parseInt(csv[0]);
+            int id = Integer.parseInt(csv[0]);
             String name = csv[1];
-            int quantity= Integer.parseInt(csv[2]);
+            int quantity = Integer.parseInt(csv[2]);
             int price = Integer.parseInt(csv[3]);
             String category = csv[4];
-            int minStockLevel= Integer.parseInt(csv[5]);
-            Item item = new Item(id,name,quantity,price,category,minStockLevel);
+            int minStockLevel = Integer.parseInt(csv[5]);
+            Item item = new Item(id, name, quantity, price, category, minStockLevel);
             items.add(item);
-
         }
         return items;
     }
 
-    public ArrayList<Product> loadProducts(String filesPath){
+    public ArrayList<Product> loadProducts(String filesPath, Inventory inventory) {
         List<String> lines;
         ArrayList<Product> products = new ArrayList<>();
         try {
@@ -120,7 +117,7 @@ public class CsvFileReader {
             throw new RuntimeException(e);
         }
         if (!lines.isEmpty()) {
-            lines.removeFirst();
+            lines.remove(0);
         }
         for (String line : lines) {
             ArrayList<Item> items = new ArrayList<>();
@@ -135,7 +132,6 @@ public class CsvFileReader {
                 Item item = inventory.getItemById(Integer.parseInt(i));
                 if (item == null) {
                     throw new RuntimeException("Item ID not found: " + i);
-//                    ErrorLogger.log(e);
                 }
                 items.add(item);
             }
@@ -155,5 +151,4 @@ public class CsvFileReader {
 
         return field.replace("\"\"", "\"");
     }
-
 }

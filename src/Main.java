@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         // Create inventory
-        Inventory inventory = new Inventory();
+        Inventory inventory = Inventory.getInstance();
 
         // ----------------------------
         // Add new items

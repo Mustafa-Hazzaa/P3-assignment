@@ -6,8 +6,6 @@ import io.TxtFileWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 
 public class Inventory {
     private static volatile Inventory instance;
@@ -15,9 +13,12 @@ public class Inventory {
     private  ArrayList<Product> products = new ArrayList<>();
     private final CsvFileWriter writer = new CsvFileWriter();
     private final TxtFileWriter txtWriter = new TxtFileWriter();
+    private final CsvFileReader reader = new CsvFileReader();
+    private final CsvFileWriter Writer = new CsvFileWriter();
 
     private Inventory() {
-
+        items.addAll(reader.loadItems("Data/Items.csv")); //loading all items in csv file
+        products.addAll(reader.loadProducts("Data/Products.csv" , this)); //load all products in csv file
     }
 
     public static Inventory getInstance(){
@@ -33,57 +34,28 @@ public class Inventory {
         return result;
     }
 
-    private int nextItemId = 1;
-    private int nextProductId = 1;
 
-    public void loadItems(String filePath) {
-        CsvFileReader csvReader = new CsvFileReader(this);
-        items.addAll(csvReader.loadItems(filePath));
-        int maxId = 0;
-        for (Item item : items) {
-            if (item.getId() > maxId) {
-                maxId = item.getId();
-            }
-        }
-        this.nextItemId = maxId + 1;
-    }
-
-
-    public void loadProducts(String filePath) {
-        CsvFileReader csvReader = new CsvFileReader(this);
-        products.addAll(csvReader.loadProducts(filePath));
-        int maxId = 0;
-        for (Product product : products) {
-            if (product.getId() > maxId) {
-                maxId = product.getId();
-            }
-        }
-
-        this.nextProductId = maxId + 1;
-    }
-
-    public void saveItems() {
-        try {
-            txtWriter.writeLine("Data/items.csv", "id,name,quantity,price,category,minStockLevel", false); // overwrite header
-            for (Item item : items) {
-                writer.addItem(item, true); // append each line
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public void saveItems() {
+//        try {
+//            txtWriter.writeLine("Data/items.csv", "id,name,quantity,price,category,minStockLevel", false); // overwrite header
+//            for (Item item : items) {
+//                writer.addItem(item, true); // append each line
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 
     public void addNewItem(String name, int quantity, int price, String category, int minStockLevel) {
-        Item newItem = new Item(nextItemId++, name, quantity, price, category, minStockLevel);
+        Item newItem = new Item(name, quantity, price, category, minStockLevel);
         items.add(newItem);
-        saveItems();
+        writer.addItem(newItem,true);
+
     }
 
-
-
     public void addNewProduct(String name, int quantity, ArrayList<Item> items) {
-        Product newProduct = new Product(nextProductId++, name, quantity, items);
+        Product newProduct = new Product(name, quantity, items);
         products.add(newProduct);
         writer.addProduct(newProduct, true);
     }
@@ -98,17 +70,14 @@ public class Inventory {
     }
 
     public void removeItem(int id) {
-            for (int i = 0; i < items.size(); i++) {
-                if (items.get(i).getId() == id) {
-                    items.remove(i);
-                    return;
-                }
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getId() == id) {
+                items.remove(i);
+                return;
             }
-        try {
-            txtWriter.writeLine("Data/items.csv","id,name,quantity,price,category,minStockLevel",false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
+        try {txtWriter.writeLine("Data/items.csv","id,name,quantity,price,category,minStockLevel",false);}
+        catch (IOException e) {throw new RuntimeException(e);}
         for (Item item : items) {
             writer.addItem(item,true);
         }
@@ -141,8 +110,6 @@ public class Inventory {
         for(Product product : products) {
             System.out.println(product);
         }
-        System.out.println("\nNext Item ID will be: " + nextItemId);
-        System.out.println("Next Product ID will be: " + nextProductId);
         System.out.println("-------------------------------------\n");
     }
 }

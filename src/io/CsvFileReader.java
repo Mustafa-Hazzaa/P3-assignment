@@ -108,39 +108,54 @@ public class CsvFileReader {
         return items;
     }
 
-    public ArrayList<Product> loadProducts(String filesPath, Inventory inventory) {
+    public ArrayList<Product> loadProducts(String filePath, Inventory inventory) {
+
         List<String> lines;
         ArrayList<Product> products = new ArrayList<>();
+
         try {
-            lines = txtFileReader.readAllLines(filesPath);
+            lines = txtFileReader.readAllLines(filePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        // Remove header
         if (!lines.isEmpty()) {
             lines.remove(0);
         }
+
         for (String line : lines) {
-            ArrayList<Item> items = new ArrayList<>();
 
             String[] csv = line.split(",");
+
             int id = Integer.parseInt(csv[0]);
             String name = csv[1];
             int quantity = Integer.parseInt(csv[2]);
 
-            String[] ids = csv[3].split(";");
-            for (String i : ids) {
-                Item item = inventory.getItemById(Integer.parseInt(i));
+            // Map instead of ArrayList
+            Map<Integer, Item> requiredItems = new HashMap<>();
+
+            String[] itemIds = csv[3].split(";");
+            for (String itemIdStr : itemIds) {
+
+                int itemId = Integer.parseInt(itemIdStr);
+                Item item = inventory.getItemById(itemId);
+
                 if (item == null) {
-                    throw new RuntimeException("Item ID not found: " + i);
+                    throw new RuntimeException("Item ID not found: " + itemId);
                 }
-                items.add(item);
+
+                requiredItems.put(itemId, item);
             }
 
-            Product product = new Product(id, name, quantity, items);
+            Product product = new Product(id, name, quantity, requiredItems);
             products.add(product);
         }
+
         return products;
     }
+
+
 
     private String parseCsvField(String field) {
         field = field.trim();

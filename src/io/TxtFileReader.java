@@ -18,4 +18,19 @@ public class TxtFileReader {
         }
         return lines;
     }
+
+    public String readLine(String filePath, int index) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            int counter = 0;
+            String line;
+            String lastLine = null;
+            while ((line = reader.readLine()) != null) {
+                counter++;
+                lastLine = line;
+                if (index == counter)
+                    return line;
+            }
+            return lastLine;
+        }
+    }
 }

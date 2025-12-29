@@ -1,20 +1,34 @@
 package io;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ErrorLogger {
 
-    private final TxtFileWriter writer;
+    private final TxtFileWriter writer = new TxtFileWriter();
     private final String errorFilePath;
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public ErrorLogger(TxtFileWriter writer, String errorFilePath) {
-        this.writer = writer;
+    public ErrorLogger(String errorFilePath) {
         this.errorFilePath = errorFilePath;
     }
 
     public void log(String errorMessage) {
         try {
-            writer.writeLine(errorFilePath, errorMessage, true);
+            String time = dtf.format(LocalDateTime.now());
+            String Message = String.format("[%s] ERROR: %s", time, errorMessage);
+            writer.writeLine(errorFilePath, Message, true);
+        } catch (IOException e) {
+            System.err.println("Failed to write error log");
+        }
+    }
+
+    public void logTime() {
+        try {
+            String time = dtf.format(LocalDateTime.now());
+            String Message = "############################# program started at@"+ time +"@######################################";
+            writer.writeLine(errorFilePath, Message, true);
         } catch (IOException e) {
             System.err.println("Failed to write error log");
         }

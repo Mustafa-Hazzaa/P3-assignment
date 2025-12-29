@@ -11,3 +11,7 @@ id,name,quantity,price,category,minStockLevel
 10,Banana,30,8,Food,5
 11,Carrot,20,5,Food,2
 12,Orange,40,12,Food,3
+13,Apple,50,10,Food,5
+14,Banana,30,8,Food,5
+15,Carrot,20,5,Food,2
+16,Orange,40,12,Food,3

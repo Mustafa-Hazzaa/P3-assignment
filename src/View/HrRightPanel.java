@@ -7,7 +7,7 @@ import java.awt.*;
 
 import static View.underline.underline;
 
-public class HRRightPanel extends BackgroundPanel {
+public class HrRightPanel extends BackgroundPanel {
 
     public IconTextField nameField;
     public IconTextField emailField;
@@ -22,7 +22,7 @@ public class HRRightPanel extends BackgroundPanel {
     private CardLayout cardLayout = new CardLayout();
     private final Color cardColor = new Color(45, 45, 45);
 
-    public HRRightPanel() {
+    public HrRightPanel() {
         super("src/Images/background.jpg");
         setLayout(cardLayout);
         setOpaque(false);

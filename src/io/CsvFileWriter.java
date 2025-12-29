@@ -61,12 +61,10 @@ public class CsvFileWriter {
     }
 
     public void addProduct(String filePath, Product product, boolean append) {
-        // to convert item elements into there ids
         String items = product.getRequiredItems().stream()
                 .map(i -> String.valueOf(i.getId()))
                 .collect(Collectors.joining(";"));
 
-        //store the product and the items required ids
         String line = product.getId() + "," +
                 parseCsvField(product.getName()) + "," +
                 product.getQuantity() + "," +

@@ -3,10 +3,8 @@ package View;
 import Control.LoginController;
 import Model.UserRepository;
 import Model.UserService;
-import Swing.*;
+
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.List;
 
@@ -14,7 +12,7 @@ public class HRView extends JFrame {
 
     List<String> menuItems;
     SideNavPanel sideNav;
-    public HRRightPanel rightPanel;
+    public HrRightPanel rightPanel;
 
     public HRView() {
         // Colors
@@ -32,7 +30,7 @@ public class HRView extends JFrame {
         this.setIconImage(logo.getImage());
 
         //#######################   Right Panel    ######################
-        rightPanel = new HRRightPanel();
+        rightPanel = new HrRightPanel();
         add(rightPanel, BorderLayout.CENTER);
 
         //#######################   Side Navigation    ######################
@@ -44,8 +42,8 @@ public class HRView extends JFrame {
                 menuItems,
                 item -> {
                     switch (item) {
-                        case "Add User" -> ((HRRightPanel) rightPanel).showCard("ADD");
-                        case "Remove User" -> ((HRRightPanel) rightPanel).showCard("REMOVE");
+                        case "Add User" -> ((HrRightPanel) rightPanel).showCard("ADD");
+                        case "Remove User" -> ((HrRightPanel) rightPanel).showCard("REMOVE");
                     }
                 },
                 () -> {  // Logout action

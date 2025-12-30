@@ -1,6 +1,2 @@
 id,name,quantity,requiredItems
-1,Bookshelf Kit,10,1;4
-2,Toolbox,5,1;1;2
-3,Fruit Salad,10,1;2
-4,Fruit Salad,10,1;2
-
+1,"hello",320,apple

@@ -23,14 +23,4 @@ public class ErrorLogger {
             System.err.println("Failed to write error log");
         }
     }
-
-    public void logTime() {
-        try {
-            String time = dtf.format(LocalDateTime.now());
-            String Message = "############################# program started at@"+ time +"@######################################";
-            writer.writeLine(errorFilePath, Message, true);
-        } catch (IOException e) {
-            System.err.println("Failed to write error log");
-        }
-    }
 }

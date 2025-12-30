@@ -3,7 +3,7 @@ package Model;
 public abstract class Stockable {
 
     protected final int id;
-    protected String name;
+    protected final String name;
     protected int quantity;
 
     protected Stockable(int id, String name, int quantity) {
@@ -15,4 +15,9 @@ public abstract class Stockable {
     public int getId() {return id;}
     public String getName() {return name;}
     public int getQuantity() {return quantity;}
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+
 }

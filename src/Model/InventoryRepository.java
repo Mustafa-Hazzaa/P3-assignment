@@ -15,6 +15,7 @@ import java.util.Map;
         private final Map<String, Item> itemsByName = new HashMap<>();
         private final Map<String, Product> productsByName = new HashMap<>();
 
+
         private final CsvFileWriter writer = new CsvFileWriter();
         private final TxtFileWriter txtWriter = new TxtFileWriter();
         private final CsvFileReader reader = new CsvFileReader();
@@ -33,21 +34,20 @@ import java.util.Map;
         public Map<String, Item> getItems() {
             return itemsByName;
         }
-
         public Map<String, Product> getProducts() {
             return productsByName;
         }
 
 
-    public void saveItem(Item item) {
+        public void saveItem(Item item) {
         writer.addItem(item, true);
     }
 
-    public void saveProduct(Product product) {
+        public void saveProduct(Product product) {
         writer.addProduct(product, true);
     }
 
-    public void rewriteItems() {
+        public void rewriteItems() {
         try {
             txtWriter.writeLine(
                     "Data/Items.csv",
@@ -63,7 +63,7 @@ import java.util.Map;
         }
     }
 
-    public void rewriteProducts() {
+        public void rewriteProducts() {
         try {
             txtWriter.writeLine(
                     "Data/Products.csv",

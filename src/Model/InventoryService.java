@@ -1,13 +1,30 @@
 package Model;
 
+import io.ErrorLogger;
+
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class InventoryService {
 
     private final InventoryRepository repo;
-
-    public InventoryService(InventoryRepository repo) {
+    private final ErrorLogger logger =new ErrorLogger();
+    private static volatile InventoryService instance;
+    public final Map<Item, Integer> reservedItems = new HashMap<>();
+    private InventoryService(InventoryRepository repo) {
         this.repo = repo;
+    }
+
+    public static InventoryService getInstance(InventoryRepository repo) {
+        if (instance == null) {
+            synchronized (InventoryService.class) {
+                if (instance == null) {
+                    instance = new InventoryService(repo);
+                }
+            }
+        }
+        return instance;
     }
 
     public void addItem(String name, int quantity, int price, String category, int minStockLevel) {
@@ -59,9 +76,6 @@ public class InventoryService {
         repo.saveProduct(product);
     }
 
-
-
-
     public Product getProductByName(String name) {
         return repo.getProducts().get(name);
     }
@@ -76,5 +90,35 @@ public class InventoryService {
     public void removeProduct(String name) {
         if (repo.getProducts().remove(name) == null) return;
         repo.rewriteProducts();
+    }
+
+    public synchronized boolean  addReservedItem(Task task) {
+        if (checkStock(task)) {
+            Set<Map.Entry<Item, Integer>> requirements = task.getProduct().getRequiredItems().entrySet();
+
+            for (Map.Entry<Item, Integer> requirement : requirements) {
+                Item item = requirement.getKey();
+                int requiredForThisTask = requirement.getValue() * task.getQuantity();
+                int alreadyReserved = reservedItems.get(item) == null ? 0 : reservedItems.get(item);
+                reservedItems.put(item, alreadyReserved + requiredForThisTask);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkStock(Task task){
+        Set<Map.Entry<Item, Integer>> requirements = task.getProduct().getRequiredItems().entrySet();
+        for (Map.Entry<Item, Integer> requirement : requirements) {
+            Item item = requirement.getKey();
+            int requiredQuantity = requirement.getValue() * task.getQuantity();
+            int reservedQuantity = reservedItems.get(item) == null ? 0 : reservedItems.get(item);
+            if (item.getQuantity() - reservedQuantity - requiredQuantity <= item.getMinStockLevel() ) {
+                logger.log("Reservation failed: Not enough stock for item '" + item.getName() +
+                        "'. Required: " + requiredQuantity + ", Available: " + item.getQuantity());
+                return false;
+            }
+        }
+        return true;
     }
 }

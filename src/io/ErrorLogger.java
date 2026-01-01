@@ -7,12 +7,8 @@ import java.time.format.DateTimeFormatter;
 public class ErrorLogger {
 
     private final TxtFileWriter writer = new TxtFileWriter();
-    private final String errorFilePath;
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    public ErrorLogger(String errorFilePath) {
-        this.errorFilePath = errorFilePath;
-    }
+    private static final String  errorFilePath = "Data/Errors.txt";
 
     public void log(String errorMessage) {
         try {

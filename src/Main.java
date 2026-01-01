@@ -25,7 +25,7 @@ public class Main {
 
         System.out.println("--- PHASE 1: Populating initial data ---");
         InventoryRepository repo1 = new InventoryRepository();
-        InventoryService service1 = new InventoryService(repo1);
+        InventoryService service1 = InventoryService.getInstance(repo1);
 
         System.out.println("\n[STEP 1.1] Adding new items...");
         service1.addItem("wood", 50, 10, "material", 20);
@@ -50,7 +50,7 @@ public class Main {
         System.out.println("=================================================");
         System.out.println("--- PHASE 2: Testing Persistence (Loading from files) ---");
         InventoryRepository repo2 = new InventoryRepository();
-        InventoryService service2 = new InventoryService(repo2);
+        InventoryService service2 = InventoryService.getInstance(repo2);
 
         System.out.println("\n[STEP 2.1] Verifying re-loaded items...");
         Item reloadedWood = service2.getItemByName("wood");

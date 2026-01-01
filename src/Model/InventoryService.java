@@ -1,6 +1,5 @@
 package Model;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class InventoryService {
@@ -44,13 +43,13 @@ public class InventoryService {
         repo.rewriteItems();
     }
 
-    public void addProduct(String name, int quantity, ArrayList<Item> requiredItems) {
+    public void addProduct(String name, int quantity, Map<Item, Integer> requiredItems) {
         name = name.toLowerCase();
         Map<String, Product> products = repo.getProducts();
 
         if (products.containsKey(name)) {
-            Product existing = products.get(name);
-            existing.setQuantity(existing.getQuantity() + quantity);
+            Product existingProduct = products.get(name);
+            existingProduct.setQuantity(existingProduct.getQuantity() + quantity);
             repo.rewriteProducts();
             return;
         }
@@ -59,6 +58,7 @@ public class InventoryService {
         products.put(name, product);
         repo.saveProduct(product);
     }
+
 
 
 

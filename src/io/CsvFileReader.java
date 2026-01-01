@@ -96,11 +96,7 @@ public class CsvFileReader {
         return items;
     }
 
-    public ArrayList<Product> loadProducts(Map<String, Item> requirements) {
-        return loadProducts("Data/Products.csv", requirements);
-    }
-
-    public ArrayList<Product> loadProducts(String filesPath, Map<String, Item> requirements) {
+    public ArrayList<Product> loadProducts(String filesPath, Map<String, Item> items) {
         List<String> lines;
         ArrayList<Product> products = new ArrayList<>();
 
@@ -120,20 +116,30 @@ public class CsvFileReader {
             String name = parseCsvField(csv[1]);
             int quantity = Integer.parseInt(csv[2]);
 
-            ArrayList<Item> items = new ArrayList<>();
-            for (String itemName : csv[3].split(";"))
-            {
-                Item item = requirements.get(itemName);
+            Map<Item, Integer> requiredItemsMap = new HashMap<>();
+            String[] requirementsPairs = csv[3].split(";");
+
+            for (String pair : requirementsPairs) {
+                if (pair.isBlank()) continue;
+
+                String[] itemAndQuantity = pair.split(":");
+                String itemName = parseCsvField(itemAndQuantity[0]);
+                int itemQuantity = Integer.parseInt(itemAndQuantity[1]);
+
+                Item item = items.get(itemName);
                 if (item == null) {
                     throw new RuntimeException("Item not found by name: " + itemName);
                 }
-                items.add(item);
+                requiredItemsMap.put(item, itemQuantity);
             }
 
-            products.add(new Product(id, name, quantity, items));
+            products.add(new Product(id, name, quantity, requiredItemsMap));
         }
 
         return products;
+    }
+    public ArrayList<Product> loadProducts(Map<String, Item> items) {
+        return loadProducts("Data/Products.csv",items);
     }
 
     private String parseCsvField(String field) {

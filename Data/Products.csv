@@ -1,2 +1,2 @@
 id,name,quantity,requiredItems
-1,"hello",320,apple
+1,"chair",5,"screw":20;"wood":4

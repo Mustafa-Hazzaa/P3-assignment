@@ -1,3 +1,5 @@
+package Model;
+
 import io.TxtFileReader;
 import io.TxtFileWriter;
 
@@ -12,14 +14,10 @@ public class SimulatedClock {
 
     private final LocalDateTime realStart;
     private final LocalDateTime simulatedStart;
-
     private final TxtFileWriter writer = new TxtFileWriter();
     private final TxtFileReader reader = new TxtFileReader();
-
-    private static final String TIME_FILE = "Data/simulated_time.txt";
-
-    private static final DateTimeFormatter FORMAT =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final String TIME_FILE = "Data/simulated_time.txt";
+    private final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public SimulatedClock() {
         this.simulatedStart = loadLastSimulatedTime();
@@ -33,10 +31,6 @@ public class SimulatedClock {
                 (realElapsed.toMillis() * SPEED) / 1000;
 
         return simulatedStart.plusSeconds(simulatedSeconds);
-    }
-
-    public String nowFormatted() {
-        return FORMAT.format(now());
     }
 
     public void shutdown() {

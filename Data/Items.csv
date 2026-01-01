@@ -1,4 +1,4 @@
 id,name,quantity,price,category,minStockLevel
-1,"apple",800,10,"Food",5
-2,"carrot",100,10,"Food",5
-3,"nails",50,10,"Food",5
+2,"screw",200,1,"hardware",100
+3,"paint",10,15,"finishing",5
+1,"wood",65,10,"material",20

@@ -66,14 +66,16 @@ public class CsvFileWriter {
 
     public void addProduct(String filePath, Product product, boolean append) {
 
-        Map<String, Item> requiredItems = product.getRequiredItems();
-        StringBuilder names = new StringBuilder();
+        Map<Item, Integer> requiredItems = product.getRequiredItems();
+        StringBuilder requirementsBuilder = new StringBuilder();
 
         int count = 0;
-        for (Item item : requiredItems.values()) {
-            names.append(item.getName());
+        for (Map.Entry<Item, Integer> entry : requiredItems.entrySet()) {
+            requirementsBuilder.append(escape(entry.getKey().getName()));
+            requirementsBuilder.append(":");
+            requirementsBuilder.append(entry.getValue());
             if (++count < requiredItems.size()) {
-                names.append(";");
+                requirementsBuilder.append(";");
             }
         }
 
@@ -81,7 +83,7 @@ public class CsvFileWriter {
                 product.getId() + "," +
                         escape(product.getName()) + "," +
                         product.getQuantity() + "," +
-                        names.toString();
+                        requirementsBuilder;
 
         try {
             txtFileWriter.writeLine(filePath, line, append);

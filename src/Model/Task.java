@@ -13,6 +13,7 @@ public class Task {
     private ProductLine productLine;
     private int progress;
     private int secondsNeeded;
+    private SimulatedClock simulatedClock = new SimulatedClock();
 
     public Task(int id, String item, int quantity, String client, ProductLine productLine, int secondsNeeded) {
         this.id = id;
@@ -33,7 +34,7 @@ public class Task {
 
         public void processTask() {
             setStatus("Working");
-            this.startTime = LocalDateTime.now();
+            this.startTime = simulatedClock.now();
 
 
 

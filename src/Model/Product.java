@@ -7,23 +7,17 @@ import java.util.Map;
 public class Product extends Stockable {
 
     private static int nextId = 1;
-    private final Map<String , Item> requiredItems;
+    private final Map<Item , Integer> requiredItems;
 
-    public Product(String name, int quantity, ArrayList<Item> requiredItems) {
+    public Product(String name, int quantity, Map<Item , Integer> requiredItems) {
         super(generateId(), name, quantity);
-        this.requiredItems = new HashMap<>();
-        for (Item item : requiredItems) {
-            this.requiredItems.put(item.getName(), item);
-        }
+        this.requiredItems = requiredItems;
     }
 
-    public Product(int id, String name, int quantity, ArrayList<Item> requiredItems) {
+    public Product(int id, String name, int quantity, Map<Item , Integer> requiredItems) {
         super(id, name, quantity);
         syncNextId(id);
-        this.requiredItems = new HashMap<>();
-        for (Item item : requiredItems) {
-            this.requiredItems.put(item.getName(), item);
-        }
+        this.requiredItems = requiredItems;
     }
 
 
@@ -31,7 +25,7 @@ public class Product extends Stockable {
         return id;
     }
 
-    public Map<String,Item> getRequiredItems() {
+    public Map<Item,Integer> getRequiredItems() {
         return requiredItems;
     }
 

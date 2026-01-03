@@ -29,7 +29,6 @@ public class LoginView extends JFrame {
         ImageIcon logo = new ImageIcon("src/Images/Logo.png");
         this.setIconImage(logo.getImage());
 
-        //  Left Panel Settings
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(Color.WHITE);
         ImageIcon icon = new ImageIcon("src/Images/imagep.jpg");
@@ -40,7 +39,6 @@ public class LoginView extends JFrame {
         imageLabel.setHorizontalAlignment(JLabel.CENTER);
         leftPanel.add(imageLabel, BorderLayout.CENTER);
 
-        //  Right Panel Settings
         JPanel rightPanel = new JPanel();
         rightPanel.setBackground(potatoBeige);
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
@@ -103,7 +101,6 @@ public class LoginView extends JFrame {
 
         Dimension signInSize = new Dimension(360, 40);
         signInButton= new RoundedButton("Sign in",capeRed);
-//        signInButton.setBackground(capeRed);
         signInButton.setForeground(Color.WHITE);
         signInButton.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
         signInButton.setMaximumSize(signInSize);

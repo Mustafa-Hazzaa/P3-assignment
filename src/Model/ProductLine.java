@@ -1,49 +1,40 @@
-package Model;
+package Model;// package Model;
 
-import java.util.Queue;
+import Model.Task;
+import Util.LineStatus;
 
-public class ProductLine implements Runnable  {
-    int id;
-    String name;
-    String status;
-    Queue<Task> taskQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-    public int getId() {
-        return id;
-    }
+// NOTE: No 'implements Runnable', no services, no run() method.
+public class ProductLine {
+    private int id;
+    private String name;
+    private LineStatus status;
+    private BlockingQueue<Task> tasks = new LinkedBlockingQueue<>();
+    // private final ErrorLogger logger = new ErrorLogger(); // This can be moved to the worker
 
-    public void setId(int id) {
+    public ProductLine(int id, String name, LineStatus status) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Queue<Task> getTaskQueue() {
-        return taskQueue;
+
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public LineStatus getStatus() { return status; }
+    public void setStatus(LineStatus status) { this.status = status; }
+
+    public void addTask(Task task) throws InterruptedException {
+        tasks.put(task);
     }
 
-    public void setTaskQueue(Queue<Task> taskQueue) {
-        this.taskQueue = taskQueue;
+    public Task takeTask() throws InterruptedException {
+        return tasks.take();
     }
 
-
-    @Override
-    public void run() {
-//        while ()
-//            Task currentTask = taskQueue.;
+    public BlockingQueue<Task> getTasks() {
+        return tasks;
     }
 }

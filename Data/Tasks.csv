@@ -1,0 +1,2 @@
+id,productName,quantity,client,status,productLineId,progress
+1,widget,0,ClientX,COMPLETED,1,100

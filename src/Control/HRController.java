@@ -1,7 +1,8 @@
 package Control;
 
 import Model.User;
-import Model.UserService;
+import Service.UserService;
+import Util.Role;
 import View.HRView;
 
 import javax.swing.*;
@@ -25,12 +26,13 @@ public class HRController {
     private void initController() {
         view.rightPanel.addUserBtn.addActionListener(e -> handleAddUser());
         view.rightPanel.rmvBtn.addActionListener(e -> handleRemoveUser());
-        view.rightPanel.nameField.addActionListener(e ->   view.rightPanel.nameField.transferFocus());;
-        view.rightPanel.emailField.addActionListener(e ->   view.rightPanel.emailField.transferFocus());;
-        view.rightPanel.passwordField.addActionListener(e ->   view.rightPanel.passwordField.transferFocus());;
+        //when you type press go to the next filed
+        view.rightPanel.nameField.addActionListener(e ->   view.rightPanel.nameField.transferFocus());
+        view.rightPanel.emailField.addActionListener(e ->   view.rightPanel.emailField.transferFocus());
+        view.rightPanel.passwordField.addActionListener(e -> handleAddUser());
         refreshUserList();
 
-
+        //check every time a key is typed
         view.rightPanel.emailField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -54,7 +56,7 @@ public class HRController {
         String name = view.rightPanel.nameField.getText().trim();
         String email = view.rightPanel.emailField.getText().trim();
         String password = new String(view.rightPanel.passwordField.getPassword());
-        String role = (String) view.rightPanel.roleComboBox.getSelectedItem();
+        Role role = (Role) view.rightPanel.roleComboBox.getSelectedItem();
 
         String validation = model.validateInfo(email,name, password, role);
         if (!validation.equals("SUCCESS")) {
@@ -67,7 +69,7 @@ public class HRController {
             return;
         }
 
-        model.addUser(name, email, password, role);
+        model.addUser(new User(name, email, password, role));
 
         view.rightPanel.userListModel.addElement(name + " - " +email + " - " + role);
 
@@ -101,7 +103,7 @@ public class HRController {
         }
     }
 
-
+    //make sure the table is upToDate
     private void refreshUserList() {
         view.rightPanel.userListModel.clear();
         for (User user : model.getAllUsers()) {
@@ -115,4 +117,6 @@ public class HRController {
         view.rightPanel.passwordField.setText("");
         view.rightPanel.roleComboBox.setSelectedIndex(0);
     }
+
+
 }

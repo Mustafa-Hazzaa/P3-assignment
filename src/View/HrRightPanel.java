@@ -1,6 +1,8 @@
 package View;
 
 import Swing.*;
+import Util.Role;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -12,7 +14,7 @@ public class HrRightPanel extends BackgroundPanel {
     public IconTextField nameField;
     public IconTextField emailField;
     public IconPasswordField passwordField;
-    public JComboBox<String> roleComboBox;
+    public JComboBox<Role> roleComboBox;
 
     public DefaultListModel<String> userListModel;
     public JList<String> userList;
@@ -147,7 +149,7 @@ public class HrRightPanel extends BackgroundPanel {
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        roleComboBox = new JComboBox<>(new String[]{"Manager", "Supervisor", "HR"});
+        roleComboBox = new JComboBox<>(Role.values());
         roleComboBox.setPreferredSize(new Dimension(0, 35));
         formPanel.add(roleComboBox, gbc);
 

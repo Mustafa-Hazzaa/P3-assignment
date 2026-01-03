@@ -1,9 +1,5 @@
 package View;
 
-import Control.LoginController;
-import Model.UserRepository;
-import Model.UserService;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -46,25 +42,14 @@ public class HRView extends JFrame {
                         case "Remove User" -> ((HrRightPanel) rightPanel).showCard("REMOVE");
                     }
                 },
-                () -> {  // Logout action
+                () -> {
                     this.dispose();
-
-                    UserRepository repository = new UserRepository();
-                    repository.loadFromCsv("Data/Users.csv");
-
-                    UserService model = new UserService(repository);
-                    LoginView view = new LoginView();
-
-                    new LoginController(model, view);
                 }
         );
         add(sideNav, BorderLayout.WEST);
 
         setVisible(true);
     }
-
-    //#######################   Helper Methods    ######################
-
 
     //#######################   Main Method    ######################
     public static void main(String[] args) {

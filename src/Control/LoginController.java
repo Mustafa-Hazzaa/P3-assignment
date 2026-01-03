@@ -1,6 +1,6 @@
 package Control;
 
-import Model.UserService;
+import Service.UserService;
 import View.LoginView;
 
 import View.HRView;
@@ -29,16 +29,13 @@ public class LoginController {
 
         String status = model.validateLoginRequest(username, password);
         if (status.equals("SUCCESS")) {
-           String role = model.getRole(username);
-            switch (role) {
-                case "HR" -> {
+            switch (model.getRole(username)) {
+                case HR -> {
                     view.setVisible(false);
-                    HRView hrView = new HRView();
-                    UserService hrModel = model;
-                    new HRController(hrModel, hrView);
+                    new HRController(model, new HRView());
                 }
-                case "Manager" -> System.out.println("He is a Manager");
-                case "Supervisor"-> System.out.println("He is a Supervisor ");
+                case MANAGER -> System.out.println("He is a Manager ");
+                case SUPERVISOR-> System.out.println("He is a Supervisor ");
             }
             view.setVisible(false);
         }else {

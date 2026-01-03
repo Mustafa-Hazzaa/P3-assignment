@@ -1,4 +1,4 @@
-package Model;
+package Util;
 
 import io.TxtFileReader;
 import io.TxtFileWriter;

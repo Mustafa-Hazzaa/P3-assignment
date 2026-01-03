@@ -1,44 +1,50 @@
 package Model;
 
+import Util.*;
+
 import java.time.LocalDateTime;
 
 public class Task {
     private static int nextId = 1;
     private int id;
-    private Product product;
+    private String productName;
     private int quantity;
     private String client;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private TaskStatus status;
-    private ProductLine productLine;
+    private int productLineId;
     private int progress;
+    private int step;
 
-    public Task(int id, Product product, int quantity, String client, ProductLine productLine, int secondsNeeded) {
+
+    public Task(int id, String productName, int quantity, String client, TaskStatus taskStatus, int productLineId, int progress) {
         this.id = id;
         syncNextId(id);
-        this.product = product;
+        this.productName = productName;
         this.quantity = quantity;
         this.client = client;
-        this.productLine = productLine;
+        this.productLineId = productLineId;
         this.startTime = null;
         this.endTime = null;
-        this.status = TaskStatus.PENDING;
-        this.progress = 0;
+        this.status = taskStatus;
+        this.progress = progress;
+        int step = getStep();
     }
 
-    public Task(Product product, int quantity, String client, ProductLine productLine) {
+    public Task(String product, int quantity, String client, int productLineId) {
         this.id = generateId();
-        this.product = product;
+        this.productName = product;
         this.quantity = quantity;
         this.client = client;
-        this.productLine = productLine;
-
+        this.productLineId = productLineId;
         this.startTime = null;
         this.endTime = null;
         this.status = TaskStatus.PENDING;
         this.progress = 0;
+        int step = getStep();
     }
+
 
     private static synchronized int generateId() {
         return nextId++;
@@ -54,16 +60,12 @@ public class Task {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getProductName() {
+        return productName;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public int getQuantity() {
@@ -82,12 +84,12 @@ public class Task {
         this.client = client;
     }
 
-    public ProductLine getProductLine() {
-        return productLine;
+    public int getProductLineId() {
+        return productLineId;
     }
 
-    public void setProductLine(ProductLine productLine) {
-        this.productLine = productLine;
+    public void setProductLine(int productLineId) {
+        this.productLineId = productLineId;
     }
 
     public TaskStatus getStatus() {
@@ -105,4 +107,41 @@ public class Task {
     public void setProgress(int progress) {
         this.progress = progress;
     }
+
+    public void start(SimulatedClock clock) {
+        this.startTime = clock.now();
+        this.status = TaskStatus.IN_PROGRESS;
+    }
+
+    public void complete(SimulatedClock clock) {
+        this.status = TaskStatus.COMPLETED;
+        this.progress = 100;
+        this.endTime = clock.now();
+    }
+
+    public boolean isCompleted() {
+        return getQuantity() <= 0;
+    }
+
+    public int remainingUnits() {
+        return quantity;
+    }
+
+    public boolean produceOneUnit() {
+        if (status != TaskStatus.IN_PROGRESS)
+            throw new IllegalStateException("Task not in progress");
+        quantity--;
+        progress = Math.min(100, progress + step);
+        return quantity == 0;
+    }
+
+    public int getStep() {
+        if (quantity <= 0) {
+            return 0;
+        }
+
+        int remainingProgress = 100 - progress;
+        return Math.max(1, remainingProgress / quantity);
+    }
+
 }

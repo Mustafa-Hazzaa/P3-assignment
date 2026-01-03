@@ -1,20 +1,18 @@
 package Model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Product extends Stockable {
 
     private static int nextId = 1;
-    private final Map<Item , Integer> requiredItems;
+    private final Map<String, Integer> requiredItems;
 
-    public Product(String name, int quantity, Map<Item , Integer> requiredItems) {
+    public Product(String name, int quantity, Map<String , Integer> requiredItems) {
         super(generateId(), name, quantity);
         this.requiredItems = requiredItems;
     }
 
-    public Product(int id, String name, int quantity, Map<Item , Integer> requiredItems) {
+    public Product(int id, String name, int quantity, Map<String, Integer> requiredItems) {
         super(id, name, quantity);
         syncNextId(id);
         this.requiredItems = requiredItems;
@@ -25,7 +23,7 @@ public class Product extends Stockable {
         return id;
     }
 
-    public Map<Item,Integer> getRequiredItems() {
+    public Map<String,Integer> getRequiredItems() {
         return requiredItems;
     }
 

@@ -1,10 +1,10 @@
-package Model;
+package Util;
 
 public enum TaskStatus {
     PENDING,
     READY,
     WAITING_FOR_MATERIAL,
-    WORKING,
+    IN_PROGRESS,
     COMPLETED,
     CANCELED
 }

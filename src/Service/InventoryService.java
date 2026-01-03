@@ -18,7 +18,7 @@ public class InventoryService {
     private final ProductRepository productRepository;
     private final Map<String, Item> itemsByName;
     private final Map<String, Product> productsByName;
-    private final Map<String, Integer> reservedItems;
+     final Map<String, Integer> reservedItems;
 
     private final ErrorLogger logger = new ErrorLogger();
 

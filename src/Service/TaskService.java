@@ -32,10 +32,6 @@ public class TaskService {
 
         for (Task task : taskList) {
             tasksById.put(task.getId(), task);
-
-            if (task.getStatus() == TaskStatus.IN_PROGRESS || task.getStatus() == TaskStatus.WAITING_FOR_MATERIAL){
-                inventoryService.addReservedItem(task);
-            }
         }
     }
 

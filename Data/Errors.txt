@@ -1871,3 +1871,59 @@
 [2026-01-03 20:22:21] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
 [2026-01-03 20:23:09] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
 [2026-01-03 20:23:09] ERROR: INFO: Worker for 'Line B' was interrupted and is shutting down.
+[2026-01-03 20:28:04] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
+[2026-01-03 20:28:04] ERROR: INFO: Worker for 'Line B' was interrupted and is shutting down.
+[2026-01-03 20:28:25] ERROR: INFO: Worker for 'Line B' was interrupted and is shutting down.
+[2026-01-03 20:28:25] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
+[2026-01-03 20:31:12] ERROR: INFO: Worker for 'Line B' was interrupted and is shutting down.
+[2026-01-03 20:31:12] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
+[2026-01-03 20:31:15] ERROR: No enum constant Util.TaskStatus.WAITING_FOR_MATERIALWAITING_FOR_MATERIAL
+[2026-01-03 20:31:45] ERROR: INFO: Worker for 'Line B' was interrupted and is shutting down.
+[2026-01-03 20:31:45] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
+[2026-01-03 20:32:34] ERROR: INFO: Worker for 'Line B' was interrupted and is shutting down.
+[2026-01-03 20:32:34] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
+[2026-01-03 20:32:49] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
+[2026-01-03 20:32:49] ERROR: INFO: Worker for 'Line B' was interrupted and is shutting down.
+[2026-01-03 20:33:05] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 0
+[2026-01-03 20:33:05] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 0
+[2026-01-03 20:33:05] ERROR: WARN: Task 1 is waiting for materials. Re-queuing...
+[2026-01-03 20:33:06] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 0
+[2026-01-03 20:33:06] ERROR: WARN: Task 1 is waiting for materials. Re-queuing...
+[2026-01-03 20:33:06] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 0
+[2026-01-03 20:33:06] ERROR: WARN: Task 1 is waiting for materials. Re-queuing...
+[2026-01-03 20:33:07] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 0
+[2026-01-03 20:33:07] ERROR: WARN: Task 1 is waiting for materials. Re-queuing...
+[2026-01-03 20:33:07] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 0
+[2026-01-03 20:33:07] ERROR: WARN: Task 1 is waiting for materials. Re-queuing...
+[2026-01-03 20:33:08] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 0
+[2026-01-03 20:33:08] ERROR: WARN: Task 1 is waiting for materials. Re-queuing...
+[2026-01-03 20:33:08] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 0
+[2026-01-03 20:33:08] ERROR: WARN: Task 1 is waiting for materials. Re-queuing...
+[2026-01-03 20:33:09] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 0
+[2026-01-03 20:33:09] ERROR: WARN: Task 1 is waiting for materials. Re-queuing...
+[2026-01-03 20:33:09] ERROR: INFO: Worker for 'Line B' was interrupted and is shutting down.
+[2026-01-03 20:33:09] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
+[2026-01-03 20:35:32] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
+[2026-01-03 20:35:32] ERROR: INFO: Worker for 'Line B' was interrupted and is shutting down.
+[2026-01-03 20:36:10] ERROR: Task 3 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 1
+[2026-01-03 20:36:10] ERROR: WARN: Task 3 is waiting for materials. Re-queuing...
+[2026-01-03 20:36:11] ERROR: Task 3 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 1
+[2026-01-03 20:36:11] ERROR: WARN: Task 3 is waiting for materials. Re-queuing...
+[2026-01-03 20:36:11] ERROR: Task 3 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 1
+[2026-01-03 20:36:11] ERROR: WARN: Task 3 is waiting for materials. Re-queuing...
+[2026-01-03 20:36:12] ERROR: Task 3 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 1
+[2026-01-03 20:36:12] ERROR: WARN: Task 3 is waiting for materials. Re-queuing...
+[2026-01-03 20:36:12] ERROR: Task 3 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 1
+[2026-01-03 20:36:12] ERROR: WARN: Task 3 is waiting for materials. Re-queuing...
+[2026-01-03 20:36:13] ERROR: Task 3 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 1
+[2026-01-03 20:36:13] ERROR: WARN: Task 3 is waiting for materials. Re-queuing...
+[2026-01-03 20:36:13] ERROR: Task 3 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 1
+[2026-01-03 20:36:13] ERROR: WARN: Task 3 is waiting for materials. Re-queuing...
+[2026-01-03 20:36:14] ERROR: Task 3 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 1
+[2026-01-03 20:36:14] ERROR: WARN: Task 3 is waiting for materials. Re-queuing...
+[2026-01-03 20:36:14] ERROR: Task 3 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 1
+[2026-01-03 20:36:14] ERROR: WARN: Task 3 is waiting for materials. Re-queuing...
+[2026-01-03 20:36:15] ERROR: Task 3 (widget) - Not enough stock for itemName 'screw'. Required: 20, Available: 1
+[2026-01-03 20:36:15] ERROR: WARN: Task 3 is waiting for materials. Re-queuing...
+[2026-01-03 20:36:15] ERROR: INFO: Worker for 'Line A' was interrupted and is shutting down.
+[2026-01-03 20:36:15] ERROR: INFO: Worker for 'Line B' was interrupted and is shutting down.

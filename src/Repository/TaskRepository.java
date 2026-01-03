@@ -3,6 +3,8 @@ package Repository;
 import Model.Task; // <<< NOTE: No more imports for Product, ProductLine, etc.
 import Util.TaskStatus;
 
+import java.time.LocalDateTime;
+
 public class TaskRepository extends CsvRepository<Task> {
 
     public TaskRepository() {
@@ -12,7 +14,8 @@ public class TaskRepository extends CsvRepository<Task> {
 
     @Override
     protected String getHeader() {
-        return "id,productName,quantity,client,status,productLineId,progress";
+        return "id,productName,totalQuantity,producedQuantity,client,status,productLineId,startTime,endTime";
+
     }
 
     @Override
@@ -23,7 +26,9 @@ public class TaskRepository extends CsvRepository<Task> {
                 task.getClient() + "," +
                 task.getStatus() + "," +
                 task.getProductLineId() + "," +
-                task.getProgress();
+                task.getProgress() + "," +
+                (task.getStartTime() == null ? "null" : task.getStartTime()) + "," +
+                (task.getEndTime() == null ? "null" : task.getEndTime());
     }
 
 
@@ -31,9 +36,14 @@ public class TaskRepository extends CsvRepository<Task> {
     @Override
     public Task fromCsv(String csvLine) {
         String[] data = csvLine.split(",");
-        if (data.length != 7)
+        if (data.length != 9)
             throw new IllegalArgumentException("Invalid task data");
-        return new Task(
+
+
+        LocalDateTime start = data[7].equals("null") ? null : LocalDateTime.parse(data[7]);
+        LocalDateTime end = data[8].equals("null") ? null : LocalDateTime.parse(data[8]);
+
+        Task task = new Task(
                 Integer.parseInt(data[0]),
                 data[1].toLowerCase(),        // product name
                 Integer.parseInt(data[2]),
@@ -42,6 +52,10 @@ public class TaskRepository extends CsvRepository<Task> {
                 Integer.parseInt(data[5]),// productLineId
                 Integer.parseInt(data[6])
         );
+        task.setStartTime(start);
+        task.setEndTime(end);
+
+        return task;
     }
 
 }

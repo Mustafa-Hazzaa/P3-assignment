@@ -73,7 +73,7 @@ public class TaskService {
             }
             else {
                 task.setStatus(TaskStatus.IN_PROGRESS);
-                task.start(clock);
+                if(task.getStartTime()==null) {task.start(clock);};
             }
 
         return true;

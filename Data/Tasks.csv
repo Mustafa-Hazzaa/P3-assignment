@@ -1,4 +1,3 @@
-id,productName,quantity,client,status,productLineId,progress
-1,widget,94,ClientX,IN_PROGRESS,1,0
-2,gadget,0,ClientX,COMPLETED,2,100
-3,widget,1,ClientX,WAITING_FOR_MATERIAL,2,0
+id,productName,totalQuantity,producedQuantity,client,status,productLineId,startTime,endTime
+1,widget,70,ClientX,IN_PROGRESS,1,0,2025-12-29T13:43:58,null
+2,gadget,0,ClientX,COMPLETED,2,100,2025-12-29T13:43:58,2025-12-29T13:43:58

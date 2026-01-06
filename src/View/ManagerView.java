@@ -1,136 +1,186 @@
 package View;
 
-import Model.ProductLine;
-import Util.LineStatus;
-
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 public class ManagerView extends JFrame {
-    private static final ImageIcon IDLE = new ImageIcon(ManagerView.class.getResource("/Images/IdleFactory.gif"));
-    private static final ImageIcon WORKING = new ImageIcon(ManagerView.class.getResource("/Images/workingFactory.gif"));
-    private static final ImageIcon BROKEN = new ImageIcon(ManagerView.class.getResource("/Images/brokenFactory.gif"));
-
-    public HashMap<Integer, ProductionLinePanel> allLines;
 
     public ManagerView() {
-        allLines = new HashMap<>();
         setTitle("Factory Manager");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setMinimumSize(new Dimension(1350, 750));
         setLayout(new BorderLayout());
-        ImageIcon logo = new ImageIcon("src/Images/Logo.png");
-        this.setIconImage(logo.getImage());
 
-
-        // Side nav
-        SideNavPanel sideNav = new SideNavPanel(
-                "Manager Panel",
-                "Factory Control",
-                "src/Images/Logo.png",
-                List.of("⚙️ Edit Production Line", "📊 Reports", "👥 Workers"),
-                this::onMenuClick,
-                () -> System.exit(0)
+        SideNavPanel sideNav= new SideNavPanel("Manager Panel","Factory Control","factory_logo.png",List.of("⚙ Edit Production Line", "📊 Reports", "👥 Workers"),this::onMenuClick,()->System.exit(0)
         );
-        add(sideNav, BorderLayout.WEST);
-    }
+        add(sideNav,BorderLayout.WEST);
 
+        JPanel rightPanel= new JPanel(new GridLayout(1,3,25,0));
+        rightPanel.setBackground(new Color(245,220,230));
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(40,40,40,40));
+
+        ImageIcon gif= new ImageIcon(getClass().getResource("/Images/factory.gif"));
+
+        rightPanel.add(new ProductionLinePanel("Line 1","01",gif));
+        rightPanel.add(new ProductionLinePanel("Line 2","02",gif));
+        rightPanel.add(new ProductionLinePanel("Line 3","03",gif));
+
+        add(rightPanel,BorderLayout.CENTER);
+    }
     private void onMenuClick(String item) {
-        switch (item) {
-            case "⚙️ Edit Production Line" -> JOptionPane.showMessageDialog(this,"Edit Production Line Clicked");
-            case "📊 Reports" -> JOptionPane.showMessageDialog(this,"Reports Clicked");
-            case "👥 Workers" -> JOptionPane.showMessageDialog(this,"Workers Clicked");
-        }
+        JOptionPane.showMessageDialog(this,item +"Clicked");
     }
-
     class ProductionLinePanel extends JPanel {
-        private final ProductLine productLine;
-        public JProgressBar bar;
 
-        public ProductionLinePanel(ProductLine productLine, ImageIcon gif) {
-            this.productLine = productLine;
-            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        private int rating= 0;
+        private String status ="RUNNING";
+        private JLabel statusLabel;
+        private String lineId;
+
+        public ProductionLinePanel(String name, String id, ImageIcon gif) {
+            this.lineId = id;
+
+            setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
             setOpaque(false);
 
-            JLabel gifLabel = new JLabel(gif);
-            gifLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JLabel gifLabel= new JLabel(gif);
+            gifLabel.setAlignmentX(CENTER_ALIGNMENT);
             gifLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            gifLabel.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    openDetails(productLine);
+            gifLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent e) {
+                    openDetails(name);
                 }
             });
 
-            JLabel title = new JLabel(productLine.getName());
-            title.setFont(new Font("SansSerif", Font.BOLD, 14));
-            title.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JLabel title=new JLabel(name);
+            title.setFont(new Font("SansSerif",Font.BOLD,15));
+            title.setAlignmentX(CENTER_ALIGNMENT);
 
-            bar = new JProgressBar(0, 100);
-            if (productLine.currentTask() != null) {
-                bar.setValue(productLine.currentTask().getProgress());
-            }
+            JProgressBar bar=new JProgressBar(0,100);
+            bar.setValue(0);
             bar.setStringPainted(true);
-            bar.setMaximumSize(new Dimension(200, 25));
+            bar.setMaximumSize(new Dimension(200,22));
+
+            statusLabel=new JLabel(status);
+            statusLabel.setForeground(new Color(0,150,0));
+            statusLabel.setAlignmentX(CENTER_ALIGNMENT);
 
             add(gifLabel);
-            add(Box.createVerticalStrut(10));
+            add(Box.createVerticalStrut(8));
             add(title);
             add(Box.createVerticalStrut(5));
             add(bar);
+            add(Box.createVerticalStrut(8));
+            add(statusLabel);
         }
 
-        private void openDetails(ProductLine productLine) {
-            JDialog dialog = new JDialog(ManagerView.this, productLine.getName() + " Details", true);
-            dialog.setSize(300, 200);
+        private void openDetails(String name) {
+            JDialog dialog=new JDialog(ManagerView.this,name +"Review",true);
+            dialog.setSize(450,420);
             dialog.setLocationRelativeTo(null);
-            dialog.add(new JLabel("Details for " + productLine.getName(), SwingConstants.CENTER));
+            dialog.setLayout(new BorderLayout(10,10));
+            dialog.getContentPane().setBackground(new Color(250,245,248));
+
+            JLabel header=new JLabel(name+"ID:"+lineId,SwingConstants.CENTER);
+            header.setFont(new Font("SansSerif",Font.BOLD,16));
+            header.setBorder(new EmptyBorder(10,10,10,10));
+            dialog.add(header, BorderLayout.NORTH);
+
+            JPanel card=new JPanel();
+            card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+            card.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY,1,true), new EmptyBorder(15,15,15,15)));
+            card.setBackground(Color.WHITE);
+
+            JLabel statusTitle=new JLabel("Line Status:");
+            statusTitle.setAlignmentX(CENTER_ALIGNMENT);
+
+            JRadioButton run=new JRadioButton("RUN");
+            JRadioButton pause=new JRadioButton("PAUSE");
+            JRadioButton stop=new JRadioButton("STOP");
+
+            ButtonGroup group=new ButtonGroup();
+            group.add(run);
+            group.add(pause);
+            group.add(stop);
+
+            if (status.equals("RUNNING"))run.setSelected(true);
+            else if (status.equals("PAUSED"))pause.setSelected(true);
+            else stop.setSelected(true);
+
+            run.addActionListener(e -> updateStatus("RUNNING",new Color(0,150,0)));
+            pause.addActionListener(e -> updateStatus("PAUSED",new Color(180,140,0)));
+            stop.addActionListener(e -> updateStatus("STOPPED",Color.RED));
+
+            JPanel statusPanel = new JPanel();
+            statusPanel.add(run);
+            statusPanel.add(pause);
+            statusPanel.add(stop);
+
+
+            JPanel starsPanel=new JPanel();
+            starsPanel.setBackground(Color.WHITE);
+            JLabel[] stars=new JLabel[5];
+
+            for (int i = 0; i < 5; i++) {
+                stars[i] = new JLabel("☆");
+                stars[i].setFont(new Font("SansSerif", Font.PLAIN, 28));
+                final int idx = i;
+                stars[i].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                stars[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent e) {
+                        rating = idx + 1;
+                        for (int j = 0; j < 5; j++) {
+                            stars[j].setText(j <= idx ? "★" : "☆");
+                        }
+                    }
+                });
+                starsPanel.add(stars[i]);
+            }
+
+            JLabel rateLbl = new JLabel("Rate this line:");
+            rateLbl.setAlignmentX(CENTER_ALIGNMENT);
+            JTextArea notes = new JTextArea(5, 20);
+            notes.setLineWrap(true);
+            notes.setWrapStyleWord(true);
+            JScrollPane scroll = new JScrollPane(notes);
+            scroll.setBorder(new TitledBorder("Notes"));
+
+            card.add(statusTitle);
+            card.add(statusPanel);
+            card.add(Box.createVerticalStrut(10));
+            card.add(rateLbl);
+            card.add(starsPanel);
+            card.add(Box.createVerticalStrut(10));
+            card.add(scroll);
+
+            dialog.add(card, BorderLayout.CENTER);
+
+            JButton save=new JButton("Save Review");
+            save.setFocusPainted(false);
+            save.addActionListener(e -> {
+                JOptionPane.showMessageDialog(dialog,
+                        "Saved Successfully ⭐\nRating:"+rating+"\nStatus:"+status);
+                dialog.dispose();
+            });
+
+            JPanel bottom=new JPanel();
+            bottom.setBackground(new Color(250,245,248));
+            bottom.add(save);
+
+            dialog.add(bottom,BorderLayout.SOUTH);
             dialog.setVisible(true);
         }
 
-        public void updateFromModel() {
-            if (productLine.currentTask() != null) {
-                bar.setValue(productLine.currentTask().getProgress());
-            }else {bar.setValue(0);}
+        private void updateStatus(String newStatus, Color color) {
+            status=newStatus;
+            statusLabel.setText(newStatus);
+            statusLabel.setForeground(color);
         }
     }
 
-    public void createPanelsForLines(Collection<ProductLine> lines) {
-//        if (getContentPane().getComponentCount() > 1) {
-//            getContentPane().remove(1);
-//        }
-
-        JPanel linePanel = new JPanel(new GridLayout(0, 3, 25, 0));
-        linePanel.setBackground(new Color(255, 200, 220));
-        linePanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
-
-        ImageIcon gif = IDLE;
-        for (ProductLine line : lines) {
-            switch (line.getStatus()){
-                case ACTIVE -> gif = WORKING;
-                case STOPPED -> gif = IDLE;
-                case MAINTENANCE -> gif = BROKEN;
-            }
-            ProductionLinePanel panel = new ProductionLinePanel(line, gif);
-            linePanel.add(panel);
-            allLines.put(line.getId(), panel);
-        }
-
-        add(linePanel, BorderLayout.CENTER);
-        revalidate();
-        repaint();
-
-
-        setVisible(true);
-    }
-
-    public void refreshLine(ProductLine line) {
-        ProductionLinePanel panel = allLines.get(line.getId());
-        if (panel != null) panel.updateFromModel();
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new ManagerView().setVisible(true));
     }
 }

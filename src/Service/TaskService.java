@@ -64,8 +64,10 @@ public class TaskService {
     }
 
     public boolean tryStartTask(Task task, InventoryService inventoryService) {
-        if (task.getStatus() == TaskStatus.IN_PROGRESS)
+        if (task.getStatus() == TaskStatus.IN_PROGRESS) {
+            inventoryService.addReservedItem(task);
             return true;
+        }
 
         if (!inventoryService.addReservedItem(task)) {
             task.setStatus(TaskStatus.WAITING_FOR_MATERIAL);
@@ -79,9 +81,9 @@ public class TaskService {
         return true;
     }
 
-    public boolean produceOneUnit(Task task, InventoryService inventoryService) {
+    public void produceOneUnit(Task task, InventoryService inventoryService) {
         if (task.getStatus() != TaskStatus.IN_PROGRESS)
-            return false;
+            return;
 
         Map<String, Integer> requirements = inventoryService.getProductByName(task.getProductName()).getRequiredItems();
         for (Map.Entry<String, Integer> req : requirements.entrySet()) {
@@ -92,8 +94,8 @@ public class TaskService {
 
         if (completed) {
             task.complete(clock);
+
         }
-        return completed;
 
     }
 

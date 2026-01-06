@@ -8,7 +8,7 @@ public class ErrorLogger {
 
     private final TxtFileWriter writer = new TxtFileWriter();
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static final String  errorFilePath = "Data/Errors.txt";
+    private static final String  errorFilePath = "Data/Errors.csv";
 
     public void log(String errorMessage) {
         try {

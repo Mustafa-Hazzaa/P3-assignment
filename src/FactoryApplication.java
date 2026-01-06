@@ -1,7 +1,9 @@
+import Control.ManagerController;
 import Service.*;
 import Util.SimulatedClock;
 import Util.ShutdownManager;
 import View.LoginView;
+import View.ManagerView;
 
 import javax.swing.*;
 
@@ -27,8 +29,6 @@ public class FactoryApplication {
 
             productLineService.assignTasksToLines(taskService);
             System.out.println("Pending tasks have been assigned to their production lines.");
-           ;
-            inventoryService.checkStock( taskService.getTask(1));
             ProductLineWorker.startAllWorkers(
                     productLineService,
                     taskService,
@@ -45,8 +45,9 @@ public class FactoryApplication {
             );
             System.out.println("Shutdown manager is ready.");
 
-//            LoginView loginView = new LoginView();
-//            new LoginController(userService, loginView);
+            ManagerView view = new ManagerView();
+            ManagerController controller = new ManagerController(view, productLineService);
+
 
             System.out.println("Application initialized successfully. Login view is now visible.");
         });

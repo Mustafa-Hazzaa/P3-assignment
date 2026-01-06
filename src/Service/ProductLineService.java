@@ -4,6 +4,7 @@ import Model.ProductLine;
 import Model.Task; // <-- Import Task
 import Repository.ProductLineRepository;
 import Util.LineStatus;
+import io.ErrorLogger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +16,7 @@ public class ProductLineService {
 
     private final ProductLineRepository repository;
     private final Map<Integer, ProductLine> productLinesById;
+    ErrorLogger logger = new ErrorLogger();
 
     public ProductLineService() {
         this.repository = new ProductLineRepository();
@@ -70,9 +72,40 @@ public class ProductLineService {
         }
     }
 
-    public void remove(int id) {
-        productLinesById.remove(id);
+    public void removeProductLine(int lineId, TaskService taskService) {
+
+        ProductLine cancelledLine = productLinesById.get(lineId);
+        if (cancelledLine == null) return;
+
+        List<ProductLine> activeLines = new ArrayList<>();
+        for (ProductLine line : productLinesById.values()) {
+            if (line.getStatus() == LineStatus.ACTIVE && line.getId() != lineId) {
+                activeLines.add(line);
+            }
+        }
+
+        if (activeLines.isEmpty()) {
+            logger.log("NO PRODUCT LINES EXIST");
+            return;
+        }
+
+        int index = 0;
+        for (Task task : cancelledLine.getAllTasks()) {
+            ProductLine targetLine = activeLines.get(index % activeLines.size());
+
+            try {
+                task.setProductLine(targetLine.getId());
+                targetLine.addTask(task);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            index++;
+        }
+
+        productLinesById.remove(lineId);
     }
+
 
     public void changeStatus(ProductLine line, LineStatus status) {
         line.setStatus(status);

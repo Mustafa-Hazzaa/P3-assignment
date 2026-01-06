@@ -6,13 +6,12 @@ import Util.LineStatus;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-// NOTE: No 'implements Runnable', no services, no run() method.
 public class ProductLine {
     private int id;
     private String name;
     private LineStatus status;
     private BlockingQueue<Task> tasks = new LinkedBlockingQueue<>();
-    // private final ErrorLogger logger = new ErrorLogger(); // This can be moved to the worker
+    private Task runningTask = null;
 
     public ProductLine(int id, String name, LineStatus status) {
         this.id = id;
@@ -31,10 +30,23 @@ public class ProductLine {
     }
 
     public Task takeTask() throws InterruptedException {
-        return tasks.take();
+        runningTask = tasks.take();
+        return runningTask;
     }
 
     public BlockingQueue<Task> getTasks() {
         return tasks;
+    }
+
+    public BlockingQueue<Task> getAllTasks() {
+        return this.tasks;
+    }
+
+    public synchronized Task currentTask() {
+        return runningTask != null ? runningTask : tasks.peek();
+    }
+
+    public synchronized void completeRunningTask() {
+        runningTask = null;
     }
 }

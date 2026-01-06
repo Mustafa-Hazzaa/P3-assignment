@@ -29,7 +29,8 @@ public class Task {
         this.endTime = null;
         this.status = taskStatus;
         this.progress = progress;
-        int step = getStep();
+        this.step = getStep();
+
     }
 
     public Task(String product, int quantity, String client, int productLineId) {
@@ -42,7 +43,8 @@ public class Task {
         this.endTime = null;
         this.status = TaskStatus.PENDING;
         this.progress = 0;
-        int step = getStep();
+        this.step = getStep();
+
     }
 
 
@@ -131,6 +133,7 @@ public class Task {
         if (status != TaskStatus.IN_PROGRESS)
             throw new IllegalStateException("Task not in progress");
         quantity--;
+        this.step = getStep();
         progress = Math.min(100, progress + step);
         return quantity == 0;
     }

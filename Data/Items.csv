@@ -1,4 +1,4 @@
 id,name,quantity,price,category,minStockLevel
-2,screw,49840,1,hardware,100
+2,screw,36800,1,hardware,100
 3,paint,10,15,finishing,5
-1,wood,199968,10,material,20
+1,wood,197250,10,material,20

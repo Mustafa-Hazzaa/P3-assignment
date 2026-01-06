@@ -14,7 +14,7 @@ public class TaskRepository extends CsvRepository<Task> {
 
     @Override
     protected String getHeader() {
-        return "id,productName,totalQuantity,producedQuantity,client,status,productLineId,startTime,endTime";
+        return "id,productName,Quantity,client,status,productLineId,Progress,startTime,endTime";
 
     }
 

@@ -8,7 +8,7 @@ import View.ManagerView;
 import javax.swing.*;
 
 public class FactoryApplication {
-
+//
     public static void main(String[] args) {
 
 

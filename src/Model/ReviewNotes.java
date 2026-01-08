@@ -2,16 +2,16 @@ package Model;
 
 public class ReviewNotes {
     private final String productLineName;
-    private  String review;
+    private  int review;
     private  String notes;
 
-    public ReviewNotes(String productLineName, String review, String notes) {
+    public ReviewNotes(String productLineName, int review, String notes) {
         this.productLineName = productLineName;
         this.review = review;
         this.notes = notes;
     }
 
-    public String getReview() {
+    public int getReview() {
         return review;
     }
 
@@ -21,6 +21,14 @@ public class ReviewNotes {
 
     public String getProductLineName() {
         return productLineName;
+    }
+
+    public void setReview(int review) {
+        this.review = review;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     @Override

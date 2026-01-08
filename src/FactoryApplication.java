@@ -1,10 +1,9 @@
-import Control.LoginController;
+//import Control.ManagerController;
 import Control.ManagerController;
 import Service.*;
 import Util.SimulatedClock;
 import Util.ShutdownManager;
-import View.LoginView;
-import View.ManagerView;
+        import View.ManagerView;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
@@ -41,7 +40,7 @@ public class FactoryApplication {
                     inventoryService,
                     clock
             );
-//
+
             ShutdownManager.registerShutdownHook(
                     userService,
                     inventoryService,
@@ -51,8 +50,14 @@ public class FactoryApplication {
             );
             System.out.println("Shutdown manager is ready.");
 
-            LoginView view = new LoginView();
-            LoginController controller = new LoginController(userService, view);
+//            LoginView view = new LoginView();
+//            LoginController controller = new LoginController(userService, view);
+
+            ManagerView view = new ManagerView();
+            view.setVisible(true);
+
+            // Create the Controller
+            ManagerController controller = new ManagerController(view, productLineService,reviewNotesService);
 
 
             System.out.println("Application initialized successfully. Login view is now visible.");

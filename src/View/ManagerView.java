@@ -1,17 +1,18 @@
 package View;
 
+import Control.ManagerController;
 import Model.ProductLine;
-import Service.ProductLineService;
-import Util.LineStatus;
+
 
 import javax.swing.*;
-import javax.swing.border.*;
 import java.awt.*;
+import javax.swing.Timer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ManagerView extends JFrame {
 
@@ -19,15 +20,22 @@ public class ManagerView extends JFrame {
     private static final ImageIcon WORKING = new ImageIcon(ManagerView.class.getResource("/Images/factory.gif"));
     private static final ImageIcon BROKEN = new ImageIcon(ManagerView.class.getResource("/Images/brokenFactory.gif"));
 
-    private static final ImageIcon activeIcon = new ImageIcon(ManagerView.class.getResource("/Images/activeIcon.png"));
-    private static final ImageIcon maintenanceIcon = new ImageIcon(ManagerView.class.getResource("/Images/maintenanceIcon.png"));
-    private static final ImageIcon stoppedIcon = new ImageIcon(ManagerView.class.getResource("/Images/stopIcon.png"));
+    public static final ImageIcon activeIcon = new ImageIcon(ManagerView.class.getResource("/Images/activeIcon.png"));
+    public static final ImageIcon maintenanceIcon = new ImageIcon(ManagerView.class.getResource("/Images/maintenanceIcon.png"));
+    public static final ImageIcon stoppedIcon = new ImageIcon(ManagerView.class.getResource("/Images/stopIcon.png"));
 
-    private static final ImageIcon clickedActiveIcon = new ImageIcon(ManagerView.class.getResource("/Images/clickedActiveIcon.png"));
-    private static final ImageIcon clickedMaintenanceIcon = new ImageIcon(ManagerView.class.getResource("/Images/clickedMaintenanceIcon.png"));
-    private static final ImageIcon clickedStoppedIcon = new ImageIcon(ManagerView.class.getResource("/Images/ClickedStopIcon.png"));
+    public static final ImageIcon clickedActiveIcon = new ImageIcon(ManagerView.class.getResource("/Images/clickedActiveIcon.png"));
+    public static final ImageIcon clickedMaintenanceIcon = new ImageIcon(ManagerView.class.getResource("/Images/clickedMaintenanceIcon.png"));
+    public static final ImageIcon clickedStoppedIcon = new ImageIcon(ManagerView.class.getResource("/Images/ClickedStopIcon.png"));
 
+    private Consumer<String> menuClickListener;
     private final HashMap<Integer, ProductionLinePanel> allLines = new HashMap<>();
+
+    // --- CardLayout fields ---
+    private JPanel cardPanel;
+    private CardLayout cardLayout;
+    private final String PRODUCT_LINES_CARD = "PRODUCT_LINES";
+    private final String REPORTS_CARD = "REPORTS";
 
     public ManagerView() {
         setTitle("Factory Manager");
@@ -36,31 +44,102 @@ public class ManagerView extends JFrame {
         setMinimumSize(new Dimension(1350, 750));
         setLayout(new BorderLayout());
 
+        ImageIcon logo = new ImageIcon("src/Images/Logo.png");
+        this.setIconImage(logo.getImage());
+
+        // --- Side navigation ---
         SideNavPanel sideNav = new SideNavPanel(
                 "Manager Panel",
                 "Factory Control",
                 "src/Images/Logo.png",
-                List.of("⚙️ Edit Production Line", "📊 Reports", "👥 Workers"),
-                this::onMenuClick,
+                List.of("⚙️ Edit Production Line", "📊 Reports"),
+                item -> {
+                    if (menuClickListener != null) menuClickListener.accept(item);
+                    // Switch cards when menu clicked
+                    if (item.equals("⚙️ Edit Production Line")) {
+                        cardLayout.show(cardPanel, PRODUCT_LINES_CARD);
+                    } else if (item.equals("📊 Reports")) {
+                        cardLayout.show(cardPanel, REPORTS_CARD);
+                    }
+                },
                 () -> System.exit(0)
         );
         add(sideNav, BorderLayout.WEST);
+
+        // --- CardLayout for center content ---
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+
+        // Product lines panel (empty for now, filled in createPanelsForLines)
+        JPanel productLinesContainer = new JPanel(new BorderLayout());
+        cardPanel.add(productLinesContainer, PRODUCT_LINES_CARD);
+
+        // Reports panel (empty placeholder)
+        JPanel reportsPanel = new JPanel();
+        reportsPanel.setBackground(new Color(220, 220, 250));
+        JLabel placeholder = new JLabel("Reports panel (empty)", SwingConstants.CENTER);
+        placeholder.setFont(new Font("SansSerif", Font.BOLD, 20));
+        reportsPanel.setLayout(new BorderLayout());
+        reportsPanel.add(placeholder, BorderLayout.CENTER);
+        cardPanel.add(reportsPanel, REPORTS_CARD);
+
+        add(cardPanel, BorderLayout.CENTER);
+
+        // Show product lines card by default
+        cardLayout.show(cardPanel, PRODUCT_LINES_CARD);
     }
 
-    private void onMenuClick(String item) {
-        JOptionPane.showMessageDialog(this, item + " Clicked");
+    public void setMenuClickListener(Consumer<String> listener) {
+        this.menuClickListener = listener;
     }
 
-    class ProductionLinePanel extends JPanel {
+    public void createPanelsForLines(Collection<ProductLine> lines, ManagerController controller) {
+        // Get the card panel for Product Lines
+        JPanel productLinesContainer = (JPanel) cardPanel.getComponent(0);
+
+        productLinesContainer.removeAll();
+
+        JPanel panel = new JPanel(new GridLayout(0, 3, 25, 0));
+        panel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+        panel.setBackground(new Color(245, 220, 230));
+
+        for (ProductLine line : lines) {
+            ImageIcon gif = switch (line.getStatus()) {
+                case ACTIVE -> WORKING;
+                case STOPPED -> IDLE;
+                case MAINTENANCE -> BROKEN;
+            };
+
+            ProductionLinePanel p = new ProductionLinePanel(line, gif,controller);
+            panel.add(p);
+            allLines.put(line.getId(), p);
+        }
+
+        productLinesContainer.add(panel, BorderLayout.CENTER);
+        productLinesContainer.revalidate();
+        productLinesContainer.repaint();
+    }
+
+    public void refreshLine(ProductLine line) {
+        ProductionLinePanel panel = allLines.get(line.getId());
+        if (panel != null) panel.updateFromModel();
+    }
+
+    // ------------------ Inner Class ------------------
+    public class ProductionLinePanel extends JPanel {
 
         private final ProductLine productLine;
+        private final ManagerController controller;
+
         private int rating = 0;
 
         private JLabel statusLabel;
         private JProgressBar bar;
 
-        public ProductionLinePanel(ProductLine line, ImageIcon gif) {
+        public ProductionLinePanel(ProductLine line, ImageIcon gif,ManagerController controller) {
             this.productLine = line;
+            this.controller = controller;
+
 
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setOpaque(false);
@@ -94,151 +173,13 @@ public class ManagerView extends JFrame {
             add(statusLabel);
 
             updateFromModel();
+
+            Timer timer = new Timer(500, e -> updateFromModel());
+            timer.start();
         }
 
         private void openDetails() {
-            JDialog dialog = new JDialog(
-                    ManagerView.this,
-                    productLine.getName() + " Review",
-                    true
-            );
-            dialog.setSize(450, 420);
-            dialog.setLocationRelativeTo(null);
-            dialog.setLayout(new BorderLayout(10, 10));
-
-            JLabel header = new JLabel(
-                    productLine.getName() + " | ID: " + productLine.getId(),
-                    SwingConstants.CENTER
-            );
-
-            header.setFont(new Font("SansSerif", Font.BOLD, 16));
-            header.setBorder(new EmptyBorder(10, 10, 10, 10));
-            dialog.add(header, BorderLayout.NORTH);
-
-            JPanel card = new JPanel();
-            card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-            card.setBorder(new CompoundBorder(
-                    new LineBorder(Color.LIGHT_GRAY, 1, true),
-                    new EmptyBorder(15, 15, 15, 15)
-            ));
-            card.setBackground(Color.WHITE);
-
-            JLabel statusTitle = new JLabel("Line Status:");
-            statusTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-            JRadioButton active = new JRadioButton();
-            JRadioButton stopped = new JRadioButton();
-            JRadioButton broken = new JRadioButton();
-
-
-            active.setIcon(activeIcon);
-            stopped.setIcon(stoppedIcon);
-            broken.setIcon(maintenanceIcon);
-
-            JRadioButton[] buttons = {active, stopped, broken};
-
-            for (JRadioButton btn : buttons) {
-                btn.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                    }
-
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        if (btn == active) {
-                            productLine.setStatus(LineStatus.ACTIVE);
-                            active.setIcon(clickedActiveIcon);
-                            stopped.setIcon(stoppedIcon);
-                            broken.setIcon(maintenanceIcon);
-                        } else if (btn == stopped) {
-                            productLine.setStatus(LineStatus.STOPPED);
-                            active.setIcon(activeIcon);
-                            stopped.setIcon(clickedStoppedIcon);
-                            broken.setIcon(maintenanceIcon);
-                        } else if (btn == broken) {
-                            productLine.setStatus(LineStatus.MAINTENANCE);
-                            active.setIcon(activeIcon);
-                            stopped.setIcon(stoppedIcon);
-                            broken.setIcon(clickedMaintenanceIcon);
-                        }
-                    }
-                });
-            }
-
-            ButtonGroup group = new ButtonGroup();
-            group.add(active);
-            group.add(stopped);
-            group.add(broken);
-
-            switch (productLine.getStatus()) {
-                case ACTIVE -> {
-                    active.setSelected(true);
-                    active.setIcon(clickedActiveIcon);
-                }
-                case STOPPED -> {
-                    stopped.setSelected(true);
-                    stopped.setIcon(clickedStoppedIcon);
-                }
-                case MAINTENANCE -> {
-                    broken.setSelected(true);
-                    broken.setIcon(clickedMaintenanceIcon);
-                }
-            }
-
-            JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-            statusPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            statusPanel.add(active);
-            statusPanel.add(stopped);
-            statusPanel.add(broken);
-
-            JLabel rateLabel = new JLabel("Rate this line:");
-            rateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-            JPanel starsPanel = new JPanel();
-            starsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            JLabel[] stars = new JLabel[5];
-
-            for (int i = 0; i < 5; i++) {
-                stars[i] = new JLabel("☆");
-                stars[i].setFont(new Font("SansSerif", Font.PLAIN, 28));
-                int idx = i;
-                stars[i].addMouseListener(new MouseAdapter() {
-                    public void mouseClicked(MouseEvent e) {
-                        rating = idx + 1;
-                        for (int j = 0; j < 5; j++) {
-                            stars[j].setText(j <= idx ? "★" : "☆");
-                        }
-                    }
-                });
-                starsPanel.add(stars[i]);
-            }
-
-            JTextArea notes = new JTextArea(5, 20);
-            JScrollPane scroll = new JScrollPane(notes);
-            scroll.setBorder(new TitledBorder("Notes"));
-
-            card.add(statusTitle);
-            card.add(statusPanel);
-            card.add(Box.createVerticalStrut(10));
-            card.add(rateLabel);
-            card.add(starsPanel);
-            card.add(Box.createVerticalStrut(10));
-            card.add(scroll);
-
-            dialog.add(card, BorderLayout.CENTER);
-
-            JButton save = new JButton("Save Review");
-            save.addActionListener(e -> {
-                updateFromModel();
-                dialog.dispose();
-            });
-
-            JPanel bottom = new JPanel();
-            bottom.add(save);
-            dialog.add(bottom, BorderLayout.SOUTH);
-
-            dialog.setVisible(true);
+            controller.openLineDetails(ManagerView.this, productLine);
         }
 
         public void updateFromModel() {
@@ -258,43 +199,8 @@ public class ManagerView extends JFrame {
             statusLabel.setText(text);
             statusLabel.setForeground(color);
         }
-    }
 
-    public void createPanelsForLines(Collection<ProductLine> lines) {
-        JPanel panel = new JPanel(new GridLayout(0, 3, 25, 0));
-        panel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
-        panel.setBackground(new Color(245, 220, 230));
 
-        for (ProductLine line : lines) {
-            ImageIcon gif = switch (line.getStatus()) {
-                case ACTIVE -> WORKING;
-                case STOPPED -> IDLE;
-                case MAINTENANCE -> BROKEN;
-            };
 
-            ProductionLinePanel p = new ProductionLinePanel(line, gif);
-            panel.add(p);
-            allLines.put(line.getId(), p);
-        }
-
-        add(panel, BorderLayout.CENTER);
-        revalidate();
-        repaint();
-    }
-
-    public void refreshLine(ProductLine line) {
-        ProductionLinePanel panel = allLines.get(line.getId());
-        if (panel != null) panel.updateFromModel();
-    }
-
-    public static void main(String[] args) {
-
-        UIManager.put("Button.pressedBackground", new Color(210, 210, 210));
-        SwingUtilities.invokeLater(() -> {
-            ProductLineService service = new ProductLineService();
-            ManagerView view = new ManagerView();
-            view.setVisible(true);
-            view.createPanelsForLines(service.getAll());
-        });
     }
 }

@@ -28,7 +28,7 @@ public class ReviewNotesRepository extends CsvRepository<ReviewNotes> {
 
         return (new ReviewNotes(
                 data[0],
-                data[1],
+                Integer.parseInt(data[1]),
                 data[2]));
     }
 }

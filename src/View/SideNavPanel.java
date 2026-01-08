@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 public class SideNavPanel extends JPanel {
 
     private JLabel selectedLabel;
-    private final Color activeColor = Color.YELLOW;
+    private final Color activeColor = new Color(255, 248, 0);
     private final Color idleColor = Color.WHITE;
     private final Color navBackground = new Color(45, 45, 45);
     private final Color hoverColor = new Color(60, 60, 60);

@@ -52,7 +52,7 @@ public class UserService {
     }
 
     public String validateLoginRequest(String username, String password) {
-        if (username == null || username.trim().isEmpty()) return "Email cannot be empty";
+        if (username == null || username.trim().isEmpty()) return "username cannot be empty";
         if (password == null || password.trim().isEmpty()) return "Password cannot be empty";
 
         User user = usersByName.get(username);

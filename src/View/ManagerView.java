@@ -1,12 +1,10 @@
 package View;
 
-import Control.ManagerController;
 import Model.ProductLine;
-
+import Util.LineStatus;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.Timer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
@@ -16,6 +14,7 @@ import java.util.function.Consumer;
 
 public class ManagerView extends JFrame {
 
+    // --- Assets ---
     private static final ImageIcon IDLE = new ImageIcon(ManagerView.class.getResource("/Images/IdleFactory.gif"));
     private static final ImageIcon WORKING = new ImageIcon(ManagerView.class.getResource("/Images/factory.gif"));
     private static final ImageIcon BROKEN = new ImageIcon(ManagerView.class.getResource("/Images/brokenFactory.gif"));
@@ -28,10 +27,13 @@ public class ManagerView extends JFrame {
     public static final ImageIcon clickedMaintenanceIcon = new ImageIcon(ManagerView.class.getResource("/Images/clickedMaintenanceIcon.png"));
     public static final ImageIcon clickedStoppedIcon = new ImageIcon(ManagerView.class.getResource("/Images/ClickedStopIcon.png"));
 
-    private Consumer<String> menuClickListener;
-    private final HashMap<Integer, ProductionLinePanel> allLines = new HashMap<>();
+    // --- Event Callbacks ---
+    private Consumer<ProductLine> onLineClicked;
 
-    // --- CardLayout fields ---
+    // --- Line Panels ---
+    private final HashMap<Integer, ProductionLinePanel> linePanels = new HashMap<>();
+
+    // --- Cards ---
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private final String PRODUCT_LINES_CARD = "PRODUCT_LINES";
@@ -47,18 +49,16 @@ public class ManagerView extends JFrame {
         ImageIcon logo = new ImageIcon("src/Images/Logo.png");
         this.setIconImage(logo.getImage());
 
-        // --- Side navigation ---
+        // --- Side Navigation ---
         SideNavPanel sideNav = new SideNavPanel(
                 "Manager Panel",
                 "Factory Control",
                 "src/Images/Logo.png",
                 List.of("⚙️ Edit Production Line", "📊 Reports"),
                 item -> {
-                    if (menuClickListener != null) menuClickListener.accept(item);
-                    // Switch cards when menu clicked
                     if (item.equals("⚙️ Edit Production Line")) {
                         cardLayout.show(cardPanel, PRODUCT_LINES_CARD);
-                    } else if (item.equals("📊 Reports")) {
+                    } else {
                         cardLayout.show(cardPanel, REPORTS_CARD);
                     }
                 },
@@ -66,38 +66,30 @@ public class ManagerView extends JFrame {
         );
         add(sideNav, BorderLayout.WEST);
 
-        // --- CardLayout for center content ---
+        // --- Cards ---
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        // Product lines panel (empty for now, filled in createPanelsForLines)
-        JPanel productLinesContainer = new JPanel(new BorderLayout());
-        cardPanel.add(productLinesContainer, PRODUCT_LINES_CARD);
+        JPanel productLines = new JPanel(new BorderLayout());
+        cardPanel.add(productLines, PRODUCT_LINES_CARD);
 
-        // Reports panel (empty placeholder)
-        JPanel reportsPanel = new JPanel();
-        reportsPanel.setBackground(new Color(220, 220, 250));
+        JPanel reportsPanel = new JPanel(new BorderLayout());
         JLabel placeholder = new JLabel("Reports panel (empty)", SwingConstants.CENTER);
         placeholder.setFont(new Font("SansSerif", Font.BOLD, 20));
-        reportsPanel.setLayout(new BorderLayout());
         reportsPanel.add(placeholder, BorderLayout.CENTER);
         cardPanel.add(reportsPanel, REPORTS_CARD);
 
         add(cardPanel, BorderLayout.CENTER);
-
-        // Show product lines card by default
         cardLayout.show(cardPanel, PRODUCT_LINES_CARD);
     }
 
-    public void setMenuClickListener(Consumer<String> listener) {
-        this.menuClickListener = listener;
+    public void setOnLineClicked(Consumer<ProductLine> callback) {
+        this.onLineClicked = callback;
     }
 
-    public void createPanelsForLines(Collection<ProductLine> lines, ManagerController controller) {
-        // Get the card panel for Product Lines
-        JPanel productLinesContainer = (JPanel) cardPanel.getComponent(0);
-
-        productLinesContainer.removeAll();
+    public void displayLines(Collection<ProductLine> lines) {
+        JPanel productLines = (JPanel) cardPanel.getComponent(0);
+        productLines.removeAll();
 
         JPanel panel = new JPanel(new GridLayout(0, 3, 25, 0));
         panel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
@@ -110,37 +102,31 @@ public class ManagerView extends JFrame {
                 case MAINTENANCE -> BROKEN;
             };
 
-            ProductionLinePanel p = new ProductionLinePanel(line, gif,controller);
+            ProductionLinePanel p = new ProductionLinePanel(line, gif);
             panel.add(p);
-            allLines.put(line.getId(), p);
+            linePanels.put(line.getId(), p);
         }
 
-        productLinesContainer.add(panel, BorderLayout.CENTER);
-        productLinesContainer.revalidate();
-        productLinesContainer.repaint();
+        productLines.add(panel, BorderLayout.CENTER);
+        productLines.revalidate();
+        productLines.repaint();
     }
 
     public void refreshLine(ProductLine line) {
-        ProductionLinePanel panel = allLines.get(line.getId());
-        if (panel != null) panel.updateFromModel();
+        if (linePanels.containsKey(line.getId())) {
+            linePanels.get(line.getId()).update();
+        }
     }
 
-    // ------------------ Inner Class ------------------
-    public class ProductionLinePanel extends JPanel {
+    // ============= INNER PANEL CLASS =============
+    private class ProductionLinePanel extends JPanel {
 
-        private final ProductLine productLine;
-        private final ManagerController controller;
+        private final ProductLine line;
+        private final JLabel statusLabel = new JLabel();
+        private final JProgressBar bar = new JProgressBar(0, 100);
 
-        private int rating = 0;
-
-        private JLabel statusLabel;
-        private JProgressBar bar;
-
-        public ProductionLinePanel(ProductLine line, ImageIcon gif,ManagerController controller) {
-            this.productLine = line;
-            this.controller = controller;
-
-
+        public ProductionLinePanel(ProductLine line, ImageIcon gif) {
+            this.line = line;
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setOpaque(false);
 
@@ -148,8 +134,9 @@ public class ManagerView extends JFrame {
             gifLabel.setAlignmentX(CENTER_ALIGNMENT);
             gifLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             gifLabel.addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
-                    openDetails();
+                    if (onLineClicked != null) onLineClicked.accept(line);
                 }
             });
 
@@ -157,11 +144,8 @@ public class ManagerView extends JFrame {
             title.setFont(new Font("SansSerif", Font.BOLD, 15));
             title.setAlignmentX(CENTER_ALIGNMENT);
 
-            bar = new JProgressBar(0, 100);
             bar.setStringPainted(true);
             bar.setMaximumSize(new Dimension(1000, 30));
-
-            statusLabel = new JLabel();
             statusLabel.setAlignmentX(CENTER_ALIGNMENT);
 
             add(gifLabel);
@@ -172,23 +156,18 @@ public class ManagerView extends JFrame {
             add(Box.createVerticalStrut(8));
             add(statusLabel);
 
-            updateFromModel();
-
-            Timer timer = new Timer(500, e -> updateFromModel());
-            timer.start();
+            new Timer(500, e -> update()).start();
+            update();
         }
 
-        private void openDetails() {
-            controller.openLineDetails(ManagerView.this, productLine);
-        }
-
-        public void updateFromModel() {
-            if (productLine.currentTask() != null)
-                bar.setValue(productLine.currentTask().getProgress());
-            else
+        public void update() {
+            if (line.currentTask() != null) {
+                bar.setValue(line.currentTask().getProgress());
+            } else {
                 bar.setValue(0);
+            }
 
-            switch (productLine.getStatus()) {
+            switch (line.getStatus()) {
                 case ACTIVE -> setStatus("RUNNING", new Color(0, 150, 0));
                 case STOPPED -> setStatus("PAUSED", new Color(180, 140, 0));
                 case MAINTENANCE -> setStatus("BROKEN", Color.RED);
@@ -199,8 +178,5 @@ public class ManagerView extends JFrame {
             statusLabel.setText(text);
             statusLabel.setForeground(color);
         }
-
-
-
     }
 }

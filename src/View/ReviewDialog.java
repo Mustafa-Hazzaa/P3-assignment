@@ -2,6 +2,7 @@ package View;
 
 import Model.ProductLine;
 import Model.ReviewNotes;
+import Util.DialogResult;
 import Util.LineStatus;
 
 import javax.swing.*;
@@ -14,6 +15,7 @@ public class ReviewDialog extends JDialog {
     private LineStatus selectedStatus;
     private int selectedRating;
     private String selectedNotes;
+    private DialogResult dialogResult = DialogResult.CANCELLED;
 
     public ReviewDialog(JFrame parent, ProductLine line, ReviewNotes notes) {
         super(parent, line.getName() + " Review", true);
@@ -121,25 +123,44 @@ public class ReviewDialog extends JDialog {
         scroll.setBorder(BorderFactory.createTitledBorder("Notes"));
 
         // ===== Save Button =====
-        JButton save = new JButton("Save Review");
-        notesArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent e) {
-                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-                    e.consume();
-                    save.doClick();
-                }
+        JButton delete = new JButton("Delete Line");
+        delete.setBackground(new Color(210, 50, 45)); // A nice red color
+        delete.setForeground(Color.WHITE);
+        delete.setFocusPainted(false);
+        delete.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+        JButton save = new JButton("Save");
+        save.setBackground(new Color(30, 150, 70));
+        save.setForeground(Color.WHITE);
+        save.setFocusPainted(false);
+        save.setFont(new Font("SansSerif", Font.BOLD, 18));
+
+
+        delete.addActionListener(e -> {
+            int choice = JOptionPane.showConfirmDialog(
+                    this,
+                    "Are you sure you want to permanently delete the '" + line.getName() + "' line?\nThis action cannot be undone.", // Message
+                    "Confirm Deletion",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            if (choice == JOptionPane.YES_OPTION) {
+                this.dialogResult = DialogResult.DELETED;
+                dispose();
             }
         });
 
-        save.addActionListener(e -> {
-            selectedStatus = active.isSelected() ? LineStatus.ACTIVE :
-                    stopped.isSelected() ? LineStatus.STOPPED :
-                            LineStatus.MAINTENANCE;
 
+        save.addActionListener(e -> {
+            selectedStatus = active.isSelected() ? LineStatus.ACTIVE : stopped.isSelected() ? LineStatus.STOPPED : LineStatus.MAINTENANCE;
             selectedRating = ratingRef[0];
             selectedNotes = notesArea.getText();
+
+            this.dialogResult = DialogResult.SAVED;
             dispose();
         });
+
 
         panel.add(statusLabel);
         panel.add(statusPanel);
@@ -151,13 +172,16 @@ public class ReviewDialog extends JDialog {
 
         add(panel, BorderLayout.CENTER);
 
-        JPanel bottom = new JPanel();
-        bottom.add(save);
-        add(bottom, BorderLayout.SOUTH);
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel.add(delete);
+        bottomPanel.add(save);
+        add(bottomPanel, BorderLayout.SOUTH);
 
         getRootPane().setDefaultButton(save);
     }
-
+    public DialogResult getDialogResult() {
+        return dialogResult;
+    }
     public LineStatus getStatus() { return selectedStatus; }
     public int getRating() { return selectedRating; }
     public String getNotes() { return selectedNotes; }

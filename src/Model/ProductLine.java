@@ -7,6 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ProductLine {
+    private static int nextId = 1;
     private int id;
     private String name;
     private LineStatus status;
@@ -15,6 +16,13 @@ public class ProductLine {
 
     public ProductLine(int id, String name, LineStatus status) {
         this.id = id;
+        syncNextId(id);
+        this.name = name;
+        this.status = status;
+    }
+
+    public ProductLine( String name, LineStatus status) {
+        this.id = generateId();
         this.name = name;
         this.status = status;
     }
@@ -48,5 +56,15 @@ public class ProductLine {
 
     public synchronized void completeRunningTask() {
         runningTask = null;
+    }
+
+    private static synchronized int generateId() {
+        return nextId++;
+    }
+
+    private static synchronized void syncNextId(int id) {
+        if (id >= nextId) {
+            nextId = id + 1;
+        }
     }
 }

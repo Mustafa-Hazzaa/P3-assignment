@@ -53,11 +53,11 @@ public class FactoryApplication {
 //            LoginView view = new LoginView();
 //            LoginController controller = new LoginController(userService, view);
 
-            ManagerView view = new ManagerView();
+            ManagerView view = new ManagerView(productLineService);
             view.setVisible(true);
 
             // Create the Controller
-            ManagerController controller = new ManagerController(view, productLineService,reviewNotesService);
+            ManagerController controller = new ManagerController(view, productLineService,reviewNotesService,taskService);
 
 
             System.out.println("Application initialized successfully. Login view is now visible.");

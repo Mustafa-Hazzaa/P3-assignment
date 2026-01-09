@@ -1,7 +1,9 @@
 package View;
 
 import Model.ProductLine;
+import Service.ProductLineService;
 import Util.LineStatus;
+import Util.raven.floating.FloatingButtonUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +16,6 @@ import java.util.function.Consumer;
 
 public class ManagerView extends JFrame {
 
-    // --- Assets ---
     private static final ImageIcon IDLE = new ImageIcon(ManagerView.class.getResource("/Images/IdleFactory.gif"));
     private static final ImageIcon WORKING = new ImageIcon(ManagerView.class.getResource("/Images/factory.gif"));
     private static final ImageIcon BROKEN = new ImageIcon(ManagerView.class.getResource("/Images/brokenFactory.gif"));
@@ -27,19 +28,20 @@ public class ManagerView extends JFrame {
     public static final ImageIcon clickedMaintenanceIcon = new ImageIcon(ManagerView.class.getResource("/Images/clickedMaintenanceIcon.png"));
     public static final ImageIcon clickedStoppedIcon = new ImageIcon(ManagerView.class.getResource("/Images/ClickedStopIcon.png"));
 
-    // --- Event Callbacks ---
+    private final ProductLineService productLineService;
     private Consumer<ProductLine> onLineClicked;
 
-    // --- Line Panels ---
     private final HashMap<Integer, ProductionLinePanel> linePanels = new HashMap<>();
 
-    // --- Cards ---
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private final String PRODUCT_LINES_CARD = "PRODUCT_LINES";
     private final String REPORTS_CARD = "REPORTS";
 
-    public ManagerView() {
+    private JPanel productLinesPanel;
+
+    public ManagerView(ProductLineService productLineService) {
+        this.productLineService = productLineService;
         setTitle("Factory Manager");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -49,7 +51,7 @@ public class ManagerView extends JFrame {
         ImageIcon logo = new ImageIcon("src/Images/Logo.png");
         this.setIconImage(logo.getImage());
 
-        // --- Side Navigation ---
+        // SIDE NAV
         SideNavPanel sideNav = new SideNavPanel(
                 "Manager Panel",
                 "Factory Control",
@@ -66,19 +68,34 @@ public class ManagerView extends JFrame {
         );
         add(sideNav, BorderLayout.WEST);
 
-        // --- Cards ---
+        // CARD PANEL SETUP
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        JPanel productLines = new JPanel(new BorderLayout());
-        cardPanel.add(productLines, PRODUCT_LINES_CARD);
+        // PRODUCT LINES PANEL (GRID INSIDE SCROLL)
+        productLinesPanel = new JPanel();
+        productLinesPanel.setBackground(new Color(245, 220, 230));
 
+        JScrollPane scrollPane = new JScrollPane(productLinesPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBorder(null);
+
+        JPanel linesContainerPanel = new JPanel(new BorderLayout());
+        linesContainerPanel.add(scrollPane, BorderLayout.CENTER);
+
+        JLayer<JPanel> layer = new JLayer<>(linesContainerPanel, new FloatingButtonUI(this::addProductLine));
+        cardPanel.add(layer, PRODUCT_LINES_CARD);
+
+        // REPORTS PANEL
         JPanel reportsPanel = new JPanel(new BorderLayout());
         JLabel placeholder = new JLabel("Reports panel (empty)", SwingConstants.CENTER);
         placeholder.setFont(new Font("SansSerif", Font.BOLD, 20));
         reportsPanel.add(placeholder, BorderLayout.CENTER);
         cardPanel.add(reportsPanel, REPORTS_CARD);
 
+        // FINALIZE
         add(cardPanel, BorderLayout.CENTER);
         cardLayout.show(cardPanel, PRODUCT_LINES_CARD);
     }
@@ -87,13 +104,14 @@ public class ManagerView extends JFrame {
         this.onLineClicked = callback;
     }
 
+    // FIXED DISPLAY FUNCTION
     public void displayLines(Collection<ProductLine> lines) {
-        JPanel productLines = (JPanel) cardPanel.getComponent(0);
-        productLines.removeAll();
+        productLinesPanel.removeAll();
+        linePanels.clear();
 
-        JPanel panel = new JPanel(new GridLayout(0, 3, 25, 0));
-        panel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
-        panel.setBackground(new Color(245, 220, 230));
+        productLinesPanel.setLayout(new GridLayout(0, 3, 25, 25));
+        productLinesPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+        productLinesPanel.setBackground(new Color(245, 220, 230));
 
         for (ProductLine line : lines) {
             ImageIcon gif = switch (line.getStatus()) {
@@ -103,13 +121,12 @@ public class ManagerView extends JFrame {
             };
 
             ProductionLinePanel p = new ProductionLinePanel(line, gif);
-            panel.add(p);
+            productLinesPanel.add(p);
             linePanels.put(line.getId(), p);
         }
 
-        productLines.add(panel, BorderLayout.CENTER);
-        productLines.revalidate();
-        productLines.repaint();
+        productLinesPanel.revalidate();
+        productLinesPanel.repaint();
     }
 
     public void refreshLine(ProductLine line) {
@@ -118,19 +135,50 @@ public class ManagerView extends JFrame {
         }
     }
 
-    // ============= INNER PANEL CLASS =============
+    private void addProductLine() {
+        JTextField nameField = new JTextField();
+        String[] statuses = {"ACTIVE", "STOPPED", "MAINTENANCE"};
+        JComboBox<String> statusBox = new JComboBox<>(statuses);
+        statusBox.setSelectedIndex(0);
+
+        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
+        panel.add(new JLabel("Name:"));
+        panel.add(nameField);
+        panel.add(new JLabel("Status:"));
+        panel.add(statusBox);
+
+        int result = JOptionPane.showConfirmDialog(
+                this, panel, "Add ProductLine", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            String name = nameField.getText().trim();
+            if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Name cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            LineStatus status = LineStatus.valueOf((String) statusBox.getSelectedItem());
+            ProductLine newLine = new ProductLine(name, status);
+
+            productLineService.add(newLine);
+            displayLines(productLineService.getAll());
+        }
+    }
+
     private class ProductionLinePanel extends JPanel {
 
         private final ProductLine line;
         private final JLabel statusLabel = new JLabel();
         private final JProgressBar bar = new JProgressBar(0, 100);
+        JLabel gifLabel;
 
         public ProductionLinePanel(ProductLine line, ImageIcon gif) {
             this.line = line;
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setOpaque(false);
 
-            JLabel gifLabel = new JLabel(gif);
+            gifLabel = new JLabel(gif);
             gifLabel.setAlignmentX(CENTER_ALIGNMENT);
             gifLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             gifLabel.addMouseListener(new MouseAdapter() {
@@ -167,16 +215,20 @@ public class ManagerView extends JFrame {
                 bar.setValue(0);
             }
 
-            switch (line.getStatus()) {
-                case ACTIVE -> setStatus("RUNNING", new Color(0, 150, 0));
-                case STOPPED -> setStatus("PAUSED", new Color(180, 140, 0));
-                case MAINTENANCE -> setStatus("BROKEN", Color.RED);
+            LineStatus status = line.getStatus();
+            if (status == null) status = LineStatus.STOPPED;
+
+            switch (status) {
+                case ACTIVE -> setStatus("RUNNING", new Color(0, 150, 0), WORKING);
+                case STOPPED -> setStatus("PAUSED", new Color(180, 140, 0), IDLE);
+                case MAINTENANCE -> setStatus("BROKEN", Color.RED, BROKEN);
             }
         }
 
-        private void setStatus(String text, Color color) {
+        private void setStatus(String text, Color color, ImageIcon image) {
             statusLabel.setText(text);
             statusLabel.setForeground(color);
+            gifLabel.setIcon(image);
         }
     }
 }

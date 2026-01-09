@@ -1,29 +1,19 @@
 package Util.raven.floating;
 
-import java.awt.AWTEvent;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
+import javax.swing.*;
 import javax.swing.JLayer;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.LayerUI;
-import raven.shadow.ShadowRenderer;
+import Util.raven.shadow.ShadowRenderer;
 
 /**
- *
- * @author RAVEN
+ * FloatingButtonUI with click callback support
  */
-public class FloatingButtonUI extends LayerUI<MainForm> {
+public class FloatingButtonUI extends LayerUI<JPanel> { // CHANGED: use generic JPanel instead of MainForm
 
     private Shape shape;
     private boolean mousePressed;
@@ -31,8 +21,17 @@ public class FloatingButtonUI extends LayerUI<MainForm> {
     private Image image;
     private BufferedImage imageShadow;
 
+    // --- ADDED: click callback ---
+    private Runnable onClick;
+
+    // --- NEW constructor to accept callback ---
+    public FloatingButtonUI(Runnable onClick) {
+        this(); // call no-arg constructor
+        this.onClick = onClick;
+    }
+
     public FloatingButtonUI() {
-        image = new ImageIcon(getClass().getResource("/raven/floating/plus.png")).getImage();
+        image = new ImageIcon(getClass().getResource("/Util/raven/floating/plus.png")).getImage();
     }
 
     @Override
@@ -56,7 +55,7 @@ public class FloatingButtonUI extends LayerUI<MainForm> {
         super.paint(grphcs, jc);
         Graphics2D g2 = (Graphics2D) grphcs.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        int size = 40;
+        int size = 60;
         int x = jc.getWidth() - size - 15;
         int y = jc.getHeight() - size - 15;
         shape = new Ellipse2D.Double(x, y, size, size);
@@ -80,7 +79,7 @@ public class FloatingButtonUI extends LayerUI<MainForm> {
     }
 
     @Override
-    protected void processMouseEvent(MouseEvent me, JLayer<? extends MainForm> jlayer) {
+    protected void processMouseEvent(MouseEvent me, JLayer<? extends JPanel> jlayer) {
         if (mouseHovered) {
             me.consume();
         }
@@ -94,15 +93,17 @@ public class FloatingButtonUI extends LayerUI<MainForm> {
                 mousePressed = false;
                 jlayer.repaint(shape.getBounds());
                 if (mouseHovered) {
-                    MainForm main = jlayer.getView();
-                    main.actionButton();
+                    // --- CHANGED: call callback if set ---
+                    if (onClick != null) {
+                        onClick.run();
+                    }
                 }
             }
         }
     }
 
     @Override
-    protected void processMouseMotionEvent(MouseEvent me, JLayer<? extends MainForm> jlayer) {
+    protected void processMouseMotionEvent(MouseEvent me, JLayer<? extends JPanel> jlayer) {
         Point point = SwingUtilities.convertPoint(me.getComponent(), me.getPoint(), jlayer.getView());
         boolean hover = shape.contains(point);
         if (mouseHovered != hover) {
@@ -136,4 +137,5 @@ public class FloatingButtonUI extends LayerUI<MainForm> {
         g2.dispose();
         return img;
     }
+
 }

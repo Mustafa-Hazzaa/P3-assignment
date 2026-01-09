@@ -85,8 +85,7 @@ public class ProductLineService {
         }
 
         if (activeLines.isEmpty()) {
-            logger.log("NO PRODUCT LINES EXIST");
-            return;
+            logger.log("NO PRODUCT LINES EXIST tasks are lost");
         }
 
         int index = 0;

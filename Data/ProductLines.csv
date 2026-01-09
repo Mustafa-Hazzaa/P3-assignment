@@ -1,5 +1,6 @@
 id,name,status
-5,da,MAINTENANCE
-6,sadfnlasjk,MAINTENANCE
-7,dsgs,MAINTENANCE
-8,heelo,MAINTENANCE
+5,da,STOPPED
+6,sadfnlasjk,ACTIVE
+7,dsgs,STOPPED
+8,heelo,ACTIVE
+9,dd,MAINTENANCE

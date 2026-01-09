@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class ManagerView extends JFrame {
-
     private static final ImageIcon IDLE = new ImageIcon(ManagerView.class.getResource("/Images/IdleFactory.gif"));
     private static final ImageIcon WORKING = new ImageIcon(ManagerView.class.getResource("/Images/factory.gif"));
     private static final ImageIcon BROKEN = new ImageIcon(ManagerView.class.getResource("/Images/brokenFactory.gif"));
@@ -227,6 +226,7 @@ public class ManagerView extends JFrame {
 
         private void setStatus(String text, Color color, ImageIcon image) {
             statusLabel.setText(text);
+            statusLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
             statusLabel.setForeground(color);
             gifLabel.setIcon(image);
         }

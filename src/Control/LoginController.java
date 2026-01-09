@@ -1,9 +1,10 @@
 package Control;
 
-import Service.UserService;
+import Service.*;
 import View.LoginView;
 
 import View.HRView;
+import View.ManagerView;
 
 import javax.swing.*;
 
@@ -11,10 +12,17 @@ public class LoginController {
 
     private UserService model;
     private LoginView view;
+    private final ProductLineService productLineService;
+    private final TaskService taskService;
+    private final ReviewNotesService reviewNotesService;
 
-    public LoginController(UserService model, LoginView view) {
+
+    public LoginController(UserService model, LoginView view, ProductLineService productLineService, TaskService taskService, ReviewNotesService reviewNotesService) {
         this.model = model;
         this.view = view;
+        this.productLineService = productLineService;
+        this.taskService = taskService;
+        this.reviewNotesService = reviewNotesService;
         initController();
     }
 
@@ -34,7 +42,12 @@ public class LoginController {
                     view.setVisible(false);
                     new HRController(model, new HRView());
                 }
-                case MANAGER -> System.out.println("He is a Manager ");
+                case MANAGER -> {
+                    ManagerView view = new ManagerView(productLineService);
+                    view.setVisible(true);
+
+                    ManagerController controller = new ManagerController(view, productLineService,reviewNotesService,taskService);
+                }
                 case SUPERVISOR-> System.out.println("He is a Supervisor ");
             }
             view.setVisible(false);

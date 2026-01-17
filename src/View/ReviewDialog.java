@@ -118,13 +118,13 @@ public class ReviewDialog extends JDialog {
         notesArea.setLineWrap(true);
         notesArea.setWrapStyleWord(true);
         notesArea.setText(notes == null ? "" : notes.getNotes());
-
+        notesArea.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "none");
         JScrollPane scroll = new JScrollPane(notesArea);
         scroll.setBorder(BorderFactory.createTitledBorder("Notes"));
 
         // ===== Save Button =====
         JButton delete = new JButton("Delete Line");
-        delete.setBackground(new Color(210, 50, 45)); // A nice red color
+        delete.setBackground(new Color(210, 50, 45));
         delete.setForeground(Color.WHITE);
         delete.setFocusPainted(false);
         delete.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -153,13 +153,33 @@ public class ReviewDialog extends JDialog {
 
 
         save.addActionListener(e -> {
-            selectedStatus = active.isSelected() ? LineStatus.ACTIVE : stopped.isSelected() ? LineStatus.STOPPED : LineStatus.MAINTENANCE;
-            selectedRating = ratingRef[0];
-            selectedNotes = notesArea.getText();
+            String text = notesArea.getText().trim();
 
-            this.dialogResult = DialogResult.SAVED;
+            if (text.contains(",") || text.contains("\"") || text.contains("'")) {
+                text = text.replace(",", "").replace("\"", "").replace("'","");
+                notesArea.setText(text);
+
+                // Show warning
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Notes cannot contain comma (,) or quotes (\"). They have been removed. Please confirm again.",
+                        "Invalid Input",
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                return;
+            }
+
+            selectedNotes = text;
+            selectedStatus = active.isSelected() ? LineStatus.ACTIVE :
+                    stopped.isSelected() ? LineStatus.STOPPED :
+                            LineStatus.MAINTENANCE;
+            selectedRating = ratingRef[0];
+
+            dialogResult = DialogResult.SAVED;
             dispose();
         });
+
 
 
         panel.add(statusLabel);
@@ -185,4 +205,5 @@ public class ReviewDialog extends JDialog {
     public LineStatus getStatus() { return selectedStatus; }
     public int getRating() { return selectedRating; }
     public String getNotes() { return selectedNotes; }
-}
+
+    }

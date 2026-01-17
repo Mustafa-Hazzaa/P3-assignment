@@ -19,9 +19,23 @@ public class SimulatedClock {
     private final String TIME_FILE = "Data/simulated_time.txt";
     private final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public SimulatedClock() {
+
+    private static SimulatedClock instance;
+
+    private SimulatedClock() {
         this.simulatedStart = loadLastSimulatedTime();
         this.realStart = LocalDateTime.now();
+    }
+
+    public static SimulatedClock getInstance() {
+        if (instance == null) {
+            synchronized (SimulatedClock.class) {
+                if (instance == null) {
+                    instance = new SimulatedClock();
+                }
+            }
+        }
+        return instance;
     }
 
     public LocalDateTime now() {

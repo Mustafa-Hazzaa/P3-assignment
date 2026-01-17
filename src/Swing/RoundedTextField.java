@@ -3,7 +3,7 @@ package Swing;
 import javax.swing.*;
 import java.awt.*;
 
-public class RoundedTextField extends JTextField {
+public class RoundedTextField extends SafeTextField {
     public RoundedTextField(int cols) {
         super(cols);
         setOpaque(false);

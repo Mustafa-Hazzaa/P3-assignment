@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-import static View.underline.underline;
+import static Swing.underline.underline;
 
 public class HrRightPanel extends BackgroundPanel {
 

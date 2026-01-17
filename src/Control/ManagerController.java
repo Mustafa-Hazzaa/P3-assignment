@@ -18,15 +18,17 @@ public class ManagerController {
     private final ProductLineService productService;
     private final ReviewNotesService notesService;
     private final TaskService taskService;
+    private final AppRouter router;
 
     public ManagerController(ManagerView view,
                              ProductLineService productService,
-                             ReviewNotesService notesService, TaskService taskService) {
+                             ReviewNotesService notesService, TaskService taskService, AppRouter router) {
 
         this.view = view;
         this.productService = productService;
         this.notesService = notesService;
         this.taskService = taskService;
+        this.router = router;
 
         view.displayLines(productService.getAll());
         view.setOnLineClicked(this::handleLineClicked);

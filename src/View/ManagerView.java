@@ -2,6 +2,7 @@ package View;
 
 import Model.ProductLine;
 import Service.ProductLineService;
+import Swing.SafeTextField;
 import Util.LineStatus;
 import Util.raven.floating.FloatingButtonUI;
 
@@ -62,16 +63,14 @@ public class ManagerView extends JFrame {
                     } else {
                         cardLayout.show(cardPanel, REPORTS_CARD);
                     }
-                },
-                () -> System.exit(0)
+                }
         );
         add(sideNav, BorderLayout.WEST);
 
-        // CARD PANEL SETUP
+
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        // PRODUCT LINES PANEL (GRID INSIDE SCROLL)
         productLinesPanel = new JPanel();
         productLinesPanel.setBackground(new Color(245, 220, 230));
 
@@ -87,14 +86,13 @@ public class ManagerView extends JFrame {
         JLayer<JPanel> layer = new JLayer<>(linesContainerPanel, new FloatingButtonUI(this::addProductLine));
         cardPanel.add(layer, PRODUCT_LINES_CARD);
 
-        // REPORTS PANEL
         JPanel reportsPanel = new JPanel(new BorderLayout());
         JLabel placeholder = new JLabel("Reports panel (empty)", SwingConstants.CENTER);
         placeholder.setFont(new Font("SansSerif", Font.BOLD, 20));
         reportsPanel.add(placeholder, BorderLayout.CENTER);
         cardPanel.add(reportsPanel, REPORTS_CARD);
 
-        // FINALIZE
+
         add(cardPanel, BorderLayout.CENTER);
         cardLayout.show(cardPanel, PRODUCT_LINES_CARD);
     }
@@ -103,7 +101,6 @@ public class ManagerView extends JFrame {
         this.onLineClicked = callback;
     }
 
-    // FIXED DISPLAY FUNCTION
     public void displayLines(Collection<ProductLine> lines) {
         productLinesPanel.removeAll();
         linePanels.clear();
@@ -135,7 +132,7 @@ public class ManagerView extends JFrame {
     }
 
     private void addProductLine() {
-        JTextField nameField = new JTextField();
+        SafeTextField nameField = new SafeTextField();
         String[] statuses = {"ACTIVE", "STOPPED", "MAINTENANCE"};
         JComboBox<String> statusBox = new JComboBox<>(statuses);
         statusBox.setSelectedIndex(0);
@@ -146,22 +143,32 @@ public class ManagerView extends JFrame {
         panel.add(new JLabel("Status:"));
         panel.add(statusBox);
 
-        int result = JOptionPane.showConfirmDialog(
-                this, panel, "Add ProductLine", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
-        );
+        while (true) {
+            int result = JOptionPane.showConfirmDialog(
+                    this, panel, "Add ProductLine", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+            );
 
-        if (result == JOptionPane.OK_OPTION) {
+            if (result != JOptionPane.OK_OPTION) {
+                return;
+            }
+
             String name = nameField.getText().trim();
+
+
             if (name.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Name cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+                continue;
+            }
+
+            if (name.contains(",") || name.contains("\"") || name.contains("'")) {
+                continue;
             }
 
             LineStatus status = LineStatus.valueOf((String) statusBox.getSelectedItem());
             ProductLine newLine = new ProductLine(name, status);
-
             productLineService.add(newLine);
             displayLines(productLineService.getAll());
+            break;
         }
     }
 
@@ -190,9 +197,10 @@ public class ManagerView extends JFrame {
             JLabel title = new JLabel(line.getName());
             title.setFont(new Font("SansSerif", Font.BOLD, 15));
             title.setAlignmentX(CENTER_ALIGNMENT);
-
+            bar.setPreferredSize(new Dimension(425, 25));
+            bar.setMaximumSize(new Dimension(425, 25));
+            bar.setMinimumSize(new Dimension(425, 25));
             bar.setStringPainted(true);
-            bar.setMaximumSize(new Dimension(1000, 30));
             statusLabel.setAlignmentX(CENTER_ALIGNMENT);
 
             add(gifLabel);

@@ -1,4 +1,5 @@
 //import Control.ManagerController;
+import Control.AppRouter;
 import Control.LoginController;
 import Control.ManagerController;
 import Service.*;
@@ -22,7 +23,7 @@ public class FactoryApplication {
         SwingUtilities.invokeLater(() -> {
 
             System.out.println("Application starting... Initializing all services.");
-            SimulatedClock clock = new SimulatedClock();
+            SimulatedClock clock = SimulatedClock.getInstance();
 
 
             UserService userService = new UserService();
@@ -48,12 +49,14 @@ public class FactoryApplication {
                     inventoryService,
                     reviewNotesService,
                     taskService,
-                    productLineService
+                    productLineService,
+                    clock
             );
             System.out.println("Shutdown manager is ready.");
 
-            LoginView view = new LoginView();
-            LoginController controller = new LoginController(userService, view,productLineService,taskService,reviewNotesService);
+            AppRouter router = new AppRouter(userService, productLineService, taskService, reviewNotesService);
+
+            router.showLoginView();
 
 
 

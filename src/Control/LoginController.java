@@ -15,14 +15,15 @@ public class LoginController {
     private final ProductLineService productLineService;
     private final TaskService taskService;
     private final ReviewNotesService reviewNotesService;
+    private final AppRouter router;
 
-
-    public LoginController(UserService model, LoginView view, ProductLineService productLineService, TaskService taskService, ReviewNotesService reviewNotesService) {
+    public LoginController(UserService model, LoginView view, ProductLineService productLineService, TaskService taskService, ReviewNotesService reviewNotesService, AppRouter router) {
         this.model = model;
         this.view = view;
         this.productLineService = productLineService;
         this.taskService = taskService;
         this.reviewNotesService = reviewNotesService;
+        this.router = router;
         initController();
     }
 
@@ -38,16 +39,8 @@ public class LoginController {
         String status = model.validateLoginRequest(username, password);
         if (status.equals("SUCCESS")) {
             switch (model.getRole(username)) {
-                case HR -> {
-                    view.setVisible(false);
-                    new HRController(model, new HRView());
-                }
-                case MANAGER -> {
-                    ManagerView view = new ManagerView(productLineService);
-                    view.setVisible(true);
-
-                    ManagerController controller = new ManagerController(view, productLineService,reviewNotesService,taskService);
-                }
+                case HR -> router.showHRView();
+                case MANAGER -> router.showManagerView();
                 case SUPERVISOR-> System.out.println("He is a Supervisor ");
             }
             view.setVisible(false);

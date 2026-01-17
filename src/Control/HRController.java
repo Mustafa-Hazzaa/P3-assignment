@@ -10,16 +10,18 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import static View.underline.underline;
+import static Swing.underline.underline;
 
 public class HRController {
 
     private final UserService model;
     private final HRView view;
+    private final AppRouter router;
 
-    public HRController(UserService model, HRView view) {
+    public HRController(UserService model, HRView view, AppRouter router) {
         this.model = model;
         this.view = view;
+        this.router = router;
         initController();
     }
 

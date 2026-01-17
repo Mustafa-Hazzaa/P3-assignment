@@ -7,7 +7,7 @@ import java.util.List;
 public class HRView extends JFrame {
 
     List<String> menuItems;
-    SideNavPanel sideNav;
+    public SideNavPanel sideNav;
     public HrRightPanel rightPanel;
 
     public HRView() {
@@ -41,9 +41,6 @@ public class HRView extends JFrame {
                         case "Add User" -> ((HrRightPanel) rightPanel).showCard("ADD");
                         case "Remove User" -> ((HrRightPanel) rightPanel).showCard("REMOVE");
                     }
-                },
-                () -> {
-                    this.dispose();
                 }
         );
         add(sideNav, BorderLayout.WEST);

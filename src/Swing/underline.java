@@ -1,4 +1,4 @@
-package View;
+package Swing;
 
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;

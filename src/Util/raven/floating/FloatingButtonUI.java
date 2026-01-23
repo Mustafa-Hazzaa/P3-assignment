@@ -51,9 +51,9 @@ public class FloatingButtonUI extends LayerUI<JPanel> { // CHANGED: use generic 
     }
 
     @Override
-    public void paint(Graphics grphcs, JComponent jc) {
-        super.paint(grphcs, jc);
-        Graphics2D g2 = (Graphics2D) grphcs.create();
+    public void paint(Graphics graphics, JComponent jc) {
+        super.paint(graphics, jc);
+        Graphics2D g2 = (Graphics2D) graphics.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int size = 60;
         int x = jc.getWidth() - size - 15;

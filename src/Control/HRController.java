@@ -38,7 +38,7 @@ public class HRController {
         view.rightPanel.emailField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                boolean valid = model.isValidEmail(view.rightPanel.emailField.getText());
+                boolean valid = UserService.isValidEmail(view.rightPanel.emailField.getText());
                 Color color = valid ? Color.GREEN : Color.RED;
                 view.rightPanel.emailField.setBorder(underline(color));
             }
@@ -47,7 +47,7 @@ public class HRController {
         view.rightPanel.passwordField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                int strength = model.passwordCheck(new String(view.rightPanel.passwordField.getPassword()));
+                int strength = UserService.passwordCheck(new String(view.rightPanel.passwordField.getPassword()));
                 Color color = (strength <= 1) ? Color.RED : (strength == 2) ? Color.YELLOW : Color.GREEN;
                 view.rightPanel.passwordField.setBorder(underline(color));
             }
@@ -117,6 +117,8 @@ public class HRController {
         view.rightPanel.nameField.setText("");
         view.rightPanel.emailField.setText("");
         view.rightPanel.passwordField.setText("");
+        view.rightPanel.emailField.setBorder(underline(new Color(70, 73, 75)));
+        view.rightPanel.passwordField.setBorder(underline(new Color(70, 73, 75)));
         view.rightPanel.roleComboBox.setSelectedIndex(0);
     }
 

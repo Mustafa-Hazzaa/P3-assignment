@@ -19,10 +19,6 @@ public class Product extends Stockable {
     }
 
 
-    public int getId() {
-        return id;
-    }
-
     public Map<String,Integer> getRequiredItems() {
         return requiredItems;
     }

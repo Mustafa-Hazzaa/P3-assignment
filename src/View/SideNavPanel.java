@@ -118,7 +118,7 @@ public class SideNavPanel extends JPanel {
         timeLabel.setText(clock.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         Timer t = new Timer(1000, e -> {
             dateLabel.setText(clock.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            timeLabel.setText(clock.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            timeLabel.setText(clock.now().format(DateTimeFormatter.ofPattern("HH:mm")));
         });
         t.start();
 

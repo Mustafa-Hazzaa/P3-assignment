@@ -1,12 +1,8 @@
-//import Control.ManagerController;
+
 import Control.AppRouter;
-import Control.LoginController;
-import Control.ManagerController;
 import Service.*;
 import Util.SimulatedClock;
 import Util.ShutdownManager;
-import View.LoginView;
-import View.ManagerView;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;

@@ -30,9 +30,9 @@ public class ProductLineWorker implements Runnable {
 
     @Override
     public void run() {
-        while (productLine.getStatus() != LineStatus.MAINTENANCE && !Thread.currentThread().isInterrupted()) {
-            if(productLine.getStatus() == LineStatus.STOPPED) productLine.setStatus(LineStatus.ACTIVE);
+        while (!Thread.currentThread().isInterrupted()) {
             try {
+                while (productLine.getStatus() != LineStatus.ACTIVE) Thread.sleep(200);
                 Task task = productLine.takeTask();
                 if (!taskService.tryStartTask(task, inventoryService)) {
                     productLine.addTask(task);
@@ -40,6 +40,11 @@ public class ProductLineWorker implements Runnable {
                     continue;
                 }
                 while (!task.isCompleted()) {
+
+                    while (productLine.getStatus() != LineStatus.ACTIVE) {
+                        sleep(200);
+                    }
+
                     taskService.produceOneUnit(task, inventoryService);
                     sleep(1000);
                 }
@@ -54,12 +59,10 @@ public class ProductLineWorker implements Runnable {
 
     public static void startAllWorkers(ProductLineService productLineService, TaskService taskService, InventoryService inventoryService, SimulatedClock clock) {
         for (ProductLine line : productLineService.getAll()) {
-            if (line.getStatus() == LineStatus.ACTIVE) {
                 ProductLineWorker worker = new ProductLineWorker(line, taskService, inventoryService, clock);
                 Thread workerThread = new Thread(worker, "Worker - " + line.getName());
                 workerThread.start();
                 allWorkerThreads.add(workerThread);
-            }
         }
     }
 

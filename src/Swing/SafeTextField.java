@@ -24,7 +24,7 @@ public class SafeTextField extends JTextField {
     }
 
 
-    public String validateInput() {
+    public void validateInput() {
         String text = getText();
         if (text.contains(",") || text.contains("\"") || text.contains("'")) {
             text = text.replace(",", "").replace("\"", "").replace("'", "");
@@ -37,7 +37,6 @@ public class SafeTextField extends JTextField {
                     JOptionPane.WARNING_MESSAGE
             );
         }
-        return text;
     }
 }
 

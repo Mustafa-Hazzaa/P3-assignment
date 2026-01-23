@@ -7,12 +7,11 @@ public class IconTextField extends RoundedTextField {
 
     private Icon icon;
     private static final int ICON_SIZE = 20;
-    private static final int LEFT_PADDING = 35; // Total space for the icon + gap
+    private static final int LEFT_PADDING = 35;
 
     public IconTextField(int cols, Icon icon) {
         super(cols);
         this.icon = scale(icon);
-        // Set a transparent cursor/text margin
         setMargin(new Insets(2, LEFT_PADDING, 2, 5));
     }
 
@@ -27,8 +26,6 @@ public class IconTextField extends RoundedTextField {
         }
     }
 
-    // This is the "Magic" fix:
-    // It forces the internal text renderer to stay to the right
     @Override
     public Insets getInsets() {
         Insets insets = super.getInsets();
@@ -38,17 +35,14 @@ public class IconTextField extends RoundedTextField {
 
     @Override
     protected void paintComponent(Graphics g) {
-        // 1. Paint the background and rounded shape (from parent)
         super.paintComponent(g);
 
-        // 2. Paint the icon manually in the padding area
+
         if (icon != null) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            // Icon X position (centered in the LEFT_PADDING area)
             int iconX = (LEFT_PADDING - ICON_SIZE) / 2;
-            // Icon Y position (vertically centered)
             int iconY = (getHeight() - ICON_SIZE) / 2;
 
             icon.paintIcon(this, g2, iconX, iconY);

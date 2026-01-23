@@ -20,7 +20,7 @@ public class SimulatedClock {
     private final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 
-    private static SimulatedClock instance;
+    private static volatile SimulatedClock instance;
 
     private SimulatedClock() {
         this.simulatedStart = loadLastSimulatedTime();

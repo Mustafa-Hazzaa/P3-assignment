@@ -16,6 +16,8 @@ public class Task {
     private int productLineId;
     private int progress;
     private int step;
+    private final int totalQuantity;
+
 
 
     public Task(int id, String productName, int quantity, String client, TaskStatus taskStatus, int productLineId, int progress) {
@@ -23,13 +25,13 @@ public class Task {
         syncNextId(id);
         this.productName = productName;
         this.quantity = quantity;
+        totalQuantity= quantity;
         this.client = client;
         this.productLineId = productLineId;
         this.startTime = null;
         this.endTime = null;
         this.status = taskStatus;
         this.progress = progress;
-        this.step = getStep();
 
     }
 
@@ -37,13 +39,13 @@ public class Task {
         this.id = generateId();
         this.productName = product;
         this.quantity = quantity;
+        totalQuantity= quantity;
         this.client = client;
         this.productLineId = productLineId;
         this.startTime = null;
         this.endTime = null;
         this.status = TaskStatus.PENDING;
         this.progress = 0;
-        this.step = getStep();
 
     }
 
@@ -122,30 +124,23 @@ public class Task {
     }
 
     public boolean isCompleted() {
-        return getQuantity() <= 0;
+        return quantity <= 0;
     }
 
     public int remainingUnits() {
         return quantity;
     }
 
-    public boolean produceOneUnit() {
+    public synchronized boolean produceOneUnit() {
         if (status != TaskStatus.IN_PROGRESS)
             throw new IllegalStateException("Task not in progress");
-        quantity--;
-        this.step = getStep();
-        progress = Math.min(100, progress + step);
+
+        quantity--; // remaining
+        progress = (int) ((1.0 * (totalQuantity - quantity) / totalQuantity) * 100);
+
         return quantity == 0;
     }
 
-    public int getStep() {
-        if (quantity <= 0) {
-            return 0;
-        }
-
-        int remainingProgress = 100 - progress;
-        return Math.max(1, remainingProgress / quantity);
-    }
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;

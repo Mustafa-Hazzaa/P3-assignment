@@ -1,4 +1,4 @@
-package ui.tasks;
+package tasks;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

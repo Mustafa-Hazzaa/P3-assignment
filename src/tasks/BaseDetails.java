@@ -58,7 +58,9 @@ public class BaseDetails extends JFrame{
 
         table.setBackground(new Color(252 , 251 , 249));
         table.setRowHeight(40);
-        table.setSelectionBackground(Color.BLACK);
+        table.setSelectionBackground(new Color(240 , 230 , 210));
+        table.setSelectionForeground(new Color(60 , 60 , 60));
+        table.setFocusable(false);
 
         table.setShowVerticalLines(false);
         table.setGridColor(new Color(230 , 230 , 230));

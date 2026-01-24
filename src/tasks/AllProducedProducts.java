@@ -21,7 +21,7 @@ public class AllProducedProducts extends JFrame {
         JTextField searchField = new JTextField(18);
 
         JComboBox<String> sortBox = new JComboBox<>(new String[] {
-                "Default" , "Quantity asc" , "Quantity desc"
+                "Default" , "Quantity Asc" , "Quantity Desc"
         });
 
         topPanel.add(new JLabel("Search Product"));
@@ -33,35 +33,43 @@ public class AllProducedProducts extends JFrame {
         model = new DefaultTableModel(new String[] {
                 "Product Name" , "Total Quantity"},0);
         table = new JTable(model);
-        table.setRowHeight(30);
+        table.setRowHeight(40);
+        table.setShowVerticalLines(false);
+        table.setIntercellSpacing(new Dimension(0,0));
+
+        table.getTableHeader().setBackground(new Color(188 , 170 , 145));
+        table.getTableHeader().setForeground(Color.WHITE);
+        table.getTableHeader().setFont(new Font("Segoe UI" , Font.BOLD , 14));
 
         sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
 
         JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(230 , 230 , 230)));
+
 
         //dummy data
         model.addRow(new Object[]{"Product A" ,500});
         model.addRow(new Object[]{"Product B" ,320});
         model.addRow(new Object[]{"Product C" ,780});
 
-            searchField.addKeyListener(new java.awt.event.KeyAdapter(){
-                @Override
-                public void keyReleased(java.awt.event.KeyEvent e){
-                    String search = searchField.getText().toLowerCase();
-                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + search ,0));
-                }
-            });
-            sortBox.addActionListener(e -> {
-                String selected = sortBox.getSelectedItem().toString();
-                if (selected.equals("Default")){
-                    sorter.setSortKeys(null);
-                } else if (selected.equals("Quantity Asc")) {
-                    sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(1,SortOrder.ASCENDING)));
-                } else if (selected.equals("Quantity Desc")) {
-                    sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(1,SortOrder.DESCENDING)));
-                }
-            });
+        searchField.addKeyListener(new java.awt.event.KeyAdapter(){
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent e){
+                String search = searchField.getText().toLowerCase();
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + search ,0));
+            }
+        });
+        sortBox.addActionListener(e -> {
+            String selected = sortBox.getSelectedItem().toString();
+            if (selected.equals("Default")){
+                sorter.setSortKeys(null);
+            } else if (selected.equals("Quantity Asc")) {
+                sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(1,SortOrder.ASCENDING)));
+            } else if (selected.equals("Quantity Desc")) {
+                sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(1,SortOrder.DESCENDING)));
+            }
+        });
         add(topPanel , BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }

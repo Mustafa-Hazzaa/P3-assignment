@@ -1,6 +1,7 @@
 package tasks;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -41,12 +42,21 @@ public class ProductionLinesByProduct extends JFrame {
                 "Production Line" , "Line Status" , "Tasks Count"
         },0);
         table = new JTable(model);
-        table.setRowHeight(30);
+        table.setRowHeight(40);
+        table.getTableHeader().setBackground(new Color(188 , 170 , 145));
+        table.getTableHeader().setForeground(Color.WHITE);
+        table.getTableHeader().setFont(new Font("Segoe UI" , Font.BOLD , 14));
+        table.setShowVerticalLines(false);
+        table.setGridColor(new Color(240 , 240 , 240));
 
         sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
 
+        table.getColumnModel().getColumn(1).setCellRenderer(new StatusRenderer());
+
         JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(Color.WHITE);
 
         // dummy data
         model.addRow(new Object[]{"Line A" , "Active" ,3});
@@ -72,5 +82,28 @@ public class ProductionLinesByProduct extends JFrame {
 
         add(topPanel , BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
+    }
+    class StatusRenderer extends DefaultTableCellRenderer{
+        @Override
+        public Component getTableCellRendererComponent(JTable table , Object value , boolean isSelected , boolean hasFocus , int row , int column){
+            JLabel label = (JLabel) super.getTableCellRendererComponent(table , value , isSelected , hasFocus , row , column);
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setOpaque(true);
+            label.setFont(new Font("Segoe Ui" , Font.BOLD , 12));
+
+            if (value!= null){
+                String status = value.toString().toUpperCase();
+                if (status.equals("ACTIVE")){
+                    label.setBackground(new Color(200 , 230 , 201));
+                    label.setForeground(new Color(46,125,50));
+                } else if (status.equals("STOPPED")) {
+                    label.setBackground(new Color(255 , 205 , 210));
+                }else {
+                    label.setBackground(Color.WHITE);
+                    label.setForeground(Color.BLACK);
+                }
+            }
+            return label;
+        }
     }
 }

@@ -5,8 +5,9 @@ import Util.SimulatedClock;
 import View.HRView;
 import View.LoginView;
 import View.ManagerView;
-import raven.toast.Notifications;
-import com.formdev.flatlaf.FlatLightLaf;
+//import raven.toast.Notifications;
+
+
 
 public class AppRouter {
 
@@ -63,7 +64,7 @@ public class AppRouter {
         if (managerView == null) managerView = new ManagerView(productLineService);
         new ManagerController(managerView, productLineService, reviewNotesService, taskService,this);
         taskService.setOnMaterialShortage(message -> {
-            Notifications.getInstance().show(Notifications.Type.WARNING,Notifications.Location.BOTTOM_LEFT, message);
+            //Notifications.getInstance().show(Notifications.Type.WARNING,Notifications.Location.BOTTOM_LEFT, message);
         });
         managerView.setOnLineAdded(line -> {
             ProductLineWorker.addWorker(line, taskService, inventoryService, clock);

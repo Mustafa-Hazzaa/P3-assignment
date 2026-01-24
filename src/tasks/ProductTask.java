@@ -34,8 +34,6 @@ public class ProductTask extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        TaskControlPanel controlPanel = new TaskControlPanel(table , model , sorter);
-
         productSelector.addActionListener(e -> {
             String selectedProduct = productSelector.getSelectedItem().toString();
             if (selectedProduct.equals("All")){
@@ -46,6 +44,5 @@ public class ProductTask extends JFrame {
         });
         add(topPanel , BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
-        add(controlPanel,BorderLayout.SOUTH);
     }
 }

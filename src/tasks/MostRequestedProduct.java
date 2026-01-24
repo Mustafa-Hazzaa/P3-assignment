@@ -28,6 +28,9 @@ public class MostRequestedProduct extends JFrame {
         topPanel.add(analyzeBtn);
 
         JPanel resultPanel = new JPanel() ;
+        resultPanel.setBackground(Color.WHITE);
+        resultLable.setForeground(new Color(33 , 150 , 243));
+        resultPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(200,200,200) , 1 , true) , BorderFactory.createEmptyBorder(20,20,20,20)));
         resultPanel.setLayout(new BorderLayout());
 
         resultPanel.setBorder(BorderFactory.createTitledBorder("Result"));

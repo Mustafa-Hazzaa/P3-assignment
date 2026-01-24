@@ -53,8 +53,8 @@ public class ProductsByProductionLine extends JFrame {
                 public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
                     return entry.getStringValue(0).toLowerCase().contains(search);
                 }
-    });
-};
+            });
+        };
         searchField.addKeyListener(new java.awt.event.KeyAdapter(){
             @Override
             public void keyReleased(java.awt.event.KeyEvent e){
@@ -65,4 +65,3 @@ public class ProductsByProductionLine extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
     }
 }
-

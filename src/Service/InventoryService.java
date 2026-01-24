@@ -18,7 +18,7 @@ public class InventoryService {
     private final ProductRepository productRepository;
     private final Map<String, Item> itemsByName;
     private final Map<String, Product> productsByName;
-     final Map<String, Integer> reservedItems;
+    public final Map<String, Integer> reservedItems;
 
     private final ErrorLogger logger = new ErrorLogger();
 
@@ -26,9 +26,11 @@ public class InventoryService {
         this.itemRepository = new ItemRepository();
         this.itemsByName = new HashMap<>();
         loadItemsFromFile();
+
         this.productRepository = new ProductRepository(itemsByName);
         this.productsByName = new HashMap<>();
         loadProductsFromFile();
+
         this.reservedItems = new HashMap<>();
 
     }
@@ -44,6 +46,7 @@ public class InventoryService {
             itemsByName.put(item.getName().toLowerCase(), item);
         }
     }
+
     private void loadProductsFromFile() {
         List<Product> productList = productRepository.loadAll();
         for (Product product : productList) {
@@ -94,6 +97,10 @@ public class InventoryService {
         return new ArrayList<>(productsByName.values());
     }
 
+    public List<Item> getAllItems() {
+        return new ArrayList<>(itemsByName.values());
+    }
+
     public void addProduct(String name, int quantity, Map<String, Integer> requiredItems) {
         String lowerCaseName = name.toLowerCase();
         if (productsByName.containsKey(lowerCaseName)) {
@@ -109,7 +116,6 @@ public class InventoryService {
     public void removeProduct(String name) {
         Product removedProduct = productsByName.remove(name.toLowerCase());
         }
-
 
     public synchronized  boolean checkStock(Task task) {
         Map<String, Integer> requirements = getProductByName(task.getProductName()).getRequiredItems();
@@ -145,8 +151,6 @@ public class InventoryService {
         return false;
     }
 
-
-
     public void updateProductQuantity(String name, int quantity) {
         Product product = getProductByName(name);
         if(product != null) {
@@ -161,7 +165,7 @@ public class InventoryService {
         }
     }
 
-    public synchronized  void consumeReserved(String itemName, int amount) {
+    public synchronized void consumeReserved(String itemName, int amount) {
         reservedItems.put(itemName, reservedItems.get(itemName) - amount);
         getItemByName(itemName).setQuantity(getItemByName(itemName).getQuantity() - amount);
     }

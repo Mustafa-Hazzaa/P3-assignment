@@ -2,12 +2,9 @@ package Control;
 
 import Service.*;
 import Util.SimulatedClock;
-import View.HRView;
-import View.LoginView;
-import View.ManagerView;
-//import raven.toast.Notifications;
-
-
+import View.*;
+import raven.toast.Notifications;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class AppRouter {
 
@@ -23,6 +20,7 @@ public class AppRouter {
     private LoginView loginView;
     private HRView hrView;
     private ManagerView managerView;
+    private SupervisorView supervisorView;
 
     public AppRouter(InventoryService inventoryService, UserService userService, ProductLineService productLineService, TaskService taskService, ReviewNotesService reviewNotesService) {
         this.inventoryService = inventoryService;
@@ -57,14 +55,14 @@ public class AppRouter {
 
         if (loginView != null) loginView.setVisible(false);
 
-        new HRController(userService, hrView,this);
+        new HRController(userService, hrView, this);
     }
 
     public void showManagerView() {
         if (managerView == null) managerView = new ManagerView(productLineService);
-        new ManagerController(managerView, productLineService, reviewNotesService, taskService,this);
+        new ManagerController(managerView, productLineService, reviewNotesService, taskService, this);
         taskService.setOnMaterialShortage(message -> {
-            //Notifications.getInstance().show(Notifications.Type.WARNING,Notifications.Location.BOTTOM_LEFT, message);
+            Notifications.getInstance().show(Notifications.Type.WARNING, Notifications.Location.BOTTOM_LEFT, message);
         });
         managerView.setOnLineAdded(line -> {
             ProductLineWorker.addWorker(line, taskService, inventoryService, clock);
@@ -73,6 +71,20 @@ public class AppRouter {
 
         managerView.setVisible(true);
         if (loginView != null) loginView.setVisible(false);
+        if (hrView != null) hrView.setVisible(false);
+        if (managerView != null) managerView.setVisible(false);
+    }
+
+    public void showSupervisor() {
+        if (supervisorView == null) supervisorView =new SupervisorView();
+
+        new SupervisorController(inventoryService,supervisorView.rightPanel);
+        supervisorView.setVisible(true);
+
+
+        if (loginView != null) loginView.setVisible(false);
+        if (hrView != null) hrView.setVisible(false);
+        if (managerView != null) managerView.setVisible(false);
     }
 
     public static AppRouter getInstance() {

@@ -41,7 +41,7 @@ public class LoginController {
             switch (model.getRole(username)) {
                 case HR -> router.showHRView();
                 case MANAGER -> router.showManagerView();
-                case SUPERVISOR-> System.out.println("He is a Supervisor ");
+                case SUPERVISOR-> router.showSupervisor();
             }
             view.setVisible(false);
         }else {

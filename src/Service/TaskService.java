@@ -47,7 +47,7 @@ public class TaskService {
         return new ArrayList<>(tasksById.values());
     }
 
-    public void setOnMaterialShortage(java.util.function.Consumer<String> callback) {
+    public void setOnMaterialShortage(Consumer<String> callback) {
         this.onMaterialShortage = callback;
     }
 

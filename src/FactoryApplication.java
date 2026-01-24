@@ -55,9 +55,6 @@ public class FactoryApplication {
             AppRouter router = new AppRouter(inventoryService,userService, productLineService, taskService, reviewNotesService);
             router.showLoginView();
 
-
-
-
             System.out.println("Application initialized successfully. Login view is now visible.");
         });
 

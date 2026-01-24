@@ -1,5 +1,8 @@
 package management;
 
+import Control.SupervisorController;
+import Util.InventoryStatus;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -10,15 +13,15 @@ import java.util.Set;
 public class FilterPopUp {
     private final JPopupMenu menu;
     private final TableRowSorter<DefaultTableModel> sorter;
-    private ProductionSupervisorUI parent;
+    private SupervisorController controller;
     private Set<InventoryStatus> selectedStatuses = new HashSet<>();
     private Set<String> selectedCategories = new HashSet<>();
 
 
 
-    public FilterPopUp(TableRowSorter<DefaultTableModel> sorter, ProductionSupervisorUI parent) {
+    public FilterPopUp(TableRowSorter<DefaultTableModel> sorter, SupervisorController controller) {
         this.sorter = sorter;
-        this.parent = parent;
+        this.controller = controller;
         this.menu = new JPopupMenu();
         menu.setBackground(new Color(255, 250, 240));
         menu.setBorder(BorderFactory.createLineBorder(new Color(200, 180, 140), 2));
@@ -54,10 +57,10 @@ public class FilterPopUp {
 
         JMenuItem clearItem = new JMenuItem("Clear filter");
         clearItem.addActionListener(e -> {
-           selectedStatuses.clear();
-           selectedCategories.clear();
+            selectedStatuses.clear();
+            selectedCategories.clear();
             sorter.setRowFilter(null);
-            parent.applyCombinedFilter();
+            controller.applyFilters();
         });
         menu.add(clearItem);
         menu.addSeparator();
@@ -67,7 +70,7 @@ public class FilterPopUp {
             selectedStatuses.add(status);
         else selectedStatuses.remove(status);
 
-        parent.applyCombinedFilter();
+        controller.applyFilters();
     }
 
     private void toggleCategory(JCheckBoxMenuItem item , String cat){
@@ -75,7 +78,7 @@ public class FilterPopUp {
             selectedCategories.add(cat);
         else selectedCategories.remove(cat);
 
-        parent.applyCombinedFilter();
+        controller.applyFilters();
     }
 
     public Set <InventoryStatus> getSelectedStatuses(){

@@ -4,9 +4,9 @@ public class Item extends Stockable {
 
     private static int nextId = 1;
 
-    private final int price;
+    private  int price;
     private final String category;
-    private final int minStockLevel;
+    private  int minStockLevel;
 
 
     public Item(String name, int quantity, int price, String category, int minStockLevel) {
@@ -44,6 +44,14 @@ public class Item extends Stockable {
         if (id >= nextId) {
             nextId = id + 1;
         }
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setMinStockLevel(int minStockLevel) {
+        this.minStockLevel = minStockLevel;
     }
 
     @Override

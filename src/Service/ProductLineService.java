@@ -25,7 +25,6 @@ public class ProductLineService {
         loadProductLines(); // Load data when the service is created
     }
 
-
     private void loadProductLines() {
         List<ProductLine> productLines = repository.loadAll();
         for (ProductLine line : productLines) {
@@ -39,7 +38,7 @@ public class ProductLineService {
             ProductLine line = getById(task.getProductLineId());
             if (line != null) {
                 try {
-                    if (task.getStatus() != Util.TaskStatus.COMPLETED) {
+                    if (task.getStatus() != Util.TaskStatus.COMPLETED ||task.getStatus() != TaskStatus.CANCELLED ) {
                         line.addTask(task);
                     }
                 } catch (InterruptedException e) {
@@ -107,10 +106,6 @@ public class ProductLineService {
 
         productLinesById.remove(lineId);
     }
-
-
-
-
 
     public void changeStatus(ProductLine line, LineStatus status) {
         line.setStatus(status);

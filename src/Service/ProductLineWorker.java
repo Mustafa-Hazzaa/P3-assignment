@@ -33,7 +33,7 @@ public class ProductLineWorker implements Runnable {
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                while (productLine.getStatus() != LineStatus.ACTIVE) sleep(200);
+                while (productLine.getStatus() != LineStatus.ACTIVE) sleep(500);
                 Task task = productLine.takeTask();
                 if (task.getStatus() == TaskStatus.CANCELLED) continue;
                 if (!taskService.tryStartTask(task, inventoryService)) {
@@ -52,8 +52,10 @@ public class ProductLineWorker implements Runnable {
                 }
                 productLine.completeRunningTask();
             } catch (InterruptedException e) {
+                logger.log(e.getMessage());
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
+                logger.log(e.getMessage());
             }
         }
     }

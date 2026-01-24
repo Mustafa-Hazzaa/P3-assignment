@@ -72,14 +72,25 @@ public class ProductionLineTasks extends BaseDetails {
         });
     }
     private void handleAddTask() {
-        JTextField id = new JTextField();
-        JTextField prod = new JTextField();
-        JTextField line = new JTextField();
+        int nextIdNumber = model.getRowCount() + 1 ;
+        String autoId = "T-" + String.format("%02d" , nextIdNumber);
+
+        String[] availableProducts = {"Product A" , "Product B" , "Product C" , "Product D"};
+        JComboBox<String> productCombo = new JComboBox<>(availableProducts);
+
+        String [] availableLines = {"Line A" , "Line B" , "Line C"};
+        JComboBox<String> lineCombo = new JComboBox<>(availableLines);
+
         JTextField qty = new JTextField();
-        Object[] fields = {"ID:", id, "Product:", prod, "Line:", line, "Qty:", qty};
-        int result = JOptionPane.showConfirmDialog(this, fields, "Add Task", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            model.addRow(new Object[]{id.getText(), prod.getText(), line.getText(), qty.getText(), "-", "-", "IN_PROGRESS"});
+        JComboBox<String> status = new JComboBox<>(new String[] {"IN_PROGRESS" , "COMPLETED"});
+
+        Object[] fields = {"Generated ID:" , new JLabel("<html><b>" + autoId + "</b></html>") , "Select product:" , productCombo , "Select Production Line:" , lineCombo , "Quantity:" , qty , "Status:" , status};
+        int result = JOptionPane.showConfirmDialog(this,fields , "Add new task" ,JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION){
+            String quantity =qty.getText().isEmpty() ? "0" : qty.getText();
+
+            model.addRow(new Object[] {autoId , productCombo.getSelectedItem().toString() , lineCombo.getSelectedItem().toString() , quantity , "-","-", status.getSelectedItem().toString()});
         }
     }
 
@@ -125,7 +136,6 @@ public class ProductionLineTasks extends BaseDetails {
             }
         });
     }
-
     private JButton createStyledButton(String text, Color bg) {
         JButton b = new JButton(text);
         b.setBackground(bg);

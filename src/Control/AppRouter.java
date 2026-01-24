@@ -32,59 +32,70 @@ public class AppRouter {
     }
 
     public void showLoginView() {
-        if (loginView == null) {
-            loginView = new LoginView();
-            loginView.setVisible(true);
-            new LoginController(userService, loginView, productLineService, taskService, reviewNotesService, this);
-        }
-        loginView.usernameField.setText("");
-        loginView.passwordField.setText("");
-        loginView.usernameField.requestFocusInWindow();
-
-
-        loginView.setVisible(true);
-
         if (hrView != null) hrView.setVisible(false);
         if (managerView != null) managerView.setVisible(false);
+        if (supervisorView != null) supervisorView.setVisible(false);
+        new Loading(() -> {
+            if (loginView == null) {
+                loginView = new LoginView();
+                new LoginController(userService, loginView, productLineService, taskService, reviewNotesService, this);
+            }
+            loginView.usernameField.setText("");
+            loginView.passwordField.setText("");
+            loginView.usernameField.requestFocusInWindow();
+            loginView.setVisible(true);
+
+            // Hide other views if they are currently visible
+        });
     }
 
 
     public void showHRView() {
-        if (hrView == null) hrView = new HRView();
-        hrView.setVisible(true);
+        new Loading(() -> {
+            if (hrView == null) hrView = new HRView();
+            hrView.setVisible(true);
 
-        if (loginView != null) loginView.setVisible(false);
+            // Hide other views
+            if (loginView != null) loginView.setVisible(false);
+            if (managerView != null) managerView.setVisible(false);
+            if (supervisorView != null) supervisorView.setVisible(false);
 
-        new HRController(userService, hrView, this);
+            new HRController(userService, hrView, this); // Instantiate controller after view is ready
+        });
     }
 
     public void showManagerView() {
-        if (managerView == null) managerView = new ManagerView(productLineService);
-        new ManagerController(managerView, productLineService, reviewNotesService, taskService, this);
-        taskService.setOnMaterialShortage(message -> {
-            Notifications.getInstance().show(Notifications.Type.WARNING, Notifications.Location.BOTTOM_LEFT, message);
-        });
-        managerView.setOnLineAdded(line -> {
-            ProductLineWorker.addWorker(line, taskService, inventoryService, clock);
-        });
-        taskService.checkInitialShortages(productLineService);
+        new Loading(() -> {
+            if (managerView == null) managerView = new ManagerView(productLineService);
+            new ManagerController(managerView, productLineService, reviewNotesService, taskService, this);
+            taskService.setOnMaterialShortage(message -> {
+                Notifications.getInstance().show(Notifications.Type.WARNING, Notifications.Location.BOTTOM_LEFT, message);
+            });
 
-        managerView.setVisible(true);
-        if (loginView != null) loginView.setVisible(false);
-        if (hrView != null) hrView.setVisible(false);
-        if (managerView != null) managerView.setVisible(false);
+            managerView.setOnLineAdded(line -> {
+                ProductLineWorker.addWorker(line, taskService, inventoryService, clock);
+            });
+            taskService.checkInitialShortages(productLineService);
+
+            managerView.setVisible(true);
+
+            if (loginView != null) loginView.setVisible(false);
+            if (hrView != null) hrView.setVisible(false);
+            if (supervisorView != null) supervisorView.setVisible(false);
+        });
     }
 
     public void showSupervisor() {
-        if (supervisorView == null) supervisorView =new SupervisorView();
+        new Loading(() -> {
+            if (supervisorView == null) supervisorView = new SupervisorView();
+            new SupervisorController(inventoryService, supervisorView.rightPanel);
+            supervisorView.setVisible(true);
 
-        new SupervisorController(inventoryService,supervisorView.rightPanel);
-        supervisorView.setVisible(true);
-
-
-        if (loginView != null) loginView.setVisible(false);
-        if (hrView != null) hrView.setVisible(false);
-        if (managerView != null) managerView.setVisible(false);
+            // Hide other views
+            if (loginView != null) loginView.setVisible(false);
+            if (hrView != null) hrView.setVisible(false);
+            if (managerView != null) managerView.setVisible(false);
+        });
     }
 
     public static AppRouter getInstance() {

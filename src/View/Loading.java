@@ -33,7 +33,7 @@ public class Loading extends JFrame {
         JProgressBar progressBar = new JProgressBar(0, 100);
         progressBar.setValue(0);
         progressBar.setPreferredSize(new Dimension(getWidth(), 10));
-        progressBar.setForeground(new Color(55, 100, 145));
+        progressBar.setForeground(new Color(255, 249, 230));
         progressBar.setBorderPainted(false);
         progressBar.setBackground(Color.BLACK);
         background.add(progressBar, BorderLayout.SOUTH);

@@ -1,6 +1,7 @@
 package management;
 
 import Control.SupervisorController;
+import Util.Category;
 import Util.InventoryStatus;
 
 import javax.swing.*;
@@ -30,7 +31,6 @@ public class FilterPopUp {
 
     private void buildMenu() {
         JMenu statusMenu = new JMenu("Status");
-        JMenu categoryMenu = new JMenu("Category");
         JCheckBoxMenuItem av = new JCheckBoxMenuItem("Available");
         JCheckBoxMenuItem low = new JCheckBoxMenuItem("Low");
         JCheckBoxMenuItem out = new JCheckBoxMenuItem("Out of stock");
@@ -43,14 +43,14 @@ public class FilterPopUp {
         statusMenu.add(low);
         statusMenu.add(out);
 
-        JCheckBoxMenuItem rawItem = new JCheckBoxMenuItem("Raw Material");
-        JCheckBoxMenuItem prodItem = new JCheckBoxMenuItem("Product");
+        JMenu categoryMenu = new JMenu("Category");
 
-        rawItem.addActionListener(e -> toggleCategory(rawItem,"Raw Material"));
-        prodItem.addActionListener(e -> toggleCategory(prodItem,"Product"));
-
-        categoryMenu.add(rawItem);
-        categoryMenu.add(prodItem);
+        for (Category category : Category.values()) {
+            String categoryName = category.name();
+            JCheckBoxMenuItem categoryItem = new JCheckBoxMenuItem(categoryName);
+            categoryItem.addActionListener(e -> toggleCategory(categoryItem, categoryName));
+            categoryMenu.add(categoryItem);
+        }
 
         menu.add(statusMenu);
         menu.add(categoryMenu);

@@ -6,16 +6,18 @@ import Util.ShutdownManager;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class FactoryApplication {
 //
     public static void main(String[] args) {
         FlatLightLaf.setup();
+        UIManager.put("Toast.frameInsets", new Insets(10, 270, 35, 100));
+        UIManager.put("Toast.duration", 5000);
         UIManager.put("Button.arc", 12);
         UIManager.put("Component.arc", 12);
         UIManager.put("ProgressBar.arc", 12);
         UIManager.put("TextComponent.arc", 10);
-
         SwingUtilities.invokeLater(() -> {
 
             System.out.println("Application starting... Initializing all services.");
@@ -50,8 +52,7 @@ public class FactoryApplication {
             );
             System.out.println("Shutdown manager is ready.");
 
-            AppRouter router = new AppRouter(userService, productLineService, taskService, reviewNotesService);
-
+            AppRouter router = new AppRouter(inventoryService,userService, productLineService, taskService, reviewNotesService);
             router.showLoginView();
 
 

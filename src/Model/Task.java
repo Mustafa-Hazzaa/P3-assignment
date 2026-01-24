@@ -20,26 +20,25 @@ public class Task {
 
 
 
-    public Task(int id, String productName, int quantity, String client, TaskStatus taskStatus, int productLineId, int progress) {
+    public Task(int id, String productName, int quantity, int totalQuantity, String client, TaskStatus status, int productLineId, int progress) {
         this.id = id;
         syncNextId(id);
         this.productName = productName;
         this.quantity = quantity;
-        totalQuantity= quantity;
+        this.totalQuantity = totalQuantity;
         this.client = client;
+        this.status = status;
         this.productLineId = productLineId;
-        this.startTime = null;
-        this.endTime = null;
-        this.status = taskStatus;
         this.progress = progress;
-
+        startTime=null;
+        endTime=null;
     }
 
-    public Task(String product, int quantity, String client, int productLineId) {
+    public Task(String product, int quantity,int totalQuantity ,String client, int productLineId) {
         this.id = generateId();
         this.productName = product;
         this.quantity = quantity;
-        totalQuantity= quantity;
+        this.totalQuantity = totalQuantity;
         this.client = client;
         this.productLineId = productLineId;
         this.startTime = null;
@@ -156,5 +155,8 @@ public class Task {
 
     public LocalDateTime getEndTime() {
         return endTime;
+    }
+    public int getTotalQuantity() {
+        return totalQuantity;
     }
 }

@@ -1,2 +1,2 @@
-id,productName,Quantity,client,status,productLineId,Progress,startTime,endTime
-1,widget,988,clientx,IN_PROGRESS,3,1,null,null
+id,productName,Quantity,totalQuantity,client,status,productLineId,Progress,startTime,endTime
+1,widget,6701,10000,clientx,WAITING_FOR_MATERIAL,1,32,2026-01-03T03:57:33,null

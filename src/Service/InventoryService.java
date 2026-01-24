@@ -125,10 +125,6 @@ public class InventoryService {
             int available = getItemByName(itemName).getQuantity() - reservedQuantity;
 
             if (available < requiredQuantity) {
-                logger.log(String.format(
-                        "Task %d (%s) - Not enough stock for itemName '%s'. Required: %d, Available: %d",
-                        task.getId(), task.getProductName(), itemName, requiredQuantity, available
-                ));
                 return false;
             }
         }

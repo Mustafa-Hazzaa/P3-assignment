@@ -6,5 +6,5 @@ public enum TaskStatus {
     WAITING_FOR_MATERIAL,
     IN_PROGRESS,
     COMPLETED,
-    CANCELED
+    CANCELLED
 }

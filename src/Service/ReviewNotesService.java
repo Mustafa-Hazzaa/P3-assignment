@@ -8,46 +8,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class ReviewNotesService {
 
     private final ReviewNotesRepository repository;
-    private final Map<String, ReviewNotes> notesByProductLine;
-
+    private final Map<Integer, ReviewNotes> notesByProductLineId;
 
     public ReviewNotesService() {
         this.repository = new ReviewNotesRepository();
-        this.notesByProductLine = new HashMap<>();
+        this.notesByProductLineId = new HashMap<>();
         loadNotesFromFile();
     }
 
     private void loadNotesFromFile() {
         List<ReviewNotes> notesList = repository.loadAll();
         for (ReviewNotes note : notesList) {
-            notesByProductLine.put(note.getProductLineName(), note);
+            notesByProductLineId.put(note.getProductLineId(), note);
         }
-        System.out.println("ReviewNotesService loaded: " + notesByProductLine.size() + " notes.");
     }
 
-    public ReviewNotes getNotesForProductLine(String productLineName) {
-        return notesByProductLine.get(productLineName);
+    public ReviewNotes getNotesForProductLine(int productLineId) {
+        return notesByProductLineId.get(productLineId);
     }
-
-
 
     public void addUpdateNotes(ReviewNotes notes) {
         if (notes != null) {
-            notesByProductLine.put(notes.getProductLineName(), notes);
+            notesByProductLineId.put(notes.getProductLineId(), notes);
         }
     }
 
     public List<ReviewNotes> getAllNotes() {
-        return new ArrayList<>(notesByProductLine.values());
+        return new ArrayList<>(notesByProductLineId.values());
     }
 
     public void saveChanges() {
-        System.out.println("ReviewNotesService: Saving changes...");
-        repository.saveAll(new ArrayList<>(notesByProductLine.values()));
-        System.out.println("...Review notes save complete.");
+        repository.saveAll(new ArrayList<>(notesByProductLineId.values()));
     }
 }

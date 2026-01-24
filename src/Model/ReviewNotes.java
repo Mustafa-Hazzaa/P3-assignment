@@ -1,12 +1,12 @@
 package Model;
 
 public class ReviewNotes {
-    private final String productLineName;
+    private final int productLineID;
     private  int review;
     private  String notes;
 
-    public ReviewNotes(String productLineName, int review, String notes) {
-        this.productLineName = productLineName;
+    public ReviewNotes(int productLineID, int review, String notes) {
+        this.productLineID = productLineID;
         this.review = review;
         this.notes = notes;
     }
@@ -19,8 +19,8 @@ public class ReviewNotes {
         return notes;
     }
 
-    public String getProductLineName() {
-        return productLineName;
+    public int getProductLineId() {
+        return productLineID;
     }
 
     public void setReview(int review) {

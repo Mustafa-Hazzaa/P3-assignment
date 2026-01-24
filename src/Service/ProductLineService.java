@@ -4,6 +4,7 @@ import Model.ProductLine;
 import Model.Task; // <-- Import Task
 import Repository.ProductLineRepository;
 import Util.LineStatus;
+import Util.TaskStatus;
 import io.ErrorLogger;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class ProductLineService {
                     }
                 } catch (InterruptedException e) {
                     System.err.println("ERROR: Failed to assign task " + task.getId() + " to line " + line.getName());
-                    Thread.currentThread().interrupt(); // Preserve interrupted status
+                    Thread.currentThread().interrupt();
                 }
             }
         }
@@ -73,9 +74,10 @@ public class ProductLineService {
     }
 
     public void removeProductLine(int lineId, TaskService taskService) {
-
         ProductLine cancelledLine = productLinesById.get(lineId);
         if (cancelledLine == null) return;
+
+        List<Task> tasksToReassign = taskService.getTasksByProductLine(lineId);
 
         List<ProductLine> activeLines = new ArrayList<>();
         for (ProductLine line : productLinesById.values()) {
@@ -85,25 +87,29 @@ public class ProductLineService {
         }
 
         if (activeLines.isEmpty()) {
-            logger.log("NO PRODUCT LINES EXIST tasks are lost");
+            productLinesById.remove(lineId);
+            return;
         }
 
         int index = 0;
-        for (Task task : cancelledLine.getAllTasks()) {
+        for (Task task : tasksToReassign) {
+            task.setStatus(TaskStatus.CANCELLED);
             ProductLine targetLine = activeLines.get(index % activeLines.size());
-
+            task.setProductLine(targetLine.getId());
+            task.setStatus(TaskStatus.PENDING);
             try {
-                task.setProductLine(targetLine.getId());
                 targetLine.addTask(task);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-
             index++;
         }
 
         productLinesById.remove(lineId);
     }
+
+
+
 
 
     public void changeStatus(ProductLine line, LineStatus status) {

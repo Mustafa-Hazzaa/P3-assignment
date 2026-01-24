@@ -77,6 +77,7 @@ public class UserService {
 
     public String validateInfo(String email,String username, String password, Role role) {
         if (username == null || username.trim().isEmpty()) {return "Username cannot be empty";}
+        if (!username.matches("^[a-zA-Z].*")){return "username should start with a character";}
         if (!isValidEmail(email)) {return "Invalid email format";}
         if (password == null || password.trim().isEmpty()) {return "Password cannot be empty";}
         if (passwordCheck(password) <= 1) {return "Password is too weak";}

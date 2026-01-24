@@ -30,6 +30,9 @@ public class ManagerView extends JFrame {
 
     private final ProductLineService productLineService;
     private Consumer<ProductLine> onLineClicked;
+    private Consumer<ProductLine> onLineAdded;
+
+
 
     private final HashMap<Integer, ProductionLinePanel> linePanels = new HashMap<>();
 
@@ -38,9 +41,11 @@ public class ManagerView extends JFrame {
     private final String PRODUCT_LINES_CARD = "PRODUCT_LINES";
     private final String REPORTS_CARD = "REPORTS";
 
+
     private JPanel productLinesPanel;
 
     public ManagerView(ProductLineService productLineService) {
+
         this.productLineService = productLineService;
         setTitle("Factory Manager");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -72,7 +77,7 @@ public class ManagerView extends JFrame {
         cardPanel = new JPanel(cardLayout);
 
         productLinesPanel = new JPanel();
-        productLinesPanel.setBackground(new Color(245, 220, 230));
+        productLinesPanel.setBackground(new Color(255, 214, 153));
 
         JScrollPane scrollPane = new JScrollPane(productLinesPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -100,6 +105,9 @@ public class ManagerView extends JFrame {
     public void setOnLineClicked(Consumer<ProductLine> callback) {
         this.onLineClicked = callback;
     }
+    public void setOnLineAdded(Consumer<ProductLine> callback) {
+        this.onLineAdded = callback;
+    }
 
     public void displayLines(Collection<ProductLine> lines) {
         productLinesPanel.removeAll();
@@ -107,7 +115,7 @@ public class ManagerView extends JFrame {
 
         productLinesPanel.setLayout(new GridLayout(0, 3, 25, 25));
         productLinesPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
-        productLinesPanel.setBackground(new Color(245, 220, 230));
+        productLinesPanel.setBackground(new Color(236, 209, 166));
 
         for (ProductLine line : lines) {
             ImageIcon gif = switch (line.getStatus()) {
@@ -166,6 +174,7 @@ public class ManagerView extends JFrame {
 
             LineStatus status = LineStatus.valueOf((String) statusBox.getSelectedItem());
             ProductLine newLine = new ProductLine(name, status);
+            if (onLineAdded != null) onLineAdded.accept(newLine);
             productLineService.add(newLine);
             displayLines(productLineService.getAll());
             break;
@@ -173,6 +182,7 @@ public class ManagerView extends JFrame {
     }
 
     private class ProductionLinePanel extends JPanel {
+
 
         private final ProductLine line;
         private final JLabel statusLabel = new JLabel();

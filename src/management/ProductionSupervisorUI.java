@@ -1,5 +1,7 @@
 package management;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -268,6 +270,11 @@ public class ProductionSupervisorUI extends JFrame {
         }
 
     public static void main(String[]args){
+        FlatLightLaf.setup();
+        UIManager.put("Button.arc", 12);
+        UIManager.put("Component.arc", 12);
+        UIManager.put("ProgressBar.arc", 12);
+        UIManager.put("TextComponent.arc", 10);
         SwingUtilities.invokeLater(() -> new ProductionSupervisorUI().setVisible(true));
     }
 }

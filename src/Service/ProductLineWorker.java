@@ -4,6 +4,7 @@ import Model.ProductLine;
 import Model.Task;
 import Util.LineStatus;
 import Util.SimulatedClock;
+import Util.TaskStatus;
 import io.ErrorLogger;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,9 @@ public class ProductLineWorker implements Runnable {
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                while (productLine.getStatus() != LineStatus.ACTIVE) Thread.sleep(200);
+                while (productLine.getStatus() != LineStatus.ACTIVE) sleep(200);
                 Task task = productLine.takeTask();
+                if (task.getStatus() == TaskStatus.CANCELLED) continue;
                 if (!taskService.tryStartTask(task, inventoryService)) {
                     productLine.addTask(task);
                     sleep(500);
@@ -64,6 +66,13 @@ public class ProductLineWorker implements Runnable {
                 workerThread.start();
                 allWorkerThreads.add(workerThread);
         }
+    }
+
+    public static void addWorker(ProductLine productLine, TaskService taskService, InventoryService inventoryService, SimulatedClock clock){
+        ProductLineWorker worker = new ProductLineWorker(productLine, taskService, inventoryService, clock);
+        Thread workerThread = new Thread(worker, "Worker - " + productLine.getName());
+        workerThread.start();
+        allWorkerThreads.add(workerThread);
     }
 
 

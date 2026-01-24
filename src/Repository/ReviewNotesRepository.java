@@ -14,7 +14,7 @@ public class ReviewNotesRepository extends CsvRepository<ReviewNotes> {
 
     @Override
     protected String toCsv(ReviewNotes object) {
-        return object.getProductLineName()+ "," +
+        return object.getProductLineId()+ "," +
                 object.getReview()+ "," +
                 object.getNotes();
     }
@@ -27,7 +27,7 @@ public class ReviewNotesRepository extends CsvRepository<ReviewNotes> {
         }
 
         return (new ReviewNotes(
-                data[0],
+                Integer.parseInt(data[0]),
                 Integer.parseInt(data[1]),
                 data[2]));
     }

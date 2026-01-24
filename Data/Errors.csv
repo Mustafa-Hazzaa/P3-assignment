@@ -85,3 +85,76 @@
 [2026-01-23 19:01:12] ERROR: Invalid Data
 [2026-01-23 19:01:21] ERROR: Invalid Data
 [2026-01-23 19:02:15] ERROR: Invalid Data
+[2026-01-23 20:30:58] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 19760, Available: 0
+[2026-01-23 20:31:43] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:44] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:44] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:45] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:45] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:46] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:46] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:47] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:47] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:48] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:48] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:49] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:49] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:50] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:50] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:51] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:51] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:52] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:52] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:53] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:53] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:54] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:54] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:55] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:55] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:56] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:56] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:57] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:57] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:58] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:31:58] ERROR: Task 1 (widget) - Not enough stock for itemName 'screw'. Required: 20000, Available: 0
+[2026-01-23 20:40:13] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1widget
+[2026-01-23 23:00:25] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 00:35:31] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 00:40:45] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 00:55:41] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 00:56:07] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 00:56:27] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:04:18] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:05:04] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:07:28] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:08:50] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:09:40] ERROR: Invalid Data
+[2026-01-24 01:09:40] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:22:52] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:23:15] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:30:35] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:33:14] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:33:59] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:36:50] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:38:57] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:39:18] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:41:04] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:42:56] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:43:33] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:44:00] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:44:26] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:44:54] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:46:16] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:46:37] ERROR: THERE IS NOT ENOUGH MATERIAL in task 1 doing product widget
+[2026-01-24 01:52:15] ERROR: For input string: "aa"
+[2026-01-24 01:52:15] ERROR: For input string: "sadfnlasjk"
+[2026-01-24 01:52:15] ERROR: For input string: "mfa."
+[2026-01-24 01:52:15] ERROR: For input string: "da"
+[2026-01-24 01:52:15] ERROR: For input string: "first"
+[2026-01-24 01:52:15] ERROR: For input string: "luna"
+[2026-01-24 01:52:15] ERROR: For input string: "second"
+[2026-01-24 01:53:01] ERROR: Invalid Data
+[2026-01-24 02:18:59] ERROR: Invalid task data
+[2026-01-24 02:19:21] ERROR: Text '0' could not be parsed at index 0
+[2026-01-24 02:19:58] ERROR: Text '0' could not be parsed at index 0
+[2026-01-24 02:22:24] ERROR: Text '0' could not be parsed at index 0

@@ -35,7 +35,7 @@ public class ManagerController {
     }
 
     private void handleLineClicked(ProductLine line) {
-        ReviewNotes notes = notesService.getNotesForProductLine(line.getName());
+        ReviewNotes notes = notesService.getNotesForProductLine(line.getId());
 
         ReviewDialog dlg = new ReviewDialog(view, line, notes);
         dlg.setVisible(true);
@@ -47,7 +47,7 @@ public class ManagerController {
                 int rating = dlg.getRating();
                 String text = dlg.getNotes();
 
-                notesService.addUpdateNotes(new ReviewNotes(line.getName(), rating, text));
+                notesService.addUpdateNotes(new ReviewNotes(line.getId(), rating, text));
                 line.setStatus(status);
                 view.refreshLine(line);
                 break;

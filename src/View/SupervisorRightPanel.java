@@ -88,9 +88,9 @@ public class SupervisorRightPanel extends JPanel {
         editBtn = new RoundedButton("Edit", new Color(255, 214, 153));
         deleteBtn = new RoundedButton("Delete", new Color(255, 170, 170));
         saveBtn = new RoundedButton("Save Inventory", new Color(180, 180, 220));
+        saveBtn.setIcon(new ImageIcon("src/Images/save.png"));
 
-
-        filterBtn = new JButton(new ImageIcon("src/Images/Logo.png"));
+        filterBtn = new JButton(new ImageIcon("src/Images/filter.png"));
         filterBtn.setBorderPainted(false);
         filterBtn.setContentAreaFilled(false);
 

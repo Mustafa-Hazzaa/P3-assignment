@@ -5,9 +5,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
 public class InventoryStatusRenderer extends DefaultTableCellRenderer {
-    private Icon availableIcon = new ImageIcon("icons/Available.png");
-    private Icon lowIcon = new ImageIcon("icons/Low.png");
-    private Icon outIcon = new ImageIcon("icons/Out.png");
+    private Icon availableIcon = new ImageIcon("src/Images/Available.png");
+    private Icon lowIcon = new ImageIcon("src/Images/Low.png");
+    private Icon outIcon = new ImageIcon("src/Images/Out.png");
     private Color bgColor;
 
     public InventoryStatusRenderer(){

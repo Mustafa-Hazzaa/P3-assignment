@@ -1,109 +1,67 @@
 package tasks;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 
-public class ProductionLinesByProduct extends JFrame {
+public class ProductionLinesByProduct extends BaseDetails {
     private JTable table;
     private DefaultTableModel model;
-    private TableRowSorter<DefaultTableModel> sorter;
 
-    public ProductionLinesByProduct(){
-        setTitle("Production Lines by Product");
-        setSize(800 , 550);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout(10,10));
+    public ProductionLinesByProduct() {
+        super("Production Lines by Product", "Detailed view of tasks and lines for a specific product");
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT , 15 , 10));
-
-        JComboBox<String> productBox = new JComboBox<>(new String[]{
-                "Product A" , "Product B" , "Product C"
-        });
-        JComboBox<String> statusBox = new JComboBox<>(new String[] {
-                "All" , "IN_PROGRESS" , "COMPLETED"
+        JComboBox<String> productSelector = new JComboBox<>(new String[]{
+                "All", "Product A", "Product B", "Product C"
         });
 
-        JTextField searchField = new JTextField(15);
+        toolbarPanel.add(new JLabel("Select Product: "));
+        toolbarPanel.add(productSelector);
 
-        topPanel.add(new JLabel("Product:"));
-        topPanel.add(productBox);
+        model = new DefaultTableModel(new String[]{
+                "Task ID", "Line Name", "Quantity", "Start Date", "Status"
+        }, 0);
 
-        topPanel.add(new JLabel("Task Status:"));
-        topPanel.add(statusBox);
-
-        topPanel.add(new JLabel("Search Line:"));
-        topPanel.add(searchField);
-
-        model = new DefaultTableModel(new String[] {
-                "Production Line" , "Line Status" , "Tasks Count"
-        },0);
         table = new JTable(model);
-        table.setRowHeight(40);
-        table.getTableHeader().setBackground(new Color(188 , 170 , 145));
-        table.getTableHeader().setForeground(Color.WHITE);
-        table.getTableHeader().setFont(new Font("Segoe UI" , Font.BOLD , 14));
-        table.setShowVerticalLines(false);
-        table.setGridColor(new Color(240 , 240 , 240));
+        customizeTable(table);
+        table.setDefaultEditor(Object.class, null);
 
-        sorter = new TableRowSorter<>(model);
-        table.setRowSorter(sorter);
-
-        table.getColumnModel().getColumn(1).setCellRenderer(new StatusRenderer());
 
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getViewport().setBackground(Color.WHITE);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        // dummy data
-        model.addRow(new Object[]{"Line A" , "Active" ,3});
-        model.addRow(new Object[]{"Line B" , "Active" ,1});
-        model.addRow(new Object[]{"Line C" , "Stopped" ,2});
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
 
-        Runnable applyFilter = () -> {
-            String search = searchField.getText().toLowerCase();
-
-            sorter.setRowFilter(new RowFilter<DefaultTableModel, Integer>() {
-                @Override
-                public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
-                    return entry.getStringValue(0).toLowerCase().contains(search);
-                }
-            });
-        };
-        searchField.addKeyListener(new java.awt.event.KeyAdapter(){
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent e){
-                applyFilter.run();
-            }
+        productSelector.addActionListener(e -> {
+            String selected = (String) productSelector.getSelectedItem();
+            updateTable(selected);
         });
 
-        add(topPanel , BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        updateTable("All");
     }
-    class StatusRenderer extends DefaultTableCellRenderer{
-        @Override
-        public Component getTableCellRendererComponent(JTable table , Object value , boolean isSelected , boolean hasFocus , int row , int column){
-            JLabel label = (JLabel) super.getTableCellRendererComponent(table , value , isSelected , hasFocus , row , column);
-            label.setHorizontalAlignment(JLabel.CENTER);
-            label.setOpaque(true);
-            label.setFont(new Font("Segoe Ui" , Font.BOLD , 12));
 
-            if (value!= null){
-                String status = value.toString().toUpperCase();
-                if (status.equals("ACTIVE")){
-                    label.setBackground(new Color(200 , 230 , 201));
-                    label.setForeground(new Color(46,125,50));
-                } else if (status.equals("STOPPED")) {
-                    label.setBackground(new Color(255 , 205 , 210));
-                }else {
-                    label.setBackground(Color.WHITE);
-                    label.setForeground(Color.BLACK);
-                }
-            }
-            return label;
+    private void updateTable(String productName) {
+        model.setRowCount(0);
+        switch (productName) {
+            case "Product A":
+                model.addRow(new Object[]{"T-01", "Line A", "500", "20/01/2026", "COMPLETED"});
+                model.addRow(new Object[]{"T-04", "Line C", "300", "22/01/2026", "IN_PROGRESS"});
+                break;
+            case "Product B":
+                model.addRow(new Object[]{"T-02", "Line B", "1000", "21/01/2026", "COMPLETED"});
+                model.addRow(new Object[]{"T-08", "Line B", "450", "23/01/2026", "IN_PROGRESS"});
+                break;
+            case "Product C":
+                model.addRow(new Object[]{"T-05", "Line A", "200", "22/01/2026", "COMPLETED"});
+                break;
+            case "All":
+                model.addRow(new Object[]{"T-01", "Line A", "500", "20/01/2026", "COMPLETED"});
+                model.addRow(new Object[]{"T-02", "Line B", "1000", "21/01/2026", "COMPLETED"});
+                model.addRow(new Object[]{"T-04", "Line C", "300", "22/01/2026", "IN_PROGRESS"});
+                model.addRow(new Object[]{"T-05", "Line A", "200", "22/01/2026", "COMPLETED"});
+                model.addRow(new Object[]{"T-08", "Line B", "450", "23/01/2026", "IN_PROGRESS"});
+                break;
         }
     }
 }

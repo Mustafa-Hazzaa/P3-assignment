@@ -5,7 +5,7 @@ import java.util.Map;
 public class Product extends Stockable {
 
     private static int nextId = 1;
-    private final Map<String, Integer> requiredItems;
+    private Map<String, Integer> requiredItems;
 
     public Product(String name, int quantity, Map<String , Integer> requiredItems) {
         super(generateId(), name, quantity);

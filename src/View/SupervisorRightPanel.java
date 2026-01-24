@@ -11,7 +11,7 @@ import java.awt.*;
 public class SupervisorRightPanel extends JPanel {
 
     private CardLayout cardLayout = new CardLayout();
-
+    private ProductManagementPanel productManagementPanel;
     private DefaultTableModel model;
     private JTable table;
     private TableRowSorter<DefaultTableModel> sorter;
@@ -33,7 +33,9 @@ public class SupervisorRightPanel extends JPanel {
         // ####################### CARD #######################
         JPanel stockCard = createStockPanel();
         JPanel taskCard = new ProductionLineDashBoard();
-        add(stockCard, "INVENTORY");
+        productManagementPanel = new ProductManagementPanel();
+        add(stockCard, "ITEMS");
+        add(productManagementPanel, "PRODUCTS");
         add(taskCard, "TASK MANAGEMENT");
     }
 
@@ -68,7 +70,7 @@ public class SupervisorRightPanel extends JPanel {
         table.setSelectionBackground(new Color(220, 200, 170));
         table.setSelectionForeground(Color.BLACK);
         table.setRowHeight(50);
-
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         JScrollPane scroll = new JScrollPane(table);
         scroll.getViewport().setOpaque(false);
         scroll.setOpaque(false);
@@ -85,10 +87,26 @@ public class SupervisorRightPanel extends JPanel {
         header.setReorderingAllowed(false);
 
         // Buttons
+        Dimension buttonSize = new Dimension(100, 50);
         addBtn = new RoundedButton("Add", new Color(180, 220, 180));
+        addBtn.setForeground(Color.BLACK);
+        addBtn.setFont(new Font("segoe UI", Font.PLAIN, 18));
+        addBtn.setPreferredSize(buttonSize);
+
         editBtn = new RoundedButton("Edit", new Color(255, 214, 153));
+        editBtn.setForeground(Color.BLACK);
+        editBtn.setFont(new Font("segoe UI", Font.PLAIN, 18));
+        editBtn.setPreferredSize(buttonSize);
+
         deleteBtn = new RoundedButton("Delete", new Color(255, 170, 170));
+        deleteBtn.setForeground(Color.BLACK);
+        deleteBtn.setFont(new Font("segoe UI", Font.PLAIN, 18));
+        deleteBtn.setPreferredSize(buttonSize);
+
         saveBtn = new RoundedButton("Save Inventory", new Color(180, 180, 220));
+        saveBtn.setForeground(Color.BLACK);
+        saveBtn.setFont(new Font("segoe UI", Font.PLAIN, 18));
+
         saveBtn.setIcon(new ImageIcon("src/Images/save.png"));
 
         filterBtn = new JButton(new ImageIcon("src/Images/filter.png"));
@@ -115,7 +133,9 @@ public class SupervisorRightPanel extends JPanel {
         return panel;
     }
 
-
+    public ProductManagementPanel getProductManagementPanel() {
+        return productManagementPanel;
+    }
     public void showCard(String cardName) {
         cardLayout.show(this, cardName);
     }

@@ -45,7 +45,6 @@ public class AppRouter {
             loginView.usernameField.requestFocusInWindow();
             loginView.setVisible(true);
 
-            // Hide other views if they are currently visible
         });
     }
 
@@ -89,6 +88,7 @@ public class AppRouter {
         new Loading(() -> {
             if (supervisorView == null) supervisorView = new SupervisorView();
             new SupervisorController(inventoryService, supervisorView.rightPanel);
+            new ProductController(inventoryService, supervisorView.rightPanel.getProductManagementPanel());
             supervisorView.setVisible(true);
 
             // Hide other views

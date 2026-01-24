@@ -33,7 +33,7 @@ public class ItemRepository extends CsvRepository<Item>{
                 Integer.parseInt(data[0]),
                 data[1],
                 Integer.parseInt(data[2]),
-                Integer.parseInt(data[3]),
+                Double.parseDouble(data[3]),
                 data[4],
                 Integer.parseInt(data[5])));
     }

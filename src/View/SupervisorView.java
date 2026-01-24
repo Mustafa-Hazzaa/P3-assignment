@@ -27,7 +27,7 @@ public class SupervisorView extends JFrame {
         add(rightPanel, BorderLayout.CENTER);
 
         // Side Navigation logic
-        menuItems = List.of("INVENTORY", "TASK MANAGEMENT");
+        menuItems = List.of("ITEMS","PRODUCTS", "TASK MANAGEMENT");
         sideNav = new SideNavPanel(
                 "SUPER POTATO",
                 "SUPERVISOR",
@@ -35,7 +35,8 @@ public class SupervisorView extends JFrame {
                 menuItems,
                 item -> {
                     switch (item) {
-                        case "INVENTORY" -> rightPanel.showCard("INVENTORY");
+                        case "ITEMS" -> rightPanel.showCard("ITEMS");
+                        case "PRODUCTS" -> rightPanel.showCard("PRODUCTS");
                         case "TASK MANAGEMENT" -> rightPanel.showCard("TASK MANAGEMENT");
                     }
                 }

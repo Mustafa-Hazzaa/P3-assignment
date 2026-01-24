@@ -1,3 +1,5 @@
 id,name,quantity,requiredItems
 4,widget,1418,screw:20;wood:4
+6,d,11,aa:22
 5,gadget,120,screw:20;wood:5
+7,dadsa,11,aa:1

@@ -15,6 +15,8 @@ public class Loading extends JFrame {
     private void initUI() {
         setUndecorated(true);
         setSize(800, 500);
+        ImageIcon logo = new ImageIcon("src/Images/Logo.png");
+        this.setIconImage(logo.getImage());
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 

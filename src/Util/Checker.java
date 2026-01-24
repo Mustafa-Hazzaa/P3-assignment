@@ -11,6 +11,19 @@ public class Checker {
             throw new PositiveIntegerException("Value must be a valid integer");
         }
     }
+
+    public static double parsePositiveDouble(String text) throws PositiveDoubleException {
+        try {
+            double value = Double.parseDouble(text.trim());
+            if (value <= 0) {
+                throw new PositiveDoubleException("Value must be a positive integer");
+            }
+            return value;
+        } catch (NumberFormatException e) {
+            throw new PositiveDoubleException("Value must be a valid integer");
+        }
+    }
+
     public static String isAlphabet(String s)throws IsAlphabet{
         if( s != null && s.matches("[A-Za-z]+")){
             return s;

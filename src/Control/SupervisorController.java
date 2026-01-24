@@ -2,13 +2,10 @@ package Control;
 
 import Service.InventoryService;
 import Model.Item;
-import Util.Category;
-import Util.Checker;
-import Util.IsAlphabet;
-import Util.PositiveIntegerException;
+import Util.*;
 import View.SupervisorRightPanel;
-import Util.InventoryStatus;
 import management.FilterPopUp;
+import raven.toast.Notifications;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -92,7 +89,7 @@ public class SupervisorController {
             try {
                 String name = Checker.isAlphabet(nameField.getText().trim().toLowerCase());
                 int qty = Checker.parsePositiveInt(qtyField.getText().trim());
-                int price = Checker.parsePositiveInt(priceField.getText().trim());
+                double price = Checker.parsePositiveDouble(priceField.getText().trim());
                 int minQty = Checker.parsePositiveInt(minQtyField.getText().trim());
                 Category category = (Category) categoryBox.getSelectedItem();
 
@@ -109,6 +106,8 @@ public class SupervisorController {
                 JOptionPane.showMessageDialog(view, "Quantity, Price, and Min Stock must be positive integers");
             } catch (IsAlphabet isAlphabet) {
                 JOptionPane.showMessageDialog(view, "Name must only contain letters");
+            } catch (PositiveDoubleException e) {
+                 JOptionPane.showMessageDialog(view, "Price must be positive double");
             }
         }
     }
@@ -116,7 +115,7 @@ public class SupervisorController {
     private void handleEdit() {
         int row = view.getTable().getSelectedRow();
         if (row == -1) {
-            JOptionPane.showMessageDialog(view, "Please select an item to edit.");
+            Notifications.getInstance().show(Notifications.Type.WARNING, "Please select a product to edit.");
             return;
         }
 
@@ -189,8 +188,8 @@ public class SupervisorController {
                         "Deleted", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(view, "Please select an item to delete.",
-                    "No Selection", JOptionPane.WARNING_MESSAGE);
+            Notifications.getInstance().show(Notifications.Type.WARNING, "Please select a product to delete.");
+            return;
         }
         refreshTable();
     }
@@ -210,22 +209,21 @@ public class SupervisorController {
     }
 
     public void applyFilters() {
-        // 1. Get current state from the View
         String text = view.searchField.getText().trim().toLowerCase();
         Set<InventoryStatus> selectedStatuses = filterPopUp.getSelectedStatuses();
         Set<String> selectedCategories = filterPopUp.getSelectedCategories();
         TableRowSorter<DefaultTableModel> sorter = view.getSorter();
 
-        // 2. Create the filter logic
+
         sorter.setRowFilter(new RowFilter<>() {
             @Override
             public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
-                // Get row data using the model from the view
+
                 String name = entry.getStringValue(view.getTableModel().findColumn("Name")).toLowerCase();
                 String category = entry.getStringValue(view.getTableModel().findColumn("Category"));
                 InventoryStatus status = (InventoryStatus) entry.getValue(view.getTableModel().findColumn("Status"));
 
-                // 3. Apply the logic
+
                 boolean matchesSearch = name.contains(text);
                 boolean matchesStatus = selectedStatuses.isEmpty() || selectedStatuses.contains(status);
                 boolean matchesCategory = selectedCategories.isEmpty() || selectedCategories.stream()

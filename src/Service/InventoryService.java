@@ -66,7 +66,7 @@ public class InventoryService {
         return null;
     }
 
-    public void addItem(String name, int quantity, int price, String category, int minStock) {
+    public void addItem(String name, int quantity, double price, String category, int minStock) {
         String lowerCaseName = name.toLowerCase();
 
         if (itemsByName.containsKey(lowerCaseName)) {

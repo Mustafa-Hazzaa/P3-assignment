@@ -11,7 +11,6 @@ public class ProductsByProductionLine extends BaseDetails {
 
     public ProductsByProductionLine() {
         super("Products by Production Line", "View products filtered by line");
-
         JComboBox<String> lineBox = new JComboBox<>(new String[]{"All Lines", "Line A", "Line B", "Line C"});
         toolbarPanel.add(new JLabel("Select Line: "));
         toolbarPanel.add(lineBox);
@@ -19,8 +18,6 @@ public class ProductsByProductionLine extends BaseDetails {
         model = new DefaultTableModel(new String[]{"Product Name", "Total Quantity", "Production Line", "Status"}, 0);
         JTable table = new JTable(model);
         customizeTable(table);
-
-
         sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
 
@@ -37,7 +34,6 @@ public class ProductsByProductionLine extends BaseDetails {
             }
         });
     }
-
     private void addDummyData() {
         model.addRow(new Object[]{"Product A", "1200 Units", "Line A", "ACTIVE"});
         model.addRow(new Object[]{"Product B", "2000 Units", "Line B", "ACTIVE"});

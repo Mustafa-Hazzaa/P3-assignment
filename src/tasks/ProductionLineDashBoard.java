@@ -64,7 +64,6 @@ public class ProductionLineDashBoard extends JFrame {
 
         return card;
     }
-
     public static void main (String[]args){
         UIManager.put("Button.arc",15);
         UIManager.put("Component.arc",15);

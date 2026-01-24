@@ -24,7 +24,6 @@ public class AllProducedProducts extends BaseDetails {
         addFinishedProductCard("Chips Salt", "4100 Bags", "Line C", new Color(245, 245, 220));
         addFinishedProductCard("Chips Cheese", "2800 Bags", "Line B", new Color(255, 223, 186));
     }
-
     private void addFinishedProductCard(String name, String totalQty, String lines, Color color) {
         JPanel card = new JPanel();
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));

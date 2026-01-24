@@ -3,51 +3,79 @@ package tasks;
 import javax.swing.*;
 import java.awt.*;
 
-public class MostRequestedProduct extends JFrame {
-    private JLabel resultLable;
+public class MostRequestedProduct extends BaseDetails {
+    private JLabel resultName;
+    private JLabel resultQty;
+    private JPanel resultCard;
 
-    public MostRequestedProduct(){
-        setTitle("Most Requested Product");
-        setSize(700 , 500);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout(10,10));
+    public MostRequestedProduct() {
+        super("Most Requested Product", "Analysis of production demand across all lines");
+        JTextField fromDateField = new JTextField("2026-01-01", 10);
+        JTextField toDateField = new JTextField("2026-01-31", 10);
+        JButton analyzeBtn = new JButton("Analyze Demand");
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT , 15 , 10));
-        JTextField fromDateField = new JTextField(10);
-        JTextField toDateField = new JTextField(10);
+        analyzeBtn.setBackground(new Color(33, 150, 243));
+        analyzeBtn.setForeground(Color.WHITE);
+        analyzeBtn.setFocusPainted(false);
 
-        JButton analyzeBtn = new JButton("Analyze");
+        toolbarPanel.add(new JLabel("From:"));
+        toolbarPanel.add(fromDateField);
+        toolbarPanel.add(Box.createHorizontalStrut(10));
+        toolbarPanel.add(new JLabel("To:"));
+        toolbarPanel.add(toDateField);
+        toolbarPanel.add(Box.createHorizontalStrut(10));
+        toolbarPanel.add(analyzeBtn);
 
-        topPanel.add(new JLabel("From Date:"));
-        topPanel.add(fromDateField);
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        centerPanel.setBackground(Color.WHITE);
 
-        topPanel.add(new JLabel("To Date:"));
-        topPanel.add(toDateField);
+        resultCard = new JPanel();
+        resultCard.setLayout(new BoxLayout(resultCard, BoxLayout.Y_AXIS));
+        resultCard.setPreferredSize(new Dimension(350, 200));
+        resultCard.setBackground(new Color(245, 245, 245));
+        resultCard.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true));
+        resultCard.setVisible(false);
 
-        topPanel.add(analyzeBtn);
+        JLabel crownIcon = new JLabel("🏆");
+        crownIcon.setFont(new Font("Serif", Font.PLAIN, 50));
+        crownIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel resultPanel = new JPanel() ;
-        resultPanel.setBackground(Color.WHITE);
-        resultLable.setForeground(new Color(33 , 150 , 243));
-        resultPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(200,200,200) , 1 , true) , BorderFactory.createEmptyBorder(20,20,20,20)));
-        resultPanel.setLayout(new BorderLayout());
+        resultName = new JLabel("Product Name");
+        resultName.setFont(new Font("SansSerif", Font.BOLD, 22));
+        resultName.setForeground(new Color(33, 150, 243));
+        resultName.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        resultPanel.setBorder(BorderFactory.createTitledBorder("Result"));
+        resultQty = new JLabel("Total Requested: 0 Units");
+        resultQty.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        resultQty.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        resultLable= new JLabel("No analysis performed yet." , SwingConstants.CENTER);
-        resultLable.setFont(new Font("Segoe UI" , Font.BOLD , 16));
-        resultPanel.add(resultLable , BorderLayout.CENTER);
+        resultCard.add(Box.createVerticalStrut(20));
+        resultCard.add(crownIcon);
+        resultCard.add(Box.createVerticalStrut(10));
+        resultCard.add(resultName);
+        resultCard.add(Box.createVerticalStrut(5));
+        resultCard.add(resultQty);
 
-        analyzeBtn.addActionListener(e -> analyzeMostRequestedProduct(fromDateField.getText() , toDateField.getText()));
+        centerPanel.add(resultCard);
+        contentPanel.add(centerPanel, BorderLayout.CENTER);
 
-        add(topPanel , BorderLayout.NORTH);
-        add(resultPanel, BorderLayout.CENTER);
+        analyzeBtn.addActionListener(e -> {
+            String from = fromDateField.getText();
+            String to = toDateField.getText();
+            analyzeMostRequestedProduct(from, to);
+        });
     }
-    private  void analyzeMostRequestedProduct (String from , String to){
+    private void analyzeMostRequestedProduct(String from, String to) {
         if (from.isEmpty() || to.isEmpty()) {
-            JOptionPane.showMessageDialog(this , "Please enter both dates" , "Missing Date" , JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter both dates", "Missing Date", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        String winner = "Chips Vinegar (Family Pack)";
+        String total = "15,400 Bags";
+
+        resultName.setText(winner);
+        resultQty.setText("Total Production Demand: " + total);
+        resultCard.setVisible(true);
+        resultCard.setBackground(new Color(240, 248, 255));
     }
 }

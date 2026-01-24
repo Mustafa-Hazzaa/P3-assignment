@@ -87,7 +87,6 @@ public class ProductTask extends BaseDetails {
             }
         });
     }
-
     private void applyStatusRenderer() {
         table.getColumnModel().getColumn(6).setCellRenderer(new javax.swing.table.DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(JTable t, Object v, boolean isS, boolean hasF, int r, int c) {

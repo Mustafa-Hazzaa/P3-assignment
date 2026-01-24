@@ -72,11 +72,29 @@ public class ProductionLineTasks extends BaseDetails {
         });
     }
     private void handleAddTask() {
+        DefaultComboBoxModel<String> productModel = new DefaultComboBoxModel<>(new String[]{
+                "Product A" , "Product B" , "ProductC" , "Product D"});
+        JComboBox<String> productCombo = new JComboBox<>(productModel);
+
+        JButton addNewProdBtn = new JButton("+");
+        addNewProdBtn.setToolTipText("Add new Product to the System");
+        addNewProdBtn.setBackground(new Color(200 , 180 , 140));
+        addNewProdBtn.setForeground(Color.WHITE);
+        addNewProdBtn.setFocusPainted(false);
+
+        addNewProdBtn.addActionListener(e -> {
+            String newProd = JOptionPane.showInputDialog(this , "Enter new Product name:");
+            if (newProd != null && !newProd.trim().isEmpty()){
+                productModel.addElement(newProd);
+                productCombo.setSelectedItem(newProd);
+            }
+        });
+        JPanel productPanel = new JPanel(new BorderLayout(5 , 0));
+        productPanel.add(productCombo,BorderLayout.CENTER);
+        productPanel.add(addNewProdBtn,BorderLayout.EAST);
+
         int nextIdNumber = model.getRowCount() + 1 ;
         String autoId = "T-" + String.format("%02d" , nextIdNumber);
-
-        String[] availableProducts = {"Product A" , "Product B" , "Product C" , "Product D"};
-        JComboBox<String> productCombo = new JComboBox<>(availableProducts);
 
         String [] availableLines = {"Line A" , "Line B" , "Line C"};
         JComboBox<String> lineCombo = new JComboBox<>(availableLines);
@@ -84,7 +102,7 @@ public class ProductionLineTasks extends BaseDetails {
         JTextField qty = new JTextField();
         JComboBox<String> status = new JComboBox<>(new String[] {"IN_PROGRESS" , "COMPLETED"});
 
-        Object[] fields = {"Generated ID:" , new JLabel("<html><b>" + autoId + "</b></html>") , "Select product:" , productCombo , "Select Production Line:" , lineCombo , "Quantity:" , qty , "Status:" , status};
+        Object[] fields = {"Generated ID:" , new JLabel("<html><b>" + autoId + "</b></html>") , "Select product:" , productPanel , "Select Production Line:" , lineCombo , "Quantity:" , qty , "Status:" , status};
         int result = JOptionPane.showConfirmDialog(this,fields , "Add new task" ,JOptionPane.OK_CANCEL_OPTION);
 
         if (result == JOptionPane.OK_OPTION){

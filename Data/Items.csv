@@ -1,2 +1,5 @@
 id,name,quantity,price,category,minStockLevel
-1,potato,100,1.2,Food,100
+104,salt,27,0.1,SPICES,200
+103,potato,99578,0.4,VEGETABLES,50
+105,onion,9682,0.1,VEGETABLES,200
+101,bag,249858,0.05,Packaging,5000

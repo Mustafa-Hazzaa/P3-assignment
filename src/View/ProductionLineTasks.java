@@ -7,6 +7,7 @@ import Util.TaskStatus;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
@@ -52,6 +53,9 @@ public class ProductionLineTasks extends JPanel {
 
         sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
+
+        JTableHeader header = table.getTableHeader();
+        header.setReorderingAllowed(false);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230)));

@@ -1,15 +1,31 @@
 package tasks;
 
+import Model.Task;
+import Service.TaskService;
+
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
-public class MostRequestedProduct extends BaseDetails {
+public class MostRequestedProduct extends JPanel {
+
+    private final TaskService taskService;
+
     private JLabel resultName;
     private JLabel resultQty;
     private JPanel resultCard;
 
-    public MostRequestedProduct() {
-        super("Most Requested Product", "Analysis of production demand across all lines");
+    public MostRequestedProduct(TaskService taskService) {
+        super(new BorderLayout());
+        this.taskService = taskService;
+
+        JPanel toolbarPanel = new JPanel();
+        toolbarPanel.setBackground(Color.WHITE);
+
         JTextField fromDateField = new JTextField("2026-01-01", 10);
         JTextField toDateField = new JTextField("2026-01-31", 10);
         JButton analyzeBtn = new JButton("Analyze Demand");
@@ -25,6 +41,8 @@ public class MostRequestedProduct extends BaseDetails {
         toolbarPanel.add(toDateField);
         toolbarPanel.add(Box.createHorizontalStrut(10));
         toolbarPanel.add(analyzeBtn);
+
+        add(toolbarPanel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
         centerPanel.setBackground(Color.WHITE);
@@ -56,26 +74,87 @@ public class MostRequestedProduct extends BaseDetails {
         resultCard.add(Box.createVerticalStrut(5));
         resultCard.add(resultQty);
 
-        centerPanel.add(resultCard);
-        contentPanel.add(centerPanel, BorderLayout.CENTER);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        centerPanel.add(resultCard, gbc);
 
-        analyzeBtn.addActionListener(e -> {
-            String from = fromDateField.getText();
-            String to = toDateField.getText();
-            analyzeMostRequestedProduct(from, to);
-        });
-    }
-    private void analyzeMostRequestedProduct(String from, String to) {
-        if (from.isEmpty() || to.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter both dates", "Missing Date", JOptionPane.WARNING_MESSAGE);
-            return;
+        add(centerPanel, BorderLayout.CENTER);
+
+        analyzeBtn.addActionListener(e -> analyzeMostRequestedProduct(fromDateField.getText(), toDateField.getText()));
+
+        if (taskService.getAllTasks().isEmpty()) {
+            showSampleProduct();
         }
-        String winner = "Chips Vinegar (Family Pack)";
-        String total = "15,400 Bags";
+    }
 
-        resultName.setText(winner);
-        resultQty.setText("Total Production Demand: " + total);
+    private void showSampleProduct() {
+        resultName.setText("Sample Product");
+        resultQty.setText("Total Production Demand: 100 Units");
         resultCard.setVisible(true);
         resultCard.setBackground(new Color(240, 248, 255));
+        resultCard.revalidate();
+        resultCard.repaint();
+        SwingUtilities.getWindowAncestor(this).pack();
+    }
+
+    private void analyzeMostRequestedProduct(String from, String to) {
+        LocalDate fromDate;
+        LocalDate toDate;
+
+        try {
+            fromDate = LocalDate.parse(from);
+            toDate = LocalDate.parse(to);
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Invalid date format. Use YYYY-MM-DD.", "Date Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        List<Task> tasks = taskService.getAllTasks();
+
+        if (tasks.isEmpty()) {
+            showSampleProduct();
+            JOptionPane.showMessageDialog(this, "No tasks found. Showing sample data.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        Map<String, Integer> demandMap = new HashMap<String, Integer>();
+
+        for (Task t : tasks) {
+            LocalDate taskStart = t.getStartTime().toLocalDate();
+
+            if (taskStart.isBefore(fromDate) || taskStart.isAfter(toDate)) {
+                continue;
+            }
+
+            String productName = t.getProductName();
+            int quantity = t.getQuantity();
+
+            if (demandMap.containsKey(productName)) {
+                int oldValue = demandMap.get(productName);
+                demandMap.put(productName, oldValue + quantity);
+            } else {
+                demandMap.put(productName, quantity);
+            }
+        }
+
+        String topProduct = null;
+        int maxQuantity = 0;
+        for (Map.Entry<String, Integer> entry : demandMap.entrySet()) {
+            if (entry.getValue() > maxQuantity) {
+                maxQuantity = entry.getValue();
+                topProduct = entry.getKey();
+            }
+        }
+
+        if (topProduct != null) {
+            resultName.setText(topProduct);
+            resultQty.setText("Total Production Demand: " + maxQuantity + " Units");
+            resultCard.setVisible(true);
+            resultCard.setBackground(new Color(240, 248, 255));
+            resultCard.revalidate();
+            resultCard.repaint();
+            SwingUtilities.getWindowAncestor(this).pack();
+        }
     }
 }

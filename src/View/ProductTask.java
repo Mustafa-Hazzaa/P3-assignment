@@ -9,6 +9,7 @@ import Util.TaskStatus;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
@@ -58,6 +59,9 @@ public class ProductTask extends JPanel {
         table = new JTable(model);
         sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
+        JTableHeader header = table.getTableHeader();
+        header.setReorderingAllowed(false);
+
         applyStatusRenderer();
 
         JScrollPane scrollPane = new JScrollPane(table);

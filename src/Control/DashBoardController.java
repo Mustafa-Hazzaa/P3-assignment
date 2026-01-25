@@ -17,6 +17,9 @@ import io.ErrorLogger;
 import raven.toast.Notifications;
 import View.ProductionLineTasks;
 import View.ProductTask;
+import View.ProductionLinesByProduct;
+import View.ProductsByProductionLine;
+import tasks.MostRequestedProduct;
 
 import javax.swing.*;
 import java.util.List;
@@ -166,12 +169,72 @@ public class DashBoardController {
     }
 
     public void handleProductionLinesByProduct() {
+        // 1. Fetch all necessary data from services.
+        List<Task> allTasks = taskService.getAllTasks();
+        List<Product> allProducts = inventoryService.getAllProducts();
+
+        if (allTasks == null || allTasks.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "There are no tasks to display.", "No Tasks", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (allProducts == null || allProducts.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "There are no products to filter by.", "No Products", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // 2. Create the view panel, passing in the data it needs.
+        ProductionLinesByProduct viewPanel = new ProductionLinesByProduct(allTasks, allProducts, productLineService);
+
+        // 3. Display the panel in a new window.
+        JFrame frame = new JFrame("Production Lines by Product");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.getContentPane().add(viewPanel);
+        frame.pack();
+        frame.setLocationRelativeTo(null); // Center on screen
+        frame.setVisible(true);
     }
 
     public void handleProductsByProductionLine() {
+        // 1. Fetch all necessary data from services.
+        List<Task> allTasks = taskService.getAllTasks();
+        Collection<ProductLine> productLinesCollection = productLineService.getAll();
+        List<ProductLine> allProductLines = new ArrayList<>(productLinesCollection);
+
+        if (allTasks.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "There are no tasks to display.", "No Tasks", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (allProductLines.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "There are no production lines to filter by.", "No Lines", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // 2. Create the view panel, passing in the data.
+        ProductsByProductionLine viewPanel = new ProductsByProductionLine(allTasks, allProductLines);
+
+        // 3. Display the panel in a new window.
+        JFrame frame = new JFrame("Products by Production Line");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.getContentPane().add(viewPanel);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
     public void handleMostRequestedProduct() {
+        // 1. The analysis logic is now self-contained within the panel,
+        //    so we just need to pass the service it depends on.
+        MostRequestedProduct viewPanel = new MostRequestedProduct(taskService);
+
+        // 2. Display the panel in a new window.
+        JFrame frame = new JFrame("Most Requested Product");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.getContentPane().add(viewPanel);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }
 

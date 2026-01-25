@@ -2,6 +2,9 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import Swing.*;
 
 public class LoginView extends JFrame {
@@ -9,6 +12,7 @@ public class LoginView extends JFrame {
     public IconTextField usernameField;
     public IconPasswordField passwordField;
     private CardLayout cardLayout;
+    public JLabel forgotPasswordLabel;
 
     public LoginView() {
         Color potatoBeige = new Color(243, 229, 195);
@@ -108,6 +112,23 @@ public class LoginView extends JFrame {
         signInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         signInButton.setFocusPainted(false);
 
+        forgotPasswordLabel = new JLabel("Forgot your password?");
+        forgotPasswordLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+        forgotPasswordLabel.setForeground(Color.GRAY);
+        forgotPasswordLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        forgotPasswordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        forgotPasswordLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Placeholder action for password recovery
+                JOptionPane.showMessageDialog(LoginView.this,
+                        "ITS YOUR PROBLEM NOT MINE ",
+                        "Forgot Password",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
         rightPanel.add(Box.createVerticalGlue());
         rightPanel.add(title);
         rightPanel.add(Box.createRigidArea(new Dimension(0, 30)));
@@ -119,9 +140,12 @@ public class LoginView extends JFrame {
         rightPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
         rightPanel.add(signInButton);
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        rightPanel.add(forgotPasswordLabel);
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
         rightPanel.add(Box.createVerticalGlue());
-
-
         getRootPane().setDefaultButton(signInButton);
 
         add(leftPanel, BorderLayout.WEST);

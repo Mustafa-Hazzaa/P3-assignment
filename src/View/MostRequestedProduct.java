@@ -1,4 +1,4 @@
-package tasks;
+package View;
 
 import Model.Task;
 import Service.TaskService;

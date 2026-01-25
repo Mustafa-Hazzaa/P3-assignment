@@ -19,7 +19,7 @@ import View.ProductionLineTasks;
 import View.ProductTask;
 import View.ProductionLinesByProduct;
 import View.ProductsByProductionLine;
-import tasks.MostRequestedProduct;
+import View.MostRequestedProduct;
 
 import javax.swing.*;
 import java.util.List;

@@ -1,4 +1,4 @@
-package management;
+package View;
 
 import Control.SupervisorController;
 import Util.Category;

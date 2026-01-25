@@ -5,7 +5,7 @@ import Util.*;
 import java.time.LocalDateTime;
 
 public class Task {
-    private static int nextId = 1;
+    public static int nextId = 1;
     private int id;
     private String productName;
     private int quantity;
@@ -158,5 +158,7 @@ public class Task {
     }
     public int getTotalQuantity() {
         return totalQuantity;
+
     }
+
 }

@@ -4,7 +4,7 @@ import Service.InventoryService;
 import Model.Item;
 import Util.*;
 import View.SupervisorRightPanel;
-import management.FilterPopUp;
+import View.FilterPopUp;
 import raven.toast.Notifications;
 
 import javax.swing.*;

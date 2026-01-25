@@ -89,6 +89,9 @@ public class AppRouter {
             if (supervisorView == null) supervisorView = new SupervisorView();
             new SupervisorController(inventoryService, supervisorView.rightPanel);
             new ProductController(inventoryService, supervisorView.rightPanel.getProductManagementPanel());
+            DashBoard dashPanel = supervisorView.rightPanel.getDashBoardPanel();
+            DashBoardController dashController = new DashBoardController(taskService, productLineService, inventoryService, dashPanel);
+            dashPanel.setController(dashController);
             supervisorView.setVisible(true);
 
             // Hide other views

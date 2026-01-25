@@ -61,10 +61,12 @@ public class TaskService {
         return result;
     }
 
-    public void addTask(Task task) {
+    public boolean addTask(Task task) {
         if (task != null) {
             tasksById.put(task.getId(), task);
+            return true;
         }
+        return false;
     }
 
     public void removeTask(int taskId) {

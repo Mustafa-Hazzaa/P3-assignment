@@ -1,9 +1,9 @@
 package View;
 
-import Util.InventoryStatus;
 import Util.InventoryStatusRenderer;
-import management.*;
-import tasks.*;
+import Util.RoundedButton;
+import Util.RoundedTextField;
+
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -12,6 +12,7 @@ public class SupervisorRightPanel extends JPanel {
 
     private CardLayout cardLayout = new CardLayout();
     private ProductManagementPanel productManagementPanel;
+    private DashBoard dashBoardPanel;
     private DefaultTableModel model;
     private JTable table;
     private TableRowSorter<DefaultTableModel> sorter;
@@ -32,16 +33,16 @@ public class SupervisorRightPanel extends JPanel {
     private void setupCards() {
         // ####################### CARD #######################
         JPanel stockCard = createStockPanel();
-        JPanel taskCard = new ProductionLineDashBoard();
+        dashBoardPanel = new DashBoard();
         productManagementPanel = new ProductManagementPanel();
         add(stockCard, "ITEMS");
         add(productManagementPanel, "PRODUCTS");
-        add(taskCard, "TASK MANAGEMENT");
+        add(dashBoardPanel, "TASK MANAGEMENT");
     }
 
     private JPanel createStockPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         panel.setBackground(new Color(255, 249, 230));
 
         model = new DefaultTableModel(new Object[]{"ID", "Name", "Quantity", "Price", "Category", "Min Stock Level", "Status"}, 0){
@@ -135,6 +136,9 @@ public class SupervisorRightPanel extends JPanel {
 
     public ProductManagementPanel getProductManagementPanel() {
         return productManagementPanel;
+    }
+    public DashBoard getDashBoardPanel() {
+        return dashBoardPanel;
     }
     public void showCard(String cardName) {
         cardLayout.show(this, cardName);

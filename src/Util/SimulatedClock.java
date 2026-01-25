@@ -41,8 +41,7 @@ public class SimulatedClock {
     public LocalDateTime now() {
         Duration realElapsed = Duration.between(realStart, LocalDateTime.now());
 
-        long simulatedSeconds =
-                (realElapsed.toMillis() * SPEED) / 1000;
+        long simulatedSeconds = (realElapsed.toMillis() * SPEED) / 1000;
 
         return simulatedStart.plusSeconds(simulatedSeconds);
     }

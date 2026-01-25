@@ -20,7 +20,6 @@ public class FactoryApplication {
         UIManager.put("TextComponent.arc", 10);
         SwingUtilities.invokeLater(() -> {
 
-            System.out.println("Application starting... Initializing all services.");
             SimulatedClock clock = SimulatedClock.getInstance();
 
 
@@ -30,11 +29,10 @@ public class FactoryApplication {
             TaskService taskService = new TaskService(clock,inventoryService);
             ProductLineService productLineService = new ProductLineService();
 
-            System.out.println("All data services initialized.");
 
 
             productLineService.assignTasksToLines(taskService);
-            System.out.println("Pending tasks have been assigned to their production lines.");
+
             ProductLineWorker.startAllWorkers(
                     productLineService,
                     taskService,
@@ -50,12 +48,11 @@ public class FactoryApplication {
                     productLineService,
                     clock
             );
-            System.out.println("Shutdown manager is ready.");
 
             AppRouter router = new AppRouter(inventoryService,userService, productLineService, taskService, reviewNotesService);
             router.showLoginView();
 
-            System.out.println("Application initialized successfully. Login view is now visible.");
+            System.out.println("Application initialized successfully.");
         });
 
     }

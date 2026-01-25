@@ -89,8 +89,8 @@ public class MostRequestedProduct extends JPanel {
     }
 
     private void showSampleProduct() {
-        resultName.setText("Sample Product");
-        resultQty.setText("Total Production Demand: 100 Units");
+        resultName.setText("THERE IS NO PRODUCTS");
+        resultQty.setText("WE SHOULD WORK HARDER");
         resultCard.setVisible(true);
         resultCard.setBackground(new Color(240, 248, 255));
         resultCard.revalidate();

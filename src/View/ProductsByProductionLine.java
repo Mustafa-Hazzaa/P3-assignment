@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -71,8 +73,17 @@ public class ProductsByProductionLine extends JPanel {
     }
 
     private void populateTable(List<Task> tasks, Map<Integer, String> lineIdToNameMap) {
-        Map<String, List<Task>> groupedTasks = tasks.stream()
-                .collect(Collectors.groupingBy(task -> task.getProductName() + "::" + task.getProductLineId()));
+        Map<String, List<Task>> groupedTasks = new HashMap<>();
+
+        for (Task task : tasks) {
+            String key = task.getProductName() + "::" + task.getProductLineId();
+
+            if (!groupedTasks.containsKey(key)) {
+                groupedTasks.put(key, new ArrayList<>());
+            }
+
+            groupedTasks.get(key).add(task);
+        }
 
         model.setRowCount(0);
 
@@ -85,10 +96,17 @@ public class ProductsByProductionLine extends JPanel {
             int lineId = firstTask.getProductLineId();
             String lineName = lineIdToNameMap.getOrDefault(lineId, "Unknown");
 
-            int totalQuantity = tasksInGroup.stream().mapToInt(Task::getTotalQuantity).sum();
-
-            boolean anyInProgress = tasksInGroup.stream()
-                    .anyMatch(t -> t.getStatus() != TaskStatus.COMPLETED);
+            int totalQuantity = 0;
+            for (Task task : tasksInGroup) {
+                totalQuantity += task.getTotalQuantity();
+            }
+            boolean anyInProgress = false;
+            for (Task t : tasksInGroup) {
+                if (t.getStatus() != TaskStatus.COMPLETED) {
+                    anyInProgress = true;
+                    break;
+                }
+            }
             String status = anyInProgress ? "ACTIVE" : "COMPLETED";
 
             model.addRow(new Object[]{

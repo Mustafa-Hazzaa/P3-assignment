@@ -15,8 +15,6 @@ public class ShutdownManager {
     ) {
 
         Thread shutdownThread = new Thread(() -> {
-            System.out.println("-------------------------------------------");
-            System.out.println("Shutdown hook triggered. Closing application...");
 
             ProductLineWorker.stopAllWorkers();
 

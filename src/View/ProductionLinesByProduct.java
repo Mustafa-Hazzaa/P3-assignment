@@ -74,7 +74,7 @@ public class ProductionLinesByProduct extends JPanel {
         model.setRowCount(0);
         for (Task task : tasks) {
             ProductLine line = productLineService.getById(task.getProductLineId());
-            String lineName = (line != null) ? line.getName() : "Unknown";
+            String lineName = line.getName();
 
             model.addRow(new Object[]{
                     task.getId(),

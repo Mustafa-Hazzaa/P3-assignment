@@ -56,7 +56,6 @@ public class ManagerView extends JFrame {
         ImageIcon logo = new ImageIcon("src/Images/Logo.png");
         this.setIconImage(logo.getImage());
 
-        // SIDE NAV
         SideNavPanel sideNav = new SideNavPanel(
                 "Manager Panel",
                 "Factory Control",

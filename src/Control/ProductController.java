@@ -17,12 +17,11 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProductController {
 
     private final InventoryService inventoryService;
-    private final ProductManagementPanel view; // <-- Change the type here
+    private final ProductManagementPanel view;
     private final DefaultTableModel productTableModel;
     private final JTable productTable;
     private final TableRowSorter<DefaultTableModel> productSorter;
@@ -109,13 +108,11 @@ public class ProductController {
     private void addProduct() {
         JTextField nameField = new JTextField();
         JTextField quantityField = new JTextField();
-        //show what you already added
         Map<String, Integer> requiredItemsMap = new HashMap<>();
         JTextArea requirementsDisplay = new JTextArea(4, 30);
         requirementsDisplay.setEditable(false);
         requirementsDisplay.setBorder(BorderFactory.createTitledBorder("Required Items"));
 
-        //add another
         Item[] allItemsArray = inventoryService.getAllItems().toArray(new Item[0]);
         if (allItemsArray.length == 0) {
             JOptionPane.showMessageDialog(view, "Cannot add a product because there are no items in inventory.", "Error", JOptionPane.ERROR_MESSAGE);

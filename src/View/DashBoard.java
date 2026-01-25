@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 import Control.DashBoardController;
-import tasks.*;
 
 public class DashBoard extends JPanel {
     private DashBoardController controller;
@@ -16,15 +15,7 @@ public class DashBoard extends JPanel {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         mainPanel.setBackground(new Color(255, 249, 230));
     }
-//        mainPanel.add(createCard("Add a new task", "add a new task to be processed", new Color(76, 175, 80), "01", controller::handleAddTask));
-//        mainPanel.add(createCard("Tasks by Production Line", "View tasks assigned to each Production Line", new Color(255, 183, 77), "02", controller::handleTasksByProductionLine));
-//        mainPanel.add(createCard("Tasks by Product", "View tasks related to a specific Product", new Color(255, 112, 67), "03", controller::handleTasksByProduct));
-//        mainPanel.add(createCard("Production Lines for a Product", "View Production Lines that worked on a product", new Color(121, 85, 72), "04", controller::handleProductionLinesByProduct));
-//        mainPanel.add(createCard("Products by Production Line", "View Products produced by a specific Line", new Color(38, 166, 154), "05", controller::handleProductsByProductionLine));
-//        mainPanel.add(createCard("Most requested Product", "Find the most requested Product in a period", new Color(92, 107, 192), "06", controller::handleMostRequestedProduct));
-//
-//        add(mainPanel, BorderLayout.CENTER);
-//    }
+
     public void setController(DashBoardController controller) {
         this.controller = controller;
         initComponents();
@@ -34,18 +25,17 @@ public class DashBoard extends JPanel {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         mainPanel.setBackground(new Color(255, 249, 230));
 
-        // Now, controller is guaranteed to be non-null here
         mainPanel.add(createCard("Add a new task", "add a new task to be processed", new Color(76, 175, 80), "01", controller::handleAddTask));
         mainPanel.add(createCard("Tasks by Production Line", "View tasks assigned to each Production Line", new Color(255, 183, 77), "02", controller::handleTasksByProductionLine));
         mainPanel.add(createCard("Tasks by Product", "View tasks related to a specific Product", new Color(255, 112, 67), "03", controller::handleTasksByProduct));
-        mainPanel.add(createCard("Production Lines for\n a Product", "View Production Lines that worked on a product", new Color(121, 85, 72), "04", controller::handleProductionLinesByProduct));
+        mainPanel.add(createCard("Production Lines for a Product", "View Production Lines that worked on a product", new Color(121, 85, 72), "04", controller::handleProductionLinesByProduct));
         mainPanel.add(createCard("Products by Production Line", "View Products produced by a specific Line", new Color(38, 166, 154), "05", controller::handleProductsByProductionLine));
         mainPanel.add(createCard("Most requested Product", "Find the most requested Product in a period", new Color(92, 107, 192), "06", controller::handleMostRequestedProduct));
 
         add(mainPanel, BorderLayout.CENTER);
     }
 
-    // The createCard method remains the same...
+
     private JPanel createCard (String titleText , String descText , Color accentColor , String number , Runnable onOpen) {
         JPanel card = new JPanel(new BorderLayout(15 , 15));
 
